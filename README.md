@@ -1,6 +1,8 @@
 # UniWork Sri Lanka 🇱🇰
 ### University Students Micro-Gig & Errand Marketplace
 
+<img src="assets/uni.png" alt="Students Micro-Gig Platform" />
+
 UniWork is a mobile-first marketplace purpose-built to connect Sri Lankan state university undergraduates with short-term digital and physical tasks. The platform enables students to earn a flexible income that adapts to their unpredictable academic schedules, entirely bypassing the rigid commitments of traditional part-time employment.
 
 ---
@@ -58,9 +60,7 @@ The platform's infrastructure is optimized to maintain low-latency geo-queries a
 
 *   **Frontend:** Cross-platform mobile client built using **React Native / Expo**, heavily performance-optimized, featuring high-fidelity UI/UX mirroring modern design standards, minimalist typography, and extreme data-saving asset compression.
 *   **Backend Engine:** High-performance REST/WebSocket API optimized for rapid geo-location indexing (e.g., PostgreSQL with PostGIS or Redis Geo) to instantly calculate and trigger push notifications for matching gigs within a strict **5km radius** of a campus hub.
-* **Automated Escrow Pipeline:** To build complete trust, money is handled through a secure transactional workflow:
-    $$\text{Client Posts Task }\& \text{ Deposits Funds} \longrightarrow \text{Bank API Holds in Escrow} \longrightarrow \text{Task Completed} \longrightarrow \text{Instant Payout}$$
-
+* **Automated Escrow Pipeline:** To build complete trust, money is handled through a secure transactional workflow
 ---
 
 ## 💼 Monetization Engine
