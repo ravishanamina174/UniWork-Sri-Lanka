@@ -58,8 +58,8 @@ The platform's infrastructure is optimized to maintain low-latency geo-queries a
 
 *   **Frontend:** Cross-platform mobile client built using **React Native / Expo**, heavily performance-optimized, featuring high-fidelity UI/UX mirroring modern design standards, minimalist typography, and extreme data-saving asset compression.
 *   **Backend Engine:** High-performance REST/WebSocket API optimized for rapid geo-location indexing (e.g., PostgreSQL with PostGIS or Redis Geo) to instantly calculate and trigger push notifications for matching gigs within a strict **5km radius** of a campus hub.
-*   **Automated Escrow Pipeline:** To build complete trust, money is handled through a secure transactional workflow:
-    $$\text{Client Posts Task \& Deposits Funds} \longrightarrow \text{Bank API Holds in Escrow} \longrightarrow \text{Task Completed} \longrightarrow \text{Instant Payout}$$
+* **Automated Escrow Pipeline:** To build complete trust, money is handled through a secure transactional workflow:
+    $$\text{Client Posts Task }\& \text{ Deposits Funds} \longrightarrow \text{Bank API Holds in Escrow} \longrightarrow \text{Task Completed} \longrightarrow \text{Instant Payout}$$
 
 ---
 
