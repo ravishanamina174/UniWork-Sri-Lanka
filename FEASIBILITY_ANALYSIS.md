@@ -24,3 +24,55 @@ The project is **highly feasible** to execute with a lean engineering team, prov
 Since smartphone penetration among undergraduates is virtually 100%, a mobile-first approach is mandatory. The core technical hurdle is not the data itself, but ensuring low-latency location matching and extreme cross-device mobile responsiveness across varying screen sizes (from high-end iPhones to budget Android devices).
 
 ---
+
+## 4. Key Techniques Required for Success
+To ensure adoption and stability, the following technical implementations are non-negotiable:
+
+*   **Strict UI/UX Consistency:** The application must maintain high-fidelity styling across all frontend components. A fragmented or clunky interface will immediately lose the trust of Gen-Z users.
+*   **Geospatial Indexing:** Gigs need to be broadcasted based on proximity. The database must efficiently handle radius queries (e.g., "Find all students within 3km of the University of Moratuwa").
+*   **Real-Time State Management:** When a gig is posted, nearby students need instant push notifications. When a gig is claimed, it must instantly disappear from the feed to prevent double-booking.
+*   **AI-Driven Task Matching (Future Proofing):** Implementing a smart matching layer that pairs a student's past successful gigs and stated degree (e.g., assigning a software bug-fixing gig to an IT faculty student) to specific tasks.
+
+---
+
+## 5. System Architecture & Tech Stack
+To build a scalable, modern, and performant platform, the following full-stack architecture is optimal:
+
+### Frontend (Mobile App)
+*   **Framework:** React Native 
+*   **Objective:** Delivers a true cross-platform mobile experience from a single codebase while allowing for pixel-perfect, responsive frontend components.
+
+### Backend (API & Core Logic)
+*   **Framework:** FastAPI (Python)
+*   **Objective:** Extremely fast, asynchronous API handling. Perfect for concurrent user requests during high-traffic periods (e.g., when a high-paying gig is suddenly broadcasted).
+
+### Authentication & Security
+*   **Provider:** Clerk
+*   **Objective:** Drop-in, highly secure authentication system to easily handle `.ac.lk` email verification, session management, and JWT generation without reinventing the wheel.
+
+### Database & Search
+*   **Database:** PostgreSQL with PostGIS extension (for robust geospatial radius querying).
+*   **AI Integration:** Integrating the Gemini API orchestrated via LangGraph could be used to automatically categorize unstructured user gig descriptions (e.g., parsing "Need help carrying a sofa" into category: `Physical Labor`, duration: `2 hrs`, suggested price: `LKR 2000`).
+
+---
+
+## 6. How to Start the Project
+
+### Phase 1: Information Gathering & Validation
+1.  **On-Ground Surveys:** Do not write code yet. Speak directly to students living in boardims around a specific target university. Ask them: *What is your absolute minimum hourly rate to do a data-entry task? What about a physical moving task?*
+2.  **Supply-Side Acquisition:** Speak to 5 local small businesses or event management companies. Confirm they would be willing to pay a 10% premium to access instant, smart student labor.
+
+### Phase 2: Technical Initialization
+1.  **Environment Setup:** Spin up your preferred environment (e.g., configuring Cursor IDE for AI-assisted rapid prototyping).
+2.  **Auth & Boilerplate:** Initialize the React Native project and the FastAPI backend. Connect Clerk for user onboarding. 
+3.  **Database Design:** Map out the core relational models: `Users`, `Gigs`, `Transactions`, and `Reviews`.
+
+### Phase 3: Core Module Development (MVP)
+Focus strictly on the primary loop first:
+*   **Module A:** Client creates a Gig (Title, Location, Payout).
+*   **Module B:** Student views the Gig feed and clicks "Accept."
+*   **Module C:** Simple status updates (`In Progress` -> `Completed`).
+
+### Phase 4: Testing & Iteration
+*   Ensure complete UI mobile responsiveness across the entire frontend. 
+*   Run a simulated beta test with 10 friends acting as clients and 10 acting as workers before integrating real payment gateways.
