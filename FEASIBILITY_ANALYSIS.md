@@ -9,6 +9,20 @@ State university students in Sri Lanka represent the top academic tier of the co
 *   **The Time-Constraint Dilemma:** Traditional part-time jobs (e.g., retail, fast food, call centers) demand rigid 6 to 8-hour daily shifts. State university timetables are notoriously erratic, with frequent reschedules, sudden practical sessions, and rolling exam dates. A student simply cannot commit to standard employment without sacrificing their degree.
 *   **The Stigma Barrier:** There is a cultural hesitation among Sri Lankan undergraduates to engage in visible manual labor. The problem isn't a lack of willingness to work; it's a lack of a *dignified, peer-accepted platform* to do so.
 
+**Macro Environmental Pressures**
+┌────────────────────────────────────────────────────────────────────────┐
+│                        THE UNDERGRADUATE TRILEMMA                      │
+├───────────────────┬────────────────────────────┬───────────────────────┤
+│ 1. Inflationary   │ Cost of living (boardims,  │ Fixed government aid  │
+│    Pressure       │ transport, data, food)     │ (Mahapola/bursaries)  │
+│                   │ skyrocketing.              │ is stagnant.          │
+├───────────────────┼────────────────────────────┼───────────────────────┤
+│ 2. Operational    │ Erratically rescheduled    │ Cannot commit to rigid│
+│    Constraints    │ timetables, labs, exams.   │ 6-8 hour retail shifts│
+├───────────────────┼────────────────────────────┼───────────────────────┤
+│ 3. Socio-Cultural │ Reluctance to engage in    │ Need dignified, peer- │
+│    Stigma         │ visible manual labor.      │ accepted alternatives.│
+└───────────────────┴────────────────────────────┴───────────────────────┘
 ---
 
 ## 2. The Best Solution
