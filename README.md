@@ -97,3 +97,9 @@ Appoint prominent final-year undergraduates and student leaders as Campus Ambass
 
 ### Phase 4: Controlled Hyper-Local Pilot
 Rather than an island-wide rollout, operations will launch as a isolated beta test restricted to **one single campus cluster** (e.g., University of Moratuwa for digital/technical tasks or University of Colombo for creative/event tasks) utilizing digital-only gigs initially to stress-test the bank escrow infrastructure before expanding to high-risk physical errands.
+
+### Phase 5: "The Hybrid Deposit Premium"
+
+- **Zero-Cash Communication Sandbox:** To mitigate platform leakage and comply with CBSL payment regulations without holding user balances, all communication is locked into an in-app chat sandbox. Real-time data sanitization filters mask phone numbers, personal account details, and external links until a contract is signed.
+- **Decentralized LankaQR Settlement Engine:** Rather than acting as a financial intermediary, the platform generates dynamic, task-specific LankaQR tokens embedded with the student's direct bank routing information. Posters scan and execute real-time, zero-fee peer-to-peer transfers under 5,000 LKR directly to the student's account.
+- **Deferred Pay-As-You-Earn Monetization:** The core system remains entirely free to browse. To sustain the infrastructure, a 5% platform maintenance fee is either dynamically split during digital QR handshakes or charged directly to corporate clients as an upfront "Task Activation Token" for physical errands, ensuring students carry zero monthly subscription liabilities.
