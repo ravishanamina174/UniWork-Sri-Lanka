@@ -1,105 +1,113 @@
-# UniWork Sri Lanka 🇱🇰
+# UniWork Sri Lanka 🚀
 ### University Students Micro-Gig & Errand Marketplace
 
 <img src="assets/uni.png" alt="Students Micro-Gig Platform" />
 
-UniWork is a mobile-first marketplace purpose-built to connect Sri Lankan state university undergraduates with short-term digital and physical tasks. The platform enables students to earn a flexible income that adapts to their unpredictable academic schedules, entirely bypassing the rigid commitments of traditional part-time employment.
+**UniWork** is a mobile-first marketplace connecting Sri Lankan state university students with short-term digital and physical tasks. It provides undergraduates with a flexible income stream without the rigid commitment of standard part-time jobs, designed to handle the volatile schedules of local campus life.
 
 ---
 
-## 📌 Core Concept
+## 💡 The Market Need (Why State Unis?)
 
-State university students in Sri Lanka are often academically elite but financially constrained. Due to unpredictable timetables, exam shifts, and campus disruptions, standard shift-based retail jobs (e.g., supermarkets, fast food) are highly impractical. 
-
-**UniWork solves this fragmentation by offering micro-gigs that take anywhere from 1 to 5 hours to complete.**
-
-### The Macro Gaps We Solve:
-*   **Socioeconomic Push:** Government bursaries (such as Mahapola) no longer absorb the inflationary spikes in urban boarding (boardim) fees, food, and transport.
-*   **Geographic Density:** State universities function as massive localized ecosystems. Thousands of students live clustered within a 2km radius of campus gates, making hyper-local, physical errands uniquely logistically efficient.
-*   **Dignity of Labor Shift:** In Sri Lanka, minor casual labor can carry a social stigma for university undergraduates. UniWork intentionally rebrands these tasks as an **"Academic Micro-Consultancy & Youth Hustle Network"**, framing errands as smart entrepreneurship.
+*   **Financial Strain:** Government bursaries (Mahapola) no longer cover the rising cost of living, food, and boarding houses.
+*   **Schedule Chaos:** Unpredictable timetables, sudden exam shifts, and strikes make standard shift-based retail or corporate jobs impossible for full-time state undergraduates.
+*   **Geographic Density:** Thousands of students live densely packed within a 2km radius of campus gates, making hyper-local physical logistics highly efficient.
+*   **Stigma Shift:** Rebrands manual, operational, or service tasks as *"entrepreneurial micro-consulting"* to eliminate the social stigma historically associated with casual labor in Sri Lanka.
 
 ---
 
-## 🛠️ Supported Gig Ecosystem
+## 🛡️ Safety & Verification (Critical Core)
 
-The platform splits workflows into two distinct operational pipelines:
+Because student safety is paramount, the platform implements a strict multi-layered security protocol:
 
-| 💻 Digital Tasks | 🏃‍♂️ Physical & Event Logistics |
+*   **Strict Onboarding:** Requires a valid `.ac.lk` university email domain or institutional student ID paired with a live facial biometric scan during registration.
+*   **Buddy System:** Mandates "Team Gigs" (minimum of 2+ verified students) for physical tasks such as moving furniture or working off-campus locations.
+*   **Live Tracking:** Background GPS tracking and automated emergency share links activate instantly the moment a physical gig begins.
+*   **Two-Way Ratings:** Blind ratings between posters and students; low platform scores trigger automatic, permanent account bans.
+
+---
+
+## 🛠️ Tech Stack & Architecture
+[ Next.js Web App ]       [ React Native Mobile ]
+          │                         │
+          └───────────┬─────────────┘
+                      ▼
+                [ API Gateway ]
+                      │
+                      ▼
+           [ FastAPI Backend Engine ]
+                      │
+     ┌────────────────┼────────────────┐
+     ▼                ▼                ▼
+[MongoDB]       [PostgreSQL]       [Pinecone]
+
+### Frontend Ecosystem
+*   **React Native:** Cross-platform mobile app optimized for low-data footprints, low-tier Android devices, and spotty local cellular connectivity.
+*   **Next.js / React:** Fully responsive web application optimized for local desktop browsers used by corporate clients and task posters.
+
+### Backend Infrastructure
+*   **FastAPI (Python):** High-performance asynchronous API gateway handling high-concurrency requests and background task workers.
+*   **Clerk API:** Secures domain-locked (`.ac.lk`) user sessions and authentication logic across web and mobile layouts.
+*   **Redis Pub/Sub & FCM:** Paired with Firebase Cloud Messaging to dispatch immediate task alerts to verified devices within a strict 4km radius.
+
+### Databases & Spatial Engines
+*   **MongoDB:** Document store for flexible user/student profile metadata, unstructured skill matrices, high-velocity in-app chat logs, and transient multi-agent conversational states.
+*   **PostgreSQL + PostGIS:** Relational data models combined with high-performance geospatial indexing for location calculations.
+*   **Pinecone:** High-dimensional semantic vector database for running multi-agent search profiles.
+*   **Geofencing & GPS Telemetry:** Real-time spatial tracking engine calculating proof-of-presence, background movement logs, and automated risk-zone telemetry scaling.
+
+### 🧠 Multi-Agent RAG Layer (LangGraph)
+Built with **LangGraph** and **Pinecone**, running specialized conversational AI agents:
+1.  **Ingestion Agent:** Reads messy, unformatted job descriptions typed naturally by clients, extracts the exact requirements, and uses current market data to calculate a fair, inflation-adjusted price suggestion before publication.
+2.  **Sandbox Guards Agent:** Instantly and actively monitors in-app chats to parse and block phone numbers, external payment links, or personal emails, preventing users from bypassing the platform escrow system.
+
+---
+
+## 💰 Monetization: The Hybrid Deposit Premium
+> **Platform Promise:** Always 100% free for verified university students.
+
+*   **Digital Tasks (In-App Split):** When a poster scans the dynamic **LankaQR** to pay for a digital task, the app uses a split-payment structure where 95% goes directly to the student's linked account, and 5% is routed to the UniWork corporate bank node as an infrastructure platform fee.
+*   **Physical Tasks (The Unlock Token):** For physical tasks where users meet in person, the task remains completely free for the student. The client pays a small flat fee (e.g., 50 LKR to 100 LKR) via bank card (**Stripe**) or LankaQR to "Unlock the Student Buddy Allocation" once they choose their workers. This monetizes upstream from the employer.
+*   **Corporate Task Activation:** Premium subscriptions or bulk credits purchased by corporate clients via corporate payment rails to activate large-scale, automated, or high-priority campus errands.
+*   **Targeted Student Ads:** Paid banner space for student-focused brands, including local boarding places, food suppliers, telecom providers, and student banking services looking for direct campus reach.
+
+---
+
+## 📋 Supported Gig Ecosystem
+
+The platform cleanly splits incoming operational workflows into two distinct pipelines:
+
+| 💻 Digital Tasks (Remote) | 🏃‍♂️ Physical & Event Logistics (Hyper-Local) |
 | :--- | :--- |
-| • Graphic Design & UI Wireframing | • Corporate Event Operations & Hosting |
-| • Sinhala/Tamil/English Localization | • SIM Card Activation & Promotion Drives |
-| • Data Entry & AI Model Labeling | • Brand Mascot Performance |
-| • Basic Software Bug Fixing | • Floral Decoration & Setup |
-| • Social Media Content Creation | • Boarding House Furniture Shifting |
-| • Academic Peer Tutoring | • Painting, Cleaning & Grass Cutting |
+| • Social Media Management & Reels/TikTok Editing | • Corporate Event Operations & Hosting |
+| • Graphic Design (Flyers, Menus, Social Posts) | • SIM Card Activation & Promotion Drives |
+| • Social Media Content Creation | • Boarding House Furniture Shifting & Packing |
+| • Basic Web/WordPress Setup & Bug Fixing | • Floral Decoration & Setup |
+| • Virtual Assistance, Data Entry & Copy-typing | • On-the-Ground Market Research & Field Surveys |
+| • Online Tutoring (O/L, A/L, or Peer-to-Peer) | • Painting, Cleaning & Grass Cutting |
+| • Freelance Content Writing | • Photography Assisting & Equipment Setup |
 
 ---
 
-## 🔒 Safety, Security & Trust Architecture
+## 🔬 Research Mapping: Keeping Students Safe & Stopping Scams
 
-Because the safety of undergraduate students is paramount, the platform is engineered with defensive guardrails to prevent exploitation and physical danger.
-
-*   **Closed Academic Ecosystem:** Registrations are strictly restricted. Users must authenticate using a verified university email (`.ac.lk`) or complete a manual student ID verification paired with a real-time facial liveness check.
-*   **The "Buddy System" Engine:** For physical tasks occurring off-campus (e.g., furniture shifting, cleaning, late-night event setups), the architecture mandates or rewards **Team Gigs**, requiring two verified students to accept the task together.
-*   **Geofenced Safety Monitoring:** When a student marks a physical gig as "Started," the mobile app initializes foreground location tracking, giving students an instant toggle to share a live encrypted tracking link with emergency contacts or student union representatives.
-*   **Two-Way Blind Ratings:** Mutual reviews are calculated blindly upon task closure. Low-rated posters are immediately quarantined and banned automatically by the system backend.
+*   **The Research Problem:** Most traditional gig economy applications fail to protect students performing physical, real-world jobs from being scammed, harassed, or unilaterally underpaid by malicious clients who claim work wasn't completed.
+*   **The Tech Solution:** UniWork resolves this by utilizing background GPS and Geofencing telemetry. When a student arrives at an assigned job site, the app tracks their physical perimeter locations to generate an un-fakeable, cryptographic **Proof of Presence**.
+*   **Catching Liars:** If a client attempts to commit fraud by claiming *"The student never showed up, so I am refusing payment,"* the system runs an automated audit against the background GPS logs. If the telemetry proves the student was on-site for the required duration, the app exposes the client's lie, releases the escrow payment to the student, and instantly bans the client's account.
 
 ---
 
-## 🏗️ Technical Architecture & Stack
+## 🚀 Go-To-Market Strategy
 
-The platform's infrastructure is optimized to maintain low-latency geo-queries and function seamlessly on mid-to-entry-tier mobile devices running on constrained mobile data packages.
-
-[ React Native Client App ] 
-     /                     \
-(LankaQR Payment)        (FastAPI / Node.js Engine)
-/
-
-[Commercial Bank Escrow]    [Geo-Query DB / Redis Cache] ---> Push Notification
-
-
-*   **Frontend:** Cross-platform mobile client built using **React Native / Expo**, heavily performance-optimized, featuring high-fidelity UI/UX mirroring modern design standards, minimalist typography, and extreme data-saving asset compression.
-*   **Backend Engine:** High-performance REST/WebSocket API optimized for rapid geo-location indexing (e.g., PostgreSQL with PostGIS or Redis Geo) to instantly calculate and trigger push notifications for matching gigs within a strict **5km radius** of a campus hub.
-* **Automated Escrow Pipeline:** To build complete trust, money is handled through a secure transactional workflow
----
-
-## 💼 Monetization Engine
-
-The platform remains **100% free forever for all verified university students**. Revenue generation is shifted entirely to the commercial and operational supply side:
-
-1.  **B2C Commission Model:** A flat **10% to 15% service premium** is added on top of the task budget paid by private individuals posting general household errands.
-2.  **B2B Premium Tier:** Corporate clients, event management agencies, and tech companies pay premium placement fees to pin bulk task requests (e.g., deploying 30 students to act as brand ambassadors at an exhibition).
-3.  **Targeted Corporate Sponsorships:** Native, non-intrusive ad placements and sponsored student challenges financed by local telecom operators, banking entities, and educational providers looking to capture youth market share.
-4.  **Escrow Float Management:** Accumulation of minor operational interest on cash balances securely held within the banking network's digital escrow wallets during multi-day tasks.
+*   **Phase 1: Seed the Supply** – Secure 50-100 digital gigs (data entry, translation, design) from local startups before inviting the general student populace to prevent an empty marketplace.
+*   **Phase 2: Grassroots Trust** – Partner directly with official Faculty Student Unions. Frame the app transparently as a student-welfare and financial relief initiative.
+*   **Phase 3: Ambassadors** – Pay select final-year students micro-bonuses and credits for onboarding, validating, and peer-reviewing their respective faculties.
+*   **Phase 4: Hyper-Local Launch** – Do not launch island-wide initially. Pilot strictly at a single campus cluster (e.g., University of Moratuwa - UoM) using only digital gigs first to test the stability of payment gateways safely.
 
 ---
 
-## ⚖️ Legal & Compliance Framework
+## ⚖️ Legal & Compliance
 
-*   **Central Bank of Sri Lanka (CBSL) Alignment:** To avoid the heavy regulatory complexities of operating as a payment intermediary, the platform integrates directly with licensed commercial bank APIs to route funds directly via **LankaQR / JustPay** protocol into third-party escrow nodes.
-*   **Labor Law Mitigations:** The platform's Terms of Service explicitly define all students as independent gig workers / freelancers and not employees of either the marketplace or the client, completely mitigating EPF, ETF, and minimum wage legal liabilities.
-*   **Personal Data Protection Act (PDPA):** National Identity Details, phone numbers, and exact structural addresses are completely encrypted in transit and at rest, remaining completely hidden from employers until a contract is formally locked and accepted.
-
----
-
-## 🚀 Go-To-Market & Scalability Roadmap
-
-State university networks require an organic, grassroots deployment pipeline over heavy digital ad spend.
-
-### Phase 1: Seed the Supply (Weeks 1 - 4)
-Acquire 50 to 100 guaranteed, fully funded digital tasks (translation, basic layout design, data entry) from partner software startups and marketing agencies *before* launching the student application to prevent an "empty dashboard" bounce rate.
-
-### Phase 2: Structural Alliances (Weeks 5 - 8)
-Engage directly with the **Faculty Student Unions** and student clubs within major universities. By presenting UniWork as an essential student-welfare tool built to lower drop-out rates caused by financial hardship, the platform gains organic institutional backing.
-
-### Phase 3: The Ambassador Network (Weeks 9 - 12)
-Appoint prominent final-year undergraduates and student leaders as Campus Ambassadors, incentivizing them with micro-bonuses for every student who completes their first verified gig.
-
-### Phase 4: Controlled Hyper-Local Pilot
-Rather than an island-wide rollout, operations will launch as a isolated beta test restricted to **one single campus cluster** (e.g., University of Moratuwa for digital/technical tasks or University of Colombo for creative/event tasks) utilizing digital-only gigs initially to stress-test the bank escrow infrastructure before expanding to high-risk physical errands.
-
-### Phase 5: "The Hybrid Deposit Premium"
-
-- **Zero-Cash Communication Sandbox:** To mitigate platform leakage and comply with CBSL payment regulations without holding user balances, all communication is locked into an in-app chat sandbox. Real-time data sanitization filters mask phone numbers, personal account details, and external links until a contract is signed.
-- **Decentralized LankaQR Settlement Engine:** Rather than acting as a financial intermediary, the platform generates dynamic, task-specific LankaQR tokens embedded with the student's direct bank routing information. Posters scan and execute real-time, zero-fee peer-to-peer transfers under 5,000 LKR directly to the student's account.
-- **Deferred Pay-As-You-Earn Monetization:** The core system remains entirely free to browse. To sustain the infrastructure, a 5% platform maintenance fee is either dynamically split during digital QR handshakes or charged directly to corporate clients as an upfront "Task Activation Token" for physical errands, ensuring students carry zero monthly subscription liabilities.
+*   **Financial (CBSL):** Partnering directly with a licensed commercial bank in Sri Lanka (via secure banking APIs like LankaQR) to legally manage and distribute escrow wallet systems without violating Central Bank regulations.
+*   **Labor Laws:** Clearly defines students as independent freelancers/contractors in the Terms of Service to insulate the platform and posters from minimum wage, EPF, or ETF statutory liabilities.
+*   **Data Privacy (PDPA):** Strictly aligned with the Sri Lankan Personal Data Protection Act. Student IDs are heavily encrypted at rest, and live telemetry locations remain completely hidden until a gig is formally accepted by both parties.
