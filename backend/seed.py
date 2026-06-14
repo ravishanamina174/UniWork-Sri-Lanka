@@ -1,14 +1,16 @@
+# backend/seed.py
 import asyncio
 from sqlalchemy import text
 import uuid
+import hashlib
 
-# Structural imports from your clean app layout
+# Core database connection dependencies
 from app.core.database import engine, Base, SessionLocal, mongo_db
-from app.models.domain_postgres import GigModel, TaskType, GigState
-from app.models.document_mongo import create_gig_metadata_document
+# New user identity models from your domain file
+from app.models.domain_postgres import UserModel, StudentProfileModel, PlatformRoleEnum
 
 def init_postgres_extensions():
-    """Forces activation of the PostGIS spatial extension framework within your relational DB instance."""
+    """Forces activation of the PostGIS spatial framework within your relational DB."""
     print("[PostgreSQL] Verifying PostGIS Extensions...")
     db = SessionLocal()
     try:
@@ -21,75 +23,74 @@ def init_postgres_extensions():
     finally:
         db.close()
 
+def hash_identity_string(value: str) -> str:
+    """Helper utility mimicking your registration auth hashing structure."""
+    return hashlib.sha256(value.encode()).hexdigest()
+
 async def seed_databases():
     print("\n🚀 Commencing Multi-Database Alignment Initialization...")
     
-    # 1. Initialize PostGIS & Build tables
+    # 1. Initialize PostGIS framework and construct standard schema layouts
     init_postgres_extensions()
     Base.metadata.create_all(bind=engine)
-    print("[PostgreSQL] Tables verified/created successfully.")
+    print("[PostgreSQL] Identity structures and tables verified/created successfully.")
     
     db_session = SessionLocal()
     
     try:
-        # Clear existing entries to keep structural data pure during staging
-        db_session.query(GigModel).delete()
+        # Clear existing entries to keep storage pure during staging runs
+        db_session.query(StudentProfileModel).delete()
+        db_session.query(UserModel).delete()
         db_session.commit()
-        await mongo_db["gig_metadata"].drop()
-        print("[System] Staging storage environments flushed.")
+        
+        await mongo_db["user_metadata"].drop()
+        print("[System] Staging storage tables and document collections flushed cleanly.")
 
-        # --- GENERATE DUMMY RECORD 1: DIGITAL TASK ---
-        digital_id = str(uuid.uuid4())
-        print(f"\n[Seeding] Preparing Digital Task Data (ID: {digital_id})...")
+        # --- GENERATE RECORD: STUDENT EARNER ---
+        user_uuid = uuid.uuid4()
+        clerk_id_mock = "user_2NxFg97XzKL0pQ1rSTuVwxyZ2026"
         
-        postgres_digital_gig = GigModel(
-            id=digital_id,
-            poster_id="clerk_user_poster_101",
-            title="Social Media Reels Editing - Local Fashion Brand",
-            budget=5000.0,  # 5000 LKR
-            task_type=TaskType.DIGITAL,
-            status=GigState.ESCROW_LOCKED,
-            location_coordinates=None  # Remote task requires no location mapping
+        print(f"\n[Seeding] Preparing Student User Data (ID: {user_uuid})...")
+        
+        # 1. Base Relational Identity Record
+        postgres_user = UserModel(
+            id=user_uuid,
+            clerk_id=clerk_id_mock,
+            email="perera.10@stu.mrt.ac.lk", # Standard .ac.lk structure
+            role=PlatformRoleEnum.STUDENT_EARNER,
+            is_verified=True,  # Set to true since email matches state domain
+            phone_number="+94771234567"
         )
-        db_session.add(postgres_digital_gig)
-        
-        mongo_digital_metadata = create_gig_metadata_document(
-            gig_id=digital_id,
-            description_raw="Need an editor to crop 5 TikTok/Reels style short videos. Raw footage will be provided via Drive. Needs quick cuts and local trendy audio tracking.",
-            skill_matrix_tags=["Video Editing", "CapCut", "TikTok Analytics", "Creative Content"]
-        )
-        await mongo_db["gig_metadata"].insert_one(mongo_digital_metadata)
-        
-        # --- GENERATE DUMMY RECORD 2: PHYSICAL TASK ---
-        physical_id = str(uuid.uuid4())
-        print(f"[Seeding] Preparing Physical Task Data (ID: {physical_id})...")
-        
-        # Location localized right near University of Moratuwa (UoM) gates
-        uom_location_point = f"POINT(79.9012 6.7951)"
-        
-        postgres_physical_gig = GigModel(
-            id=physical_id,
-            poster_id="clerk_user_poster_202",
-            title="Boarding House Shifting - Katubedda to Campus Gate",
-            budget=3500.0,  # 3500 LKR
-            task_type=TaskType.PHYSICAL,
-            status=GigState.PENDING_DEPOSIT,
-            location_coordinates=uom_location_point
-        )
-        db_session.add(postgres_physical_gig)
-        
-        mongo_physical_metadata = create_gig_metadata_document(
-            gig_id=physical_id,
-            description_raw="Moving small table, wardrobe, and 3 bags from my boarding room in Katubedda to the room near UoM main gate. Requires 2 students because of furniture weight.",
-            skill_matrix_tags=["Manual Labor", "Furniture Logistics", "Hyper-Local Delivery"]
-        )
-        await mongo_db["gig_metadata"].insert_one(mongo_physical_metadata)
+        db_session.add(postgres_user)
+        db_session.flush() # Secure reference link for foreign keys
 
-        # Finalize atomic transactions
+        # 2. Detailed Relational Meta Profile
+        postgres_student_profile = StudentProfileModel(
+            user_id=user_uuid,
+            encrypted_uni_id="ENC_MRT_SE_2022_045",
+            faculty="Faculty of Engineering",
+            nic_hash=hash_identity_string("200123456789V")
+        )
+        db_session.add(postgres_student_profile)
+        
+        # 3. Flexible NoSQL Unstructured Matrix Document
+        mongo_user_document = {
+            "user_id": str(user_uuid),
+            "clerk_id": clerk_id_mock,
+            "display_name": "Ravindu Perera",
+            "university_campus": "University of Moratuwa",
+            "academic_department": "Department of Computer Science & Engineering",
+            "skill_tags": ["Python", "FastAPI", "Tailwind CSS", "UI Design Validation"],
+            "reputation_rating": 5.0,
+            "completed_tasks_count": 0
+        }
+        await mongo_db["user_metadata"].insert_one(mongo_user_document)
+
+        # Commit transactions across databases atomically
         db_session.commit()
         print("\n🎉 Multi-Database Synchronization Execution Completed Successfully!")
-        print(f"-> PostgreSQL Synced: 2 records initialized inside table 'gigs'.")
-        print(f"-> MongoDB Synced: 2 records documents mapped into collection 'gig_metadata'.")
+        print(f"-> PostgreSQL Synced: 1 core user + student meta profile stored.")
+        print(f"-> MongoDB Synced: 1 flexible developer matrix document cached inside 'user_metadata'.")
 
     except Exception as e:
         print(f"\n❌ Seeding pipeline crashed: {str(e)}")

@@ -24,3 +24,17 @@ def get_postgres_db():
         yield db
     finally:
         db.close()
+
+
+# Backwards-compatible alias expected by some routers
+def get_db():
+    """Yield a SQLAlchemy session for FastAPI Depends.
+
+    Some modules import `get_db` directly; keep this alias to avoid
+    ImportError and preserve existing behavior.
+    """
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()

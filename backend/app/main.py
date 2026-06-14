@@ -1,20 +1,21 @@
+# backend/app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import gigs
+from app.routers import auth  # Cleaned up deleted gigs reference
 
-app = FastAPI(title="UniWork Engine")
+app = FastAPI(title="UniWorkSL API")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # Allows client development servers to interact fluidly
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Attach routers
-app.include_router(gigs.router)
+# Connect active operational routers
+app.include_router(auth.router)
 
-@app.get("/health")
-def health():
-    return {"status": "healthy"}
+@app.get("/")
+def health_check():
+    return {"status": "Engine is running"}

@@ -1,33 +1,38 @@
+# backend/app/models/domain_postgres.py
+from sqlalchemy import Column, String, Boolean, ForeignKey, Enum as SQLEnum
+from sqlalchemy.dialects.postgresql import UUID
+import uuid
 import enum
-from sqlalchemy import Column, String, Float, Enum, DateTime
-from sqlalchemy.sql import func
-from geoalchemy2 import Geometry
 from app.core.database import Base
 
-class TaskType(str, enum.Enum):
-    DIGITAL = "DIGITAL"
-    PHYSICAL = "PHYSICAL"
+# (Keep your existing GigState and GigModel code here) ...
 
-class GigState(str, enum.Enum):
-    PENDING_DEPOSIT = "PENDING_DEPOSIT"
-    ESCROW_LOCKED = "ESCROW_LOCKED"
-    ACTIVE = "ACTIVE"
-    DISBURSED = "DISBURSED"
-    FAILED_AUDIT = "FAILED_AUDIT"
+class PlatformRoleEnum(enum.Enum):
+    STUDENT_EARNER = "STUDENT_EARNER"
+    TASK_POSTER = "TASK_POSTER"
+    CORPORATE_CLIENT = "CORPORATE_CLIENT"
 
-class GigModel(Base):
-    __tablename__ = "gigs"
+class UserModel(Base):
+    __tablename__ = "users"
 
-    id = Column(String, primary_key=True, index=True, unique=True)
-    poster_id = Column(String, nullable=False, index=True)
-    title = Column(String, nullable=False)
-    budget = Column(Float, nullable=False)
-    task_type = Column(Enum(TaskType), nullable=False)
-    status = Column(Enum(GigState), default=GigState.PENDING_DEPOSIT, nullable=False)
-    
-    # PostGIS Spatially-Indexed Geometric Point Tracking Target (SRID 4326 for GPS coordinate systems)
-    # This stores where the physical gig takes place
-    location_coordinates = Column(Geometry(geometry_type='POINT', srid=4326), nullable=True)
-    
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    clerk_id = Column(String(255), unique=True, nullable=False)
+    email = Column(String(255), unique=True, nullable=False)
+    role = Column(SQLEnum(PlatformRoleEnum), nullable=False)
+    is_verified = Column(Boolean, default=False)
+    phone_number = Column(String(20), nullable=False)
+
+class StudentProfileModel(Base):
+    __tablename__ = "student_profiles"
+
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    encrypted_uni_id = Column(String, nullable=False)
+    faculty = Column(String(150), nullable=False)
+    nic_hash = Column(String(64), nullable=False)
+
+class PosterProfileModel(Base):
+    __tablename__ = "poster_profiles"
+
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    full_name = Column(String(255), nullable=False)
+    nic_hash = Column(String(64), nullable=False)
