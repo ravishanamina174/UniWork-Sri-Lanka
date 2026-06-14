@@ -36,3 +36,10 @@ class PosterProfileModel(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
     full_name = Column(String(255), nullable=False)
     nic_hash = Column(String(64), nullable=False)
+
+class CorporateProfileModel(Base):
+    __tablename__ = "corporate_profiles"
+
+    user_id = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), primary_key=True)
+    business_name = Column(String(255), nullable=False)
+    registration_number = Column(String(64), nullable=False)
