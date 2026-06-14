@@ -1,39 +1,21 @@
+// ...existing code...
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Navbar from "@/components/Navbar";
 
+import HomeClient from "../components/HomeClient";
+
 export default async function Home() {
   const { userId } = await auth();
 
-  // Guard: Force authentication check via Clerk first
+  // If user is not authenticated, send them to Clerk sign-in (server-side)
   if (!userId) {
     redirect("/sign-in");
   }
 
-  let profileExists = false;
-
-  try {
-    const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
-      method: "GET",
-      next: { revalidate: 0 }, // Do not cache, evaluate dynamically
-    });
-
-    if (backendRes.ok) {
-      const data = await backendRes.json();
-      // Read our new clean backend flag!
-      profileExists = data.exists;
-    }
-  } catch (err) {
-    console.error("⚠️ Backend engine connection error:", err);
-    // Fallback protection: keep them on home page if the server drops
-    profileExists = true; 
-  }
-
-  // 3. Intercept new users instantly and push to onboarding forms
-  if (!profileExists) {
-    redirect("/onboard");
-  }
-
+  // Render the page shell quickly on the server and let a small client component
+  // perform the backend existence check and client-side routing. This avoids
+  // long-hanging server fetches and keeps redirects responsive.
   return (
     <div className="relative min-h-screen bg-white overflow-x-hidden font-sans flex flex-col">
       {/* --- BACKGROUND ARTWORK --- */}
@@ -54,6 +36,8 @@ export default async function Home() {
         <Navbar />
 
         <main className="flex-1 max-w-7xl w-full mx-auto px-6 py-10">
+          {/* Client-side onboarding check / redirect */}
+          <HomeClient clerkUserId={userId} />
           <div className="mb-10">
             <h1 className="text-3xl font-black text-slate-900 tracking-tight sm:text-4xl">
               Welcome Back!
@@ -99,3 +83,4 @@ export default async function Home() {
     </div>
   );
 }
+// ...existing code...
