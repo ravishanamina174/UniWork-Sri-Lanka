@@ -72,10 +72,11 @@ export default function OnboardingPage() {
       });
 
       if (res.ok) {
-        router.push("/"); // Redirect home after successful onboarding
+         // Clear server caches completely and force Next.js to make a fresh database lookup
+        window.location.href = "/"; 
       } else {
-        const errorData = await res.json();
-        alert(`Error: ${errorData.detail}`);
+          const errorData = await res.json();
+          alert(`Error: ${errorData.detail}`);
       }
     } catch (err) {
       console.error("Failed to register:", err);

@@ -18,7 +18,6 @@ async def register_student(payload: StudentRegisterRequest, db: Session = Depend
         raise HTTPException(status_code=400, detail="Account already registered.")
 
     try:
-        # 1. Prepare Base relational row
         new_user = UserModel(
             clerk_id=payload.clerk_id,
             email=payload.email,
@@ -27,9 +26,8 @@ async def register_student(payload: StudentRegisterRequest, db: Session = Depend
             is_verified=payload.email.endswith(".ac.lk")
         )
         db.add(new_user)
-        db.flush()  # Generates the UUID instantly for relational linking
+        db.flush() 
 
-        # 2. Link Sub-table profile structure
         student_meta = StudentProfileModel(
             user_id=new_user.id,
             encrypted_uni_id=payload.encrypted_uni_id,
@@ -38,7 +36,6 @@ async def register_student(payload: StudentRegisterRequest, db: Session = Depend
         )
         db.add(student_meta)
 
-        # 3. Handle NoSQL metadata caching asynchronously
         mongo_user_document = {
             "user_id": str(new_user.id),
             "clerk_id": payload.clerk_id,
@@ -51,13 +48,12 @@ async def register_student(payload: StudentRegisterRequest, db: Session = Depend
         }
         await mongo_db["user_metadata"].insert_one(mongo_user_document)
         
-        # 4. Commit PostgreSQL only if MongoDB insert doesn't throw an error
         db.commit()
         return {"status": "success", "user_id": str(new_user.id)}
-
     except Exception as e:
-        db.rollback()  # Crucial! Prevents partial dirty writes if Mongo drops
+        db.rollback()  
         raise HTTPException(status_code=500, detail=f"Database synchronization pipeline failed: {str(e)}")
+
 
 @router.post("/register/poster", status_code=status.HTTP_201_CREATED)
 async def register_poster(payload: PosterRegisterRequest, db: Session = Depends(get_db)):
@@ -95,7 +91,8 @@ async def register_poster(payload: PosterRegisterRequest, db: Session = Depends(
         return {"status": "success", "user_id": str(new_user.id)}
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Database synchronization pipeline failed: {str(e)}")
+
 
 @router.post("/register/corporate", status_code=status.HTTP_201_CREATED)
 async def register_corporate(payload: CorporateRegisterRequest, db: Session = Depends(get_db)):
@@ -133,32 +130,31 @@ async def register_corporate(payload: CorporateRegisterRequest, db: Session = De
         return {"status": "success", "user_id": str(new_user.id)}
     except Exception as e:
         db.rollback()
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=500, detail=f"Database synchronization pipeline failed: {str(e)}")
+
 
 @router.get("/user/clerk/{clerk_id}")
 def get_user_by_clerk_id(clerk_id: str, db: Session = Depends(get_db)):
     """
-    Checks if a Clerk user exists in the local database instance.
-    Returns status structures instead of throwing 404 errors.
+    Checks if a Clerk user exists in PostgreSQL.
+    Returns user details if found, or raises a 404 error if new.
     """
     user = db.query(UserModel).filter(UserModel.clerk_id == clerk_id).first()
     
     if not user:
-        return {
-            "exists": False,
-            "user": None
-        }
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User identity record not initialized in local architecture database yet."
+        )
         
     return {
-        "exists": True,
-        "user": {
-            "id": str(user.id),
-            "clerk_id": user.clerk_id,
-            "email": user.email,
-            "role": user.role.value,
-            "is_verified": user.is_verified
-        }
+        "id": str(user.id),
+        "clerk_id": user.clerk_id,
+        "email": user.email,
+        "role": user.role.value,
+        "is_verified": user.is_verified
     }
+
 
 @router.get("/user/internal/{user_id}")
 def get_user_by_internal_id(user_id: str, db: Session = Depends(get_db)):
