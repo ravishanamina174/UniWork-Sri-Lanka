@@ -1,9 +1,28 @@
 # backend/app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.routers import auth  # Cleaned up deleted gigs reference
+from contextlib import asynccontextmanager
 
-app = FastAPI(title="UniWorkSL API")
+# 1. Import your Postgres engine and Base from database.py
+from app.core.database import engine, Base
+
+# 2. CRITICAL: Import all your database models so SQLAlchemy knows they exist
+from app.models.domain_postgres import UserModel, StudentProfileModel, PosterProfileModel, CorporateProfileModel
+
+# 3. Create a lifespan event to run table creation automatically at startup
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("🔄 Checking and syncing PostgreSQL database tables...")
+    try:
+        # This scans the imported models and creates any tables missing in the database
+        Base.metadata.create_all(bind=engine)
+        print("✅ Database tables verified and synced successfully!")
+    except Exception as e:
+        print(f"❌ Failed to auto-sync database tables: {e}")
+    yield
+
+# 4. Pass the lifespan context into your FastAPI app instance
+app = FastAPI(title="UniWorkSL API", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -14,6 +33,7 @@ app.add_middleware(
 )
 
 # Connect active operational routers
+from app.routers import auth
 app.include_router(auth.router)
 
 @app.get("/")

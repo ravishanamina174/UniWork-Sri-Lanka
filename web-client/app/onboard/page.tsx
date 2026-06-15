@@ -2,13 +2,14 @@
 "use client";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function OnboardingPage() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const [role, setRole] = useState<"STUDENT" | "POSTER" | "CORPORATE">("STUDENT");
   const [isLoading, setIsLoading] = useState(false);
+  const [isCheckingUser, setIsCheckingUser] = useState(true);
 
   // Form State
   const [formData, setFormData] = useState({
@@ -21,6 +22,33 @@ export default function OnboardingPage() {
     business_name: "",
     registration_number: "",
   });
+
+  // Check if user is already registered in the databases
+  useEffect(() => {
+    async function checkExistingUser() {
+      if (!isLoaded || !user) return;
+
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${user.id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+
+        if (res.ok) {
+          // User already exists in database, bypass onboarding page
+          router.push("/");
+        } else {
+          // User doesn't exist (404), allow them to fill out the form
+          setIsCheckingUser(false);
+        }
+      } catch (err) {
+        console.error("Error checking user existence:", err);
+        setIsCheckingUser(false);
+      }
+    }
+
+    checkExistingUser();
+  }, [user, isLoaded, router]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -72,11 +100,11 @@ export default function OnboardingPage() {
       });
 
       if (res.ok) {
-         // Clear server caches completely and force Next.js to make a fresh database lookup
+        // Clear caches and go home
         window.location.href = "/"; 
       } else {
-          const errorData = await res.json();
-          alert(`Error: ${errorData.detail}`);
+        const errorData = await res.json();
+        alert(`Error: ${errorData.detail}`);
       }
     } catch (err) {
       console.error("Failed to register:", err);
@@ -85,7 +113,15 @@ export default function OnboardingPage() {
     }
   };
 
-  if (!isLoaded) return <div className="p-8 text-center">Loading...</div>;
+  if (!isLoaded || isCheckingUser) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
+        <div className="p-8 text-center font-medium text-gray-600 animate-pulse">
+          Verifying security profile initialization...
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">

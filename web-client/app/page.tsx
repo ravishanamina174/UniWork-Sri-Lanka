@@ -35,7 +35,6 @@ export default async function Home() {
     } else {
       const data = await backendRes.json();
       console.log(`✅ Verified active session profile for database user: ${data.id}`);
-      // Capture the exact Postgres Enum value string returned from your FastAPI backend
       if (data.role) {
         userRole = data.role;
       }
@@ -50,7 +49,6 @@ export default async function Home() {
 
   return (
     <div className="relative min-h-screen bg-[#FFFDFB] text-[#191919] overflow-x-hidden font-sans flex flex-col selection:bg-slate-200/60">
-      
       {/* Background: Clean Sketchbook Dot Grid */}
       <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(#e2e8f0_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-80"></div>
       
@@ -64,7 +62,6 @@ export default async function Home() {
       {/* SECTION 1: Locked to exactly 100% viewport view height */}
       <div className="relative z-10 flex flex-col justify-between min-h-screen w-full">
         <div>
-          {/* Pass the dynamic state down to control layout rendering */}
           <Navbar userRole={userRole} />          
           <HeroSection />
         </div>
