@@ -137,11 +137,17 @@ async def register_corporate(payload: CorporateRegisterRequest, db: Session = De
 
 @router.get("/user/clerk/{clerk_id}")
 def get_user_by_clerk_id(clerk_id: str, db: Session = Depends(get_db)):
-    """Checks if a Clerk user exists. Returns status rather than throwing 404 for new users."""
+    """
+    Checks if a Clerk user exists in the local database instance.
+    Returns status structures instead of throwing 404 errors.
+    """
     user = db.query(UserModel).filter(UserModel.clerk_id == clerk_id).first()
     
     if not user:
-        return {"exists": False, "user": None}
+        return {
+            "exists": False,
+            "user": None
+        }
         
     return {
         "exists": True,
