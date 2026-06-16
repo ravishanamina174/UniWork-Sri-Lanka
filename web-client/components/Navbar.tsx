@@ -78,9 +78,12 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
         {/* Right Side: Conditional Blue Action Item CTA & Profile Menu */}
         <div className="flex items-center gap-4">
           {showPostGigButton && (
-            <button className="hidden sm:inline-flex items-center justify-center text-sm font-semibold px-5 py-1.5 bg-[#007FFF] text-white rounded-md hover:bg-[#0066CC] active:bg-[#0059B3] transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.05)]">
-              Post a Gig
-            </button>
+             <Link 
+                 href="/create-gig" 
+                 className="hidden sm:inline-flex items-center justify-center text-sm font-semibold px-5 py-1.5 bg-[#007FFF] text-white rounded-md hover:bg-[#0066CC] active:bg-[#0059B3] transition-colors shadow-[0_1px_2px_rgba(0,0,0,0.05)]"
+              >
+                    Post a Gig
+              </Link>
           )}
           
           {/* Elegant frame wrapper around the untouched Clerk element */}
