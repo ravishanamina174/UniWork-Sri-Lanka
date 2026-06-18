@@ -1,143 +1,132 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 
 export default function HeroSection() {
-  return (     
-    <section className="bg-[#f7f6f6]">
-      <main className="max-w-6xl w-full mx-auto px-6 py-12 sm:py-20">
-        
-        {/* Massive Beautiful Notion-style Topic with Clean Sub-lines */}
-        <div className="mb-14">
-          <h1 className="text-5xl sm:text-[56px] font-bold tracking-tight text-slate-900 max-w-4xl leading-[1.1]">
-            On-demand campus talent, optimized.
-          </h1>
-          <p className="text-slate-500 mt-4 text-base sm:text-lg max-w-2xl font-normal leading-relaxed">
-            Connecting local posters with verified state university undergraduates for instant physical errands and remote digital tasks.
-          </p>
-        </div>
+  const [index, setIndex] = useState(0);
 
-        {/* 100% Accurate Notion Shape and Sizing Layout Grid */}
-        <div className="grid gap-8 grid-cols-1 md:grid-cols-2">
+  const words = [
+    { text: "Earn", color: "bg-emerald-50 text-emerald-700 border-emerald-200/60 target-student" },
+    { text: "Post", color: "bg-amber-50 text-amber-700 border-amber-200/60 target-poster" },
+    { text: "Scale", color: "bg-blue-50 text-blue-700 border-blue-200/60 target-corporate" }
+  ];
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % words.length);
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className="relative w-full bg-white py-16 md:py-24 lg:py-28 overflow-hidden select-none">
+      {/* Structural Containment Box */}
+      <div className="mx-auto max-w-[68.5rem] px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
-          {/* Card 1: Huge Hero Asymmetric Card (Spans across 2 columns) */}
-          <div className="md:col-span-2 bg-[#ffffff] border border-slate-200/80 rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-5 min-h-[420px]">
-            
-            {/* Left Info Column */}
-            <div className="p-8 sm:p-10 lg:col-span-2 flex flex-col justify-between">
-              <div>
-                <span className="text-[13px] text-slate-500 block mb-3 font-medium font-sans tracking-wide uppercase">AI Task Engine</span>
-                <h3 className="text-2xl font-bold text-slate-900 tracking-tight leading-[1.25] mb-4">
-                  Submit messy parameters. Let UniWork structure the work.
-                </h3>
-              </div>
-              <div className="mt-6">
-                <button className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-slate-800 transition-colors">
-                  <span className="text-sm font-bold">→</span>
-                </button>
-              </div>
-            </div>
+          {/* Left Column: Interactive Sentence Engine */}
+          <div className="col-span-1 lg:col-span-7 flex flex-col justify-center text-left space-y-6 z-10">
+            <h1 className="text-[2.5rem] sm:text-[3.5rem] lg:text-[3.8rem] font-extrabold tracking-tight text-neutral-900 leading-[1.15] sm:leading-[1.1]">
+              Where independent talents <br className="hidden sm:inline" />
+              and ecosystems{" "}
+              <span className="relative inline-block mt-2 sm:mt-0">
+                <span
+                  className={`inline-flex items-center px-4 sm:px-5 py-1 sm:py-1.5 rounded-full text-[2.2rem] sm:text-[3.2rem] lg:text-[3.5rem] font-bold border transition-all duration-500 ease-in-out transform scale-100 ${words[index].color}`}
+                >
+                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 animate-pulse bg-current" />
+                  {words[index].text}
+                </span>
+              </span>{" "}
+              together.
+            </h1>
 
-            {/* Right Split Shape Block (Yellow Background Panel + Pure White Nested UI Component) */}
-            <div className="bg-[#FFC85F]/90 border-t lg:border-t-0 lg:border-l border-slate-200/60 lg:col-span-3 p-8 flex items-center justify-center overflow-hidden">
-              <div className="bg-white border border-slate-200/60 rounded-xl w-full max-w-md shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-6 space-y-4">
-                <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                  <span className="text-xs font-semibold text-slate-700">New Task Parameter Analysis</span>
-                  <div className="flex gap-1.5 text-slate-400 text-xs">
-                    <span>⚡ AI Active</span>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="p-3 bg-slate-50/60 border border-slate-100 rounded-lg">
-                    <p className="text-[11px] text-slate-400 font-mono">Raw input parsing...</p>
-                    <p className="text-xs font-bold text-slate-800 mt-1">"Need 2 guys to distribute marketing pamphlets near the university premises tomorrow morning"</p>
-                  </div>
-                  
-                  <div className="pt-2 space-y-2">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-500">Structured Category:</span>
-                      <span className="font-semibold text-slate-800">Physical / Local Logistics</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-slate-500">System Recommended Budget:</span>
-                      <span className="font-semibold text-emerald-600">LKR 3,500 / Student</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            <p className="max-w-xl text-base sm:text-lg font-medium text-neutral-500/85 leading-relaxed">
+              Empowering student earners with flexible pathways, helping task posters find immediate execution, and enabling corporate clients to scale velocity seamlessly.
+            </p>
+
+            {/* Action Matrix */}
+            <div className="flex flex-wrap items-center gap-4 pt-4">
+              <button className="px-6 py-3.5 bg-neutral-900 text-white font-semibold text-sm rounded-xl hover:bg-neutral-800 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-neutral-950/10">
+                Get Started free
+              </button>
+              
+              {/* Premium Vision Activation Button */}
+              <button className="group flex items-center gap-2 px-5 py-3.5 bg-transparent text-neutral-600 font-semibold text-sm rounded-xl hover:text-neutral-900 hover:bg-neutral-50 active:scale-[0.98] transition-all duration-200">
+                <span>Our Vision</span>
+                <svg 
+                  className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200 text-neutral-400 group-hover:text-neutral-900" 
+                  fill="none" 
+                  viewBox="0 0 24 24" 
+                  stroke="currentColor" 
+                  strokeWidth={2.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                </svg>
+              </button>
             </div>
           </div>
 
-          {/* Card 2: Campus Logistics Box (Red panel theme) */}
-          <div className="bg-[#ffffff] border border-slate-200/80 rounded-2xl overflow-hidden grid grid-cols-1 min-h-[460px] flex flex-col justify-between">
-            <div className="p-8 sm:p-10 flex-1 flex flex-col justify-between">
-              <div>
-                <span className="text-[13px] text-slate-500 block mb-3 font-medium font-sans tracking-wide uppercase">Hyper-Local Logistics</span>
-                <h3 className="text-2xl font-bold text-slate-900 tracking-tight leading-[1.25] mb-4">
-                  Safe physical errands. Managed via the Buddy System.
-                </h3>
-              </div>
-              <div>
-                <button className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-slate-800 transition-colors">
-                  <span className="text-sm font-bold">→</span>
-                </button>
-              </div>
-            </div>
-            
-            {/* Flat Red Background Bottom Box with Nested Pure White Card UI */}
-            <div className="bg-[#F67564]/90 p-8 pt-10 border-t border-slate-200/60 flex items-end justify-center">
-              <div className="bg-white border border-slate-200/60 rounded-xl w-full max-w-sm shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-5">
-                <div className="w-full bg-slate-50 border border-slate-100 rounded-lg px-3 py-2 text-[11px] text-slate-700 flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
-                    <span className="font-bold">Active Geofence Tracking</span>
+          {/* Right Column: Staggered Geometric Grid Layout */}
+          <div className="col-span-1 lg:col-span-5 relative w-full h-[360px] sm:h-[450px] lg:h-[480px] flex items-center justify-center mt-6 lg:mt-0">
+            <div className="relative w-full h-full max-w-[28rem] lg:max-w-none">
+              
+              {/* Card 01: The Base Anchor (Back Drop Left) */}
+              <div className="absolute top-[10%] left-0 w-[55%] h-[60%] rounded-2xl bg-neutral-50 border border-neutral-200/70 p-2 shadow-md shadow-neutral-100 transform -rotate-3 hover:rotate-0 hover:scale-[1.02] transition-all duration-300 ease-out group">
+                <div className="w-full h-full rounded-xl bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/assets/hero-student.jpg" 
+                    alt="Student Earners Workspace" 
+                    className="w-full h-full object-cover opacity-80 mix-blend-multiply filter grayscale-[10%] group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                      e.currentTarget.parentElement?.classList.add('bg-cloud-placeholder');
+                    }}
+                  />
+                  {/* Fallback cloud wireframe if asset missing */}
+                  <div className="absolute inset-0 flex items-center justify-center p-4 text-neutral-400 pointer-events-none">
+                    <svg className="w-8 h-8 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
                   </div>
-                  <span className="text-[10px] bg-slate-200/70 text-slate-600 px-1.5 py-0.5 rounded">Team Size: 2</span>
-                </div>
-                <div className="space-y-1.5">
-                  <div className="h-2 w-full bg-slate-100 rounded"></div>
-                  <div className="h-2 w-5/6 bg-slate-100 rounded"></div>
-                  <p className="text-[10px] text-slate-400 mt-2 italic">Anonymized telemetry active until delivery milestone verification</p>
                 </div>
               </div>
-            </div>
-          </div>
 
-          {/* Card 3: Conflict Resolution & Escrow Box (Blue panel theme) */}
-          <div className="bg-[#ffffff] border border-slate-200/80 rounded-2xl overflow-hidden grid grid-cols-1 min-h-[460px] flex flex-col justify-between">
-            <div className="p-8 sm:p-10 flex-1 flex flex-col justify-between">
-              <div>
-                <span className="text-[13px] text-slate-500 block mb-3 font-medium font-sans tracking-wide uppercase">Automated Escrow</span>
-                <h3 className="text-2xl font-bold text-slate-900 tracking-tight leading-[1.25] mb-4">
-                  Guaranteed safety protocols & instant local payouts.
-                </h3>
+              {/* Card 02: The Focal Hero (Center Front) */}
+              <div className="absolute top-[20%] right-4 w-[52%] h-[65%] rounded-2xl bg-white border border-neutral-300/80 p-2.5 shadow-xl shadow-neutral-200/80 z-20 transform rotate-2 hover:rotate-0 hover:scale-[1.04] transition-all duration-300 ease-out group">
+                <div className="w-full h-full rounded-xl bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-200 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/assets/hero-task.jpg" 
+                    alt="Task Execution Platform" 
+                    className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center p-4 text-neutral-400 pointer-events-none">
+                    <svg className="w-10 h-10 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
+                  </div>
+                </div>
               </div>
-              <div>
-                <button className="w-8 h-8 rounded-full bg-black text-white flex items-center justify-center hover:bg-slate-800 transition-colors">
-                  <span className="text-sm font-bold">→</span>
-                </button>
-              </div>
-            </div>
 
-            {/* Flat Blue Background Bottom Box with Nested Pure White Card UI */}
-            <div className="bg-[#63ACEF]/90 p-8 pt-10 border-t border-slate-200/60 flex items-end justify-center">
-              <div className="bg-white border border-slate-200/60 rounded-xl w-full max-w-sm shadow-[0_4px_20px_rgba(0,0,0,0.03)] p-5 space-y-3">
-                <div className="flex items-center justify-between text-xs font-semibold text-slate-800">
-                  <div className="flex items-center gap-2">
-                    <span className="text-emerald-500">✓</span>
-                    <span>Cryptographic Proof of Presence</span>
-                  </div>
-                </div>
-                <div className="pt-2 border-t border-slate-100 space-y-2">
-                  <div className="p-2 bg-emerald-50 border border-emerald-100 rounded-lg flex justify-between items-center text-[11px]">
-                    <span className="text-emerald-800 font-medium">PostGIS Spatial Audit Clear</span>
-                    <span className="font-bold text-emerald-700">LankaQR Released</span>
+              {/* Card 03: High-Altitude Cap (Top Right Accent) */}
+              <div className="absolute top-0 right-[25%] w-[42%] h-[42%] rounded-xl bg-neutral-50 border border-neutral-200/60 p-1.5 shadow-sm shadow-neutral-100 z-10 transform -rotate-6 hover:rotate-0 hover:scale-[1.02] transition-all duration-300 ease-out group">
+                <div className="w-full h-full rounded-lg bg-gradient-to-tr from-neutral-100 to-neutral-200 flex items-center justify-center overflow-hidden">
+                  <img 
+                    src="/assets/hero-corporate.jpg" 
+                    alt="Corporate Analytics Dashboard" 
+                    className="w-full h-full object-cover opacity-75 mix-blend-luminosity group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      e.currentTarget.style.display = 'none';
+                    }}
+                  />
+                  <div className="absolute inset-0 flex items-center justify-center p-4 text-neutral-400 pointer-events-none">
+                    <svg className="w-6 h-6 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
         </div>
-      </main>
+      </div>
     </section>
   );
 }
