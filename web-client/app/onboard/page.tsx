@@ -115,8 +115,8 @@ export default function OnboardingPage() {
 
   if (!isLoaded || isCheckingUser) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <div className="p-8 text-center font-medium text-gray-600 animate-pulse">
+      <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-taupe-100 via-white to-taupe-100">
+        <div className="p-8 text-center font-medium text-slate-500 animate-pulse bg-white border border-slate-100 rounded-2xl shadow-sm">
           Verifying security profile initialization...
         </div>
       </div>
@@ -124,76 +124,138 @@ export default function OnboardingPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-      <div className="max-w-md w-full bg-white p-8 rounded-xl shadow-sm border border-gray-100">
-        <h1 className="text-2xl font-bold text-gray-900 mb-6 text-center">Complete Your Profile</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-taupe-100 via-white to-taupe-100 p-4 md:p-8">
+      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl shadow-slate-100/70 border border-slate-200/60 overflow-hidden flex flex-col md:flex-row">
         
-        {/* Role Selector */}
-        <div className="flex space-x-2 mb-8 bg-gray-100 p-1 rounded-lg">
-          {["STUDENT", "POSTER", "CORPORATE"].map((r) => (
-            <button
-              key={r}
-              onClick={() => setRole(r as any)}
-              className={`flex-1 py-2 text-sm font-medium rounded-md transition-colors ${
-                role === r ? "bg-white text-blue-600 shadow-sm" : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              {r.charAt(0) + r.slice(1).toLowerCase()}
-            </button>
-          ))}
+        {/* Left Side: Illustration Container */}
+        <div className="md:w-1/2 bg-slate-50 relative overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 flex items-center justify-center min-h-[300px] md:min-h-full">
+          <img 
+            src="/assets/login-illustration.jpg" 
+            alt="Login Illustration" 
+            className="absolute inset-0 w-full h-full object-cover"
+          />
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
-            <input required name="phone_number" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="0771234567" />
+        {/* Right Side: Interactive Profile Onboarding Form */}
+        <div className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
+          <div className="mb-6">
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight text-center">Complete Your Profile</h1>
+            <p className="text-sm text-slate-500 mt-1 text-center">Please select your primary role profile configuration.</p>
+          </div>
+          
+          {/* Role Selector */}
+          <div className="flex space-x-1 mb-6 bg-slate-100/50 p-1.5 rounded-xl border border-slate-200/40">
+            {["STUDENT", "POSTER", "CORPORATE"].map((r) => (
+              <button
+                key={r}
+                type="button"
+                onClick={() => setRole(r as any)}
+                className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-200 ${
+                  role === r 
+                    ? "bg-white text-orange-600 shadow-sm border border-slate-200/50" 
+                    : "text-black hover:text-slate-600 hover:bg-white/50"
+                }`}
+              >
+                {r.charAt(0) + r.slice(1).toLowerCase()}
+              </button>
+            ))}
           </div>
 
-          {(role === "STUDENT" || role === "POSTER") && (
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">National ID (NIC)</label>
-              <input required name="nic" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="200012345678" />
+              <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Phone Number</label>
+              <input 
+                required 
+                name="phone_number" 
+                onChange={handleInputChange} 
+                className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                placeholder="0771234567" 
+              />
             </div>
-          )}
 
-          {role === "STUDENT" && (
-            <>
+            {(role === "STUDENT" || role === "POSTER") && (
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Student ID</label>
-                <input required name="encrypted_uni_id" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="200123A" />
+                <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">National ID (NIC)</label>
+                <input 
+                  required 
+                  name="nic" 
+                  onChange={handleInputChange} 
+                  className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                  placeholder="200012345678" 
+                />
               </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Faculty</label>
-                <input required name="faculty" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="Engineering" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Department</label>
-                <input required name="academic_department" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="Computer Science" />
-              </div>
-            </>
-          )}
+            )}
 
-          {role === "CORPORATE" && (
-            <>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Business Name</label>
-                <input required name="business_name" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="Acme Corp" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Registration Number</label>
-                <input required name="registration_number" onChange={handleInputChange} className="w-full border-gray-300 rounded-md p-2 border focus:ring-blue-500 focus:border-blue-500" placeholder="PV123456" />
-              </div>
-            </>
-          )}
+            {role === "STUDENT" && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Student ID</label>
+                  <input 
+                    required 
+                    name="encrypted_uni_id" 
+                    onChange={handleInputChange} 
+                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    placeholder="200123A" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Faculty</label>
+                  <input 
+                    required 
+                    name="faculty" 
+                    onChange={handleInputChange} 
+                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    placeholder="Engineering" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Department</label>
+                  <input 
+                    required 
+                    name="academic_department" 
+                    onChange={handleInputChange} 
+                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    placeholder="Computer Science" 
+                  />
+                </div>
+              </>
+            )}
 
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 font-medium transition-colors mt-6 disabled:opacity-50"
-          >
-            {isLoading ? "Saving Profile..." : "Complete Registration"}
-          </button>
-        </form>
+            {role === "CORPORATE" && (
+              <>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Business Name</label>
+                  <input 
+                    required 
+                    name="business_name" 
+                    onChange={handleInputChange} 
+                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    placeholder="Acme Corp" 
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Registration Number</label>
+                  <input 
+                    required 
+                    name="registration_number" 
+                    onChange={handleInputChange} 
+                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    placeholder="PV123456" 
+                  />
+                </div>
+              </>
+            )}
+
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-black hover:bg-[#70a736] text-white py-3 px-4 rounded-xl font-medium transition-all  active:scale-[0.99] mt-6 disabled:opacity-50 disabled:pointer-events-none text-sm"
+            >
+              {isLoading ? "Saving Profile..." : "Complete Registration"}
+            </button>
+          </form>
+        </div>
+
       </div>
     </div>
   );
