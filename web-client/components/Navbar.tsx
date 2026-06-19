@@ -16,19 +16,21 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
   const navigationTabs = {
     STUDENT_EARNER: [
       { name: "Dashboard", href: "/" },
-      { name: "Find Tasks", href: "/" },
-      { name: "My Proposals", href: "/" },
-      { name: "Student Wallet", href: "/" },
+      { name: "Tasks", href: "/" },
+      { name: "My Applications", href: "/" },
+      { name: "Earnings", href: "/" },
     ],
     TASK_POSTER: [
       { name: "Dashboard", href: "/" },
-      { name: "Manage Gigs", href: "/" },
-      { name: "Escrow Ledger", href: "/" },
+      { name: "Tasks", href: "/" },
+      { name: "Review Submissions", href: "/" },
+      { name: "Escrow Balance", href: "/" },
     ],
     CORPORATE_CLIENT: [
       { name: "Dashboard", href: "/" },
-      { name: "Manage Gigs", href: "/" },
-      { name: "Escrow Ledger", href: "/" },
+      { name: "Enterprise Contracts", href: "/" },
+      { name: "Talent Pool", href: "/" },
+      { name: "Invoices & Ledgers", href: "/" },
     ],
   };
 

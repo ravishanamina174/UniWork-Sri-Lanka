@@ -41,7 +41,7 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
   };
 
   return (
-    <section className="max-w-[68.5rem] w-full mx-auto px-6 pb-24 z-20">
+    <section className="max-w-[73rem] w-full mx-auto px-6 pb-24 z-20">
       <div className="border-t border-slate-200/60 pt-12 mb-8">
         <h2 className="text-2xl font-bold tracking-tight text-slate-900">
           Available Ecosystem Task Opportunities

@@ -39,7 +39,7 @@ export default async function Home() {
   return (
     <div className="relative min-h-screen bg-[#FFFDFB] text-[#191919] overflow-x-hidden font-sans flex flex-col selection:bg-slate-200/60">
       {/* Background: Clean Sketchbook Dot Grid */}
-      <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(#e2e8f0_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-80"></div>
+      {/* <div className="absolute inset-0 z-0 pointer-events-none bg-[radial-gradient(#e2e8f0_1.5px,transparent_1.5px)] [background-size:28px_28px] opacity-80"></div> */}
 
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         <div>

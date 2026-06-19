@@ -20,7 +20,7 @@ export default function HeroSection() {
   return (
     <section className="relative w-full bg-white py-16 md:py-24 lg:py-28 overflow-hidden select-none">
       {/* Structural Containment Box */}
-      <div className="mx-auto max-w-[68.5rem] px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[73rem] px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
           
           {/* Left Column: Interactive Sentence Engine */}
