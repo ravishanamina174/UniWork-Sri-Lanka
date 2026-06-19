@@ -42,12 +42,12 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
 
   return (
     <section className="max-w-[73rem] w-full mx-auto px-6 pb-24 z-20">
-      <div className="border-t border-slate-200/60 pt-12 mb-8">
-        <h2 className="text-2xl font-bold tracking-tight text-slate-900">
-          Available Ecosystem Task Opportunities
+      <div className="border-t border-slate-200/60 pt-12 mb-8 flex flex-col items-center text-center">
+        <h2 className="text-5xl font-bold tracking-tight text-slate-900">
+            Quick Gigs & On-Campus Tasks
         </h2>
-        <p className="text-sm text-slate-500 mt-0.5">
-          Explore transparent requirements sourced across regional student clusters.
+        <p className="text-lg font-medium text-[#989a9c] mt-2 max-w-xl">
+          Grab a task, deliver the work, get paid directly, and level up your profile.
         </p>
       </div>
 

@@ -45,12 +45,12 @@ export default function HeroSection() {
 
             {/* Action Matrix */}
             <div className="flex flex-wrap items-center gap-4 pt-4">
-              <button className="px-6 py-3.5 bg-neutral-900 text-white font-semibold text-sm rounded-xl hover:bg-neutral-800 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-neutral-950/10">
+              <button className="px-5 py-3 bg-neutral-900 text-white font-semibold text-sm rounded-xl hover:bg-neutral-800 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-neutral-950/10">
                 Get Started free
               </button>
               
               {/* Premium Vision Activation Button */}
-              <button className="group flex items-center gap-2 px-5 py-3.5 bg-transparent text-neutral-600 font-semibold text-sm rounded-xl hover:text-neutral-900 hover:bg-neutral-50 active:scale-[0.98] transition-all duration-200">
+              <button className="group flex items-center gap-2 px-5 py-3 bg-transparent text-neutral-600 font-semibold text-sm rounded-xl hover:text-neutral-900 hover:bg-neutral-100 active:scale-[0.98] transition-all duration-200">
                 <span>Our Vision</span>
                 <svg 
                   className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200 text-neutral-400 group-hover:text-neutral-900" 
