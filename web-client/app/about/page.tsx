@@ -1,9 +1,12 @@
 // web-client/app/about/page.tsx
 "use client";
 
+import Career from "@/components/Career";
+import ShowcaseSection from "@/components/Showcase";
 import Link from "next/link";
 
 export default function AboutPage() {
+
   return (
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-purple-100">
       
@@ -14,12 +17,12 @@ export default function AboutPage() {
         
         {/* ==================== PREMIUM HERO SECTION ==================== */}
         <section className="text-center max-w-3xl mx-auto mb-20">
-          <h1 className="text-4xl md:text-6xl font-bold text-slate-950 tracking-tight leading-[1.1]">
-            Become Job-Ready with <br />
-            Our <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600">Industry-Grade Tasks</span>
+          <h1 className="text-4xl md:text-5xl font-semibold text-slate-350 tracking-tight leading-[1.1]">
+            Empowering Sri Lankan Undergraduates, <br />
+            <span className="bg-clip-text text-transparent bg-[#919692]">One Micro-Gig at a Time.</span>
           </h1>
-          <p className="mt-6 text-base md:text-lg text-slate-500 max-w-2xl mx-auto leading-relaxed">
-            Start as a student and graduate completely field-tested. Gain hands-on production skills, solve real organizational bottlenecks, and earn verified credentials.
+          <p className="mt-6 text md:text-lg text-[#717275] max-w-1xl mx-auto leading-relaxed">
+            UniWork bridges the gap between unpredictable university timetables and the rising cost of living in Sri Lanka. Our platform connects verified undergraduates with on-demand digital and physical gigs within a 4km campus radius. Featuring real-time GPS safety logs, AI-driven pricing, and secure LankaQR escrow payments, UniWork delivers a reliable, scam-free freelancing ecosystem that is 100% free for students.
           </p>
         </section>
 
@@ -28,47 +31,47 @@ export default function AboutPage() {
         <section className="grid md:grid-cols-2 gap-8 mb-24">
           
           {/* Card Block 1: Student Focus */}
-          <div className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-xl shadow-slate-100/60 transition-all hover:translate-y-[-2px]">
+          <div className="bg-[#f7faf8] rounded-[1rem] border border-slate-200 overflow-hidden  transition-all hover:translate-y-[-2px]">
             <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
               <img 
-                src="/assets/hero-student.jpg" 
-                alt="AI Workflows & Automations" 
+                src="https://plus.unsplash.com/premium_vector-1683141059887-933a8394b824?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8dGFsZW50fGVufDB8fDB8fHww" 
+                alt="Ambitious Student Talent Pool" 
                 className="w-full h-full object-cover object-center"
               />
-              <div className="absolute top-4 left-4 bg-emerald-500 text-white font-medium text-[11px] tracking-wide px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <div className="absolute top-4 left-4 bg-white text-black font-medium text-[11px] tracking-wide px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                 Opportunities Open
               </div>
             </div>
             <div className="p-8">
               <h3 className="text-2xl font-bold text-slate-950 tracking-tight">
-                AI Workflows & Project Automations
+                Tap into a Massive Pool of Ambitious, Ready-to-Work Talent.
               </h3>
-              <p className="mt-3 text-sm text-slate-500 leading-relaxed">
-                Learn to design, build, and deploy multi-agent RAG pipelines and engineering-grade applications while working on vetted local corporate tasks.
+              <p className="mt-3 text-m text-[#7f8185] font-medium leading-relaxed">
+                Need a team for an event today or a quick digital creator by tonight? UniWork connects you with thousands of verified university students ready to deploy instantly. Instead of waiting weeks to hire, you can scale your workforce in minutes, tapping into smart, tech-savvy undergraduates who learn fast and deliver high-quality results on demand.
               </p>
             </div>
           </div>
 
           {/* Card Block 2: Corporate Focus */}
-          <div className="bg-white rounded-[2rem] border border-slate-100 overflow-hidden shadow-xl shadow-slate-100/60 transition-all hover:translate-y-[-2px]">
+          <div className="bg-[#f7faf8] rounded-[1rem] border border-slate-200 overflow-hidden transition-all hover:translate-y-[-2px]">
             <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
               <img 
-                src="/assets/hero-corporate.jpg" 
-                alt="Cyber Security & Infrastructure" 
+                src="https://plus.unsplash.com/premium_vector-1682270042817-05b6a42fc274?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDh8fHxlbnwwfHx8fHw%3D" 
+                alt="Corporate Infrastructure Integration" 
                 className="w-full h-full object-cover object-center"
               />
-              <div className="absolute top-4 left-4 bg-emerald-500 text-white font-medium text-[11px] tracking-wide px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+              <div className="absolute top-4 left-4 bg-white text-black font-medium text-[11px] tracking-wide px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-black animate-pulse" />
                 Network Live
               </div>
             </div>
             <div className="p-8">
               <h3 className="text-2xl font-bold text-slate-950 tracking-tight">
-                Secure Full-Stack Infrastructure
+                Partner with Sri Lanka’s Brightest Campus Talent.
               </h3>
-              <p className="mt-3 text-sm text-slate-500 leading-relaxed">
-                Master production security setups. Build bulletproof backend systems, implement Clerk auth paths, and scale platform services with zero operational vulnerabilities.
+              <p className="mt-3 text-m text-[#7f8185] font-medium leading-relaxed">
+                UniWork for Business gives corporate clients streamlined access to a vetted, hyper-local workforce of state university students for urgent campus errands, marketing drives, and digital projects. From managing high-volume data entry to executing on-the-ground promotional campaigns, our platform handles secure bulk-credit payments and compliance natively. By leveraging our verified student network, your company can scale operations instantly while directly supporting undergraduate welfare.
               </p>
             </div>
           </div>
@@ -76,115 +79,111 @@ export default function AboutPage() {
         </section>
 
 
-        {/* ==================== SIGNATURE PREMIUM GRADIENT DISPLAY BANNER ==================== */}
-        <section className="mb-24">
-          <div className="bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-500 text-white rounded-[2.5rem] p-8 md:p-14 shadow-2xl shadow-indigo-600/10 relative overflow-hidden flex flex-col lg:flex-row items-center justify-between gap-12">
+        <section className="mt-32 pt-24 relative">
+          <div className="flex flex-col md:flex-row gap-12 lg:gap-16">
             
-            {/* Smooth Glowing Core Vector */}
-            <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-white/10 rounded-full blur-3xl -translate-y-1/4 translate-x-1/4 pointer-events-none" />
-
-            <div className="max-w-xl relative z-10">
-              <div className="inline-block bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold tracking-wide border border-white/10 mb-6">
-                Land a Job Track Guarantee
-              </div>
-              <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-white leading-[1.1]">
-                Showcase Your Work, <br />Get Noticed!
+            {/* STICKY LEFT-HAND SIDE TITLE HEADER */}
+            <div className="md:w-4/12 md:sticky md:top-24 mr-5 h-fit">
+              <h2 className="text-4xl lg:text-5xl font-medium text-slate-950 tracking-tight leading-[1.15] mt">
+                Our 3-Step <br />
+                Success <br />
+                Pathway
               </h2>
-              <p className="mt-4 text-sm text-indigo-50 leading-relaxed font-normal">
-                Your projects deserve the spotlight. Share your absolute best production work directly with verified corporate managers, inspire fellow student engineers, and open doors to premier internships.
-              </p>
+            </div>
 
-              {/* Clean Custom Bullet Metrics */}
-              <div className="mt-8 space-y-3.5">
-                {[
-                  "Get absolute visibility from tech recruiters & local software peers",
-                  "Build out a robust, production-tested personal tech brand",
-                  "Connect and orchestrate pipelines with like-minded developers"
-                ].map((text, i) => (
-                  <div key={i} className="flex items-center gap-3 text-sm text-indigo-50">
-                    <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-[10px] text-white border border-white/20 shrink-0">
-                      ➔
-                    </span>
-                    <span className="font-medium">{text}</span>
+            {/* SCROLLING TIMELINE CONTENT BLOCK */}
+            <div className="md:w-8/12 relative pl-8 md:pl-12">
+              
+              {/* Vertical Center Indicator Line */}
+              <div className="absolute left-0 top-3  bottom-3 w-[2px] bg-slate-100" />
+
+              {/* TIMELINE STEP 1 */}
+              <div className="relative ml-25 pb-20 group">
+                {/* Timeline Node Ring Anchor */}
+                <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-4 border-white bg-slate-300 ring-4 ring-slate-100 group-hover:bg-gray-600 group-hover:ring-purple-100 transition-all duration-300 z-10" />
+                
+                <div className="flex items-start gap-4">
+                  <span className="text-lg font-mono font-bold text-slate-400 select-none pt-0.5 group-hover:text-gray-600 transition-colors">
+                    1.
+                  </span>
+                  <div>
+                    <h2 className="text-4xl lg:text-4xl font-normal text-[#484a4d] tracking-tight leading-[1.15] mt">
+                       Strict Verification & <br />
+                       Smart Skill Mapping 
+                    </h2>
+                    {/* Rendered 3 Suitable Cloud Images Grid */}
+                    <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 max-w-md shadow-sm">
+                      <img 
+                        src="https://plus.unsplash.com/premium_vector-1725524675900-2a5b74b9bb86?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c2tpbGxzfGVufDB8fDB8fHww" 
+                        alt="Secure Escrow Transaction Payout" 
+                        className="w-full h-70 object-contain"
+                      />
+                    </div>
                   </div>
-                ))}
+                </div>
               </div>
-            </div>
 
-            {/* Premium CTA Box */}
-            <div className="shrink-0 w-full lg:w-auto text-center relative z-10">
-              <Link 
-                href="/onboard" 
-                className="w-full lg:w-auto inline-block px-8 py-4 bg-white hover:bg-slate-50 text-slate-950 rounded-xl font-bold text-sm tracking-wide shadow-xl transition-all active:scale-[0.99]"
-              >
-                Showcase Your Project
-              </Link>
-            </div>
+              {/* TIMELINE STEP 2 */}
+              <div className="relative ml-25 pb-20 group">
+                {/* Timeline Node Ring Anchor */}
+                <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-4 border-white bg-slate-300 ring-4 ring-slate-100 group-hover:bg-gray-600 group-hover:ring-indigo-100 transition-all duration-300 z-10" />
+                
+                <div className="flex items-start gap-4">
+                  <span className="text-lg font-mono font-bold text-slate-400 select-none pt-0.5 group-hover:text-gray-600 transition-colors">
+                    2.
+                  </span>
+                  <div>
+                    <h2 className="text-4xl lg:text-4xl font-normal text-[#484a4d] tracking-tight leading-[1.15] mt">
+                       Instant Deployment & <br />
+                       Secure Execution
+                    </h2>
+                    {/* Unsplash Image replacing mock layout wrapper */}
+                    <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 max-w-md shadow-sm">
+                      <img 
+                        src="https://plus.unsplash.com/premium_vector-1750154283636-b54d8208e729?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGRlcGxveW1lbnR8ZW58MHx8MHx8fDA%3D" 
+                        alt="Digital Workspace Execution" 
+                        className="w-full h-70 object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
 
+              {/* TIMELINE STEP 3 */}
+              <div className="relative ml-25 group">
+                {/* Timeline Node Ring Anchor */}
+                <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-4 border-white bg-slate-300 ring-4 ring-slate-100 group-hover:bg-gray-600 group-hover:ring-blue-100 transition-all duration-300 z-10" />
+                
+                <div className="flex items-start gap-4">
+                  <span className="text-lg font-mono font-bold text-slate-400 select-none pt-0.5 group-hover:text-gray-600 transition-colors">
+                    3.
+                  </span>
+                  <div>
+                    <h2 className="text-4xl lg:text-4xl font-normal text-[#484a4d] tracking-tight leading-[1.15] mt">
+                       Verified Proof-of-Presence <br />
+                       Payout
+                    </h2>
+                    {/* Unsplash Image replacing mockup escrow container */}
+                    <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 max-w-85 shadow-sm">
+                      <img 
+                        src="https://plus.unsplash.com/premium_vector-1728586228949-fc0b5697fa57?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjV8fFBheW91dHxlbnwwfHwwfHx8MA%3D%3D" 
+                        alt="Secure Escrow Transaction Payout" 
+                        className="w-full h-70 object-contain"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
           </div>
         </section>
-
-
-        {/* ==================== READING-FRIENDLY SYSTEM TIERS ==================== */}
-        <section className="border-t border-slate-100 pt-16">
-          <div className="text-center md:text-left mb-14">
-            <h2 className="text-3xl font-bold text-slate-950 tracking-tight">Structured Platform Profiles</h2>
-            <p className="text-sm text-slate-400 mt-2">Clear identification alignments configured across our three core workspace modules.</p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            
-            {/* Student Module */}
-            <div className="bg-slate-50/50 rounded-2xl p-8 border border-slate-100 flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-purple-50 flex items-center justify-center text-xl shadow-sm border border-purple-100">
-                  🎓
-                </div>
-                <h4 className="font-bold text-slate-950 text-lg mt-5 mb-2">Undergraduates</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Secure authenticated production workloads. Manage real platform timelines, interface with API blocks, and scale up soft skills naturally.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-200/60 text-[11px] font-mono text-purple-600 font-bold">
-                // SYSTEM_NODE_STUDENT
-              </div>
-            </div>
-
-            {/* Poster Module */}
-            <div className="bg-slate-50/50 rounded-2xl p-8 border border-slate-100 flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-xl shadow-sm border border-indigo-100">
-                  ⚡
-                </div>
-                <h4 className="font-bold text-slate-950 text-lg mt-5 mb-2">Task Posters</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Delegate separate application fragments or design features. Review student portfolios instantly with checked tracking details.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-200/60 text-[11px] font-mono text-indigo-600 font-bold">
-                // SYSTEM_NODE_POSTER
-              </div>
-            </div>
-
-            {/* Corporate Module */}
-            <div className="bg-slate-50/50 rounded-2xl p-8 border border-slate-100 flex flex-col justify-between">
-              <div>
-                <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-xl shadow-sm border border-blue-100">
-                  🏢
-                </div>
-                <h4 className="font-bold text-slate-950 text-lg mt-5 mb-2">Corporate Entities</h4>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  Deploy verified business profiles to access early tech talent streams directly out of state computing university branches.
-                </p>
-              </div>
-              <div className="mt-6 pt-4 border-t border-slate-200/60 text-[11px] font-mono text-blue-600 font-bold">
-                // SYSTEM_NODE_CORPORATE
-              </div>
-            </div>
-
-          </div>
-        </section>
-
+      {/* <div className= "mt-36">
+          <ShowcaseSection/>
+      </div>
+      <div className= "mt-36">
+        <Career/>
+      </div> */}
       </div>
     </div>
   );
