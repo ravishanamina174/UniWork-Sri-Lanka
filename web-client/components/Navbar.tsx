@@ -18,19 +18,19 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
       { name: "Find Tasks", href: "/" },
       { name: "Physical", href: "/" },
       { name: "Digital", href: "/" },
-      { name: "About", href: "/" },
+      { name: "About", href: "/about" },
     ],
     TASK_POSTER: [
       { name: "Tasks", href: "/" },
       { name: "Review Submissions", href: "/" },
       { name: "Escrow Balance", href: "/" },
-      { name: "About", href: "/" },
+      { name: "About", href: "/about" },
     ],
     CORPORATE_CLIENT: [
       { name: "Enterprise Contracts", href: "/" },
       { name: "Talent Pool", href: "/" },
       { name: "Invoices & Ledgers", href: "/" },
-      { name: "About", href: "/" },
+      { name: "About", href: "/about" },
     ],
   };
 
