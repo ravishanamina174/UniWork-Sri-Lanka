@@ -49,14 +49,14 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-200 p-8 rounded-xl shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-100 p-8 rounded-2xl shadow-sm">
       <div>
         <label className="block text-sm font-semibold text-slate-700 mb-1">Task Project Title</label>
         <input
           required
           type="text"
           placeholder="e.g., Develop landing page using Tailwind CSS"
-          className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#007FFF] transition-colors"
+          className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
@@ -68,7 +68,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           required
           rows={4}
           placeholder="Break down details, expectations, constraints, or guidelines..."
-          className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#007FFF] transition-colors"
+          className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.description}
           onChange={(e) => setFormData({ ...formData, description: e.target.value })}
         />
@@ -81,7 +81,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
             required
             type="number"
             placeholder="15000"
-            className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#007FFF] transition-colors"
+            className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors font-medium text-[#2d913e]"
             value={formData.budget}
             onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
           />
@@ -91,7 +91,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           <input
             required
             type="date"
-            className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#007FFF] transition-colors"
+            className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
             value={formData.deadline}
             onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
           />
@@ -103,7 +103,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
         <input
           type="text"
           placeholder="React, TypeScript, UI Design, Content Writing"
-          className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#007FFF] transition-colors"
+          className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.skills}
           onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
         />
@@ -112,7 +112,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
       <button
         type="submit"
         disabled={loading}
-        className="w-full py-3 bg-slate-900 hover:bg-slate-800 text-white font-medium rounded-md transition-colors disabled:bg-slate-300"
+        className="w-full py-3 bg-[#2d913e] hover:bg-[#2b6e36] text-white font-medium rounded-xl transition-all shadow-md shadow-indigo-100 disabled:bg-slate-300 active:scale-[0.99]"
       >
         {loading ? "Publishing to Ecosystem..." : "Publish Task Card"}
       </button>

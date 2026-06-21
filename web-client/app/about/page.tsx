@@ -25,12 +25,15 @@ export default function AboutPage() {
             UniWork bridges the gap between unpredictable university timetables and the rising cost of living in Sri Lanka. Our platform connects verified undergraduates with on-demand digital and physical gigs within a 4km campus radius. Featuring real-time GPS safety logs, AI-driven pricing, and secure LankaQR escrow payments, UniWork delivers a reliable, scam-free freelancing ecosystem that is 100% free for students.
           </p>
         </section>
-
+        
+        <div className= "mt-36 mb-36">
+                <Career/>
+        </div>
 
         {/* ==================== HIGH-ENGAGEMENT IMAGE GRID ==================== */}
-        <section className="grid md:grid-cols-2 gap-8 mb-24">
+        {/* <section className="grid md:grid-cols-2 gap-8 mb-24">
           
-          {/* Card Block 1: Student Focus */}
+
           <div className="bg-[#f7faf8] rounded-[1rem] border border-slate-200 overflow-hidden  transition-all hover:translate-y-[-2px]">
             <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
               <img 
@@ -53,7 +56,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* Card Block 2: Corporate Focus */}
+
           <div className="bg-[#f7faf8] rounded-[1rem] border border-slate-200 overflow-hidden transition-all hover:translate-y-[-2px]">
             <div className="relative aspect-[16/10] bg-slate-900 overflow-hidden">
               <img 
@@ -76,13 +79,12 @@ export default function AboutPage() {
             </div>
           </div>
 
-        </section>
+        </section> */}
 
-
-        <section className="mt-32 pt-24 relative">
+        {/* <section className="mt-32 pt-24 relative">
           <div className="flex flex-col md:flex-row gap-12 lg:gap-16">
             
-            {/* STICKY LEFT-HAND SIDE TITLE HEADER */}
+
             <div className="md:w-4/12 md:sticky md:top-24 mr-5 h-fit">
               <h2 className="text-4xl lg:text-5xl font-medium text-slate-950 tracking-tight leading-[1.15] mt">
                 Our 3-Step <br />
@@ -91,15 +93,15 @@ export default function AboutPage() {
               </h2>
             </div>
 
-            {/* SCROLLING TIMELINE CONTENT BLOCK */}
+
             <div className="md:w-8/12 relative pl-8 md:pl-12">
               
-              {/* Vertical Center Indicator Line */}
+
               <div className="absolute left-0 top-3  bottom-3 w-[2px] bg-slate-100" />
 
-              {/* TIMELINE STEP 1 */}
+
               <div className="relative ml-25 pb-20 group">
-                {/* Timeline Node Ring Anchor */}
+
                 <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-4 border-white bg-slate-300 ring-4 ring-slate-100 group-hover:bg-gray-600 group-hover:ring-purple-100 transition-all duration-300 z-10" />
                 
                 <div className="flex items-start gap-4">
@@ -111,7 +113,7 @@ export default function AboutPage() {
                        Strict Verification & <br />
                        Smart Skill Mapping 
                     </h2>
-                    {/* Rendered 3 Suitable Cloud Images Grid */}
+
                     <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 max-w-md shadow-sm">
                       <img 
                         src="https://plus.unsplash.com/premium_vector-1725524675900-2a5b74b9bb86?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8c2tpbGxzfGVufDB8fDB8fHww" 
@@ -123,9 +125,9 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* TIMELINE STEP 2 */}
+
               <div className="relative ml-25 pb-20 group">
-                {/* Timeline Node Ring Anchor */}
+
                 <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-4 border-white bg-slate-300 ring-4 ring-slate-100 group-hover:bg-gray-600 group-hover:ring-indigo-100 transition-all duration-300 z-10" />
                 
                 <div className="flex items-start gap-4">
@@ -137,7 +139,7 @@ export default function AboutPage() {
                        Instant Deployment & <br />
                        Secure Execution
                     </h2>
-                    {/* Unsplash Image replacing mock layout wrapper */}
+
                     <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 max-w-md shadow-sm">
                       <img 
                         src="https://plus.unsplash.com/premium_vector-1750154283636-b54d8208e729?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjR8fGRlcGxveW1lbnR8ZW58MHx8MHx8fDA%3D" 
@@ -149,9 +151,9 @@ export default function AboutPage() {
                 </div>
               </div>
 
-              {/* TIMELINE STEP 3 */}
+
               <div className="relative ml-25 group">
-                {/* Timeline Node Ring Anchor */}
+
                 <div className="absolute -left-[39px] md:-left-[55px] top-1.5 w-4 h-4 rounded-full border-4 border-white bg-slate-300 ring-4 ring-slate-100 group-hover:bg-gray-600 group-hover:ring-blue-100 transition-all duration-300 z-10" />
                 
                 <div className="flex items-start gap-4">
@@ -163,7 +165,7 @@ export default function AboutPage() {
                        Verified Proof-of-Presence <br />
                        Payout
                     </h2>
-                    {/* Unsplash Image replacing mockup escrow container */}
+
                     <div className="mt-6 overflow-hidden rounded-2xl border border-slate-100 max-w-85 shadow-sm">
                       <img 
                         src="https://plus.unsplash.com/premium_vector-1728586228949-fc0b5697fa57?w=900&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NjV8fFBheW91dHxlbnwwfHwwfHx8MA%3D%3D" 
@@ -177,13 +179,12 @@ export default function AboutPage() {
 
             </div>
           </div>
-        </section>
-      {/* <div className= "mt-36">
+        </section> */}
+
+        {/* <div className= "mt-36">
           <ShowcaseSection/>
-      </div>
-      <div className= "mt-36">
-        <Career/>
-      </div> */}
+        </div> */}
+
       </div>
     </div>
   );

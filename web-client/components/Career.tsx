@@ -26,162 +26,19 @@ export default function Career() {
             position: relative;
             display: flex;
             justify-content: center;
+            align-items: center;
             min-height: 600px;
-            background-color: #fafafa; /* Very subtle background distinction */
+            background-color: #fafafa; /* Very subtle background distinction kept same */
             border-right: 1px solid #f3f4f6;
+            padding: 0; /* Padding removed to allow full space image display */
+            box-sizing: border-box;
           }
 
-          /* Yellow Guarantee Tape */
-          .guarantee-tape {
-            position: absolute;
-            top: 120px;
-            left: 5%;
-            background-color: #ccff00; /* Neon yellow matching screenshot */
-            color: #000000;
-            padding: 0.4rem 1.2rem;
-            font-weight: 800;
-            font-size: 1.1rem;
-            transform: rotate(-12deg);
-            border: 2px dashed #000000;
-            z-index: 5; /* Behind lanyard */
-            white-space: nowrap;
-          }
-
-          /* Lanyard */
-          .ca-lanyard {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 32px;
-            height: 180px;
-            background-color: #1a1a1a;
-            z-index: 10;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.15);
-          }
-
-          .ca-lanyard span {
-            color: #ffffff;
-            transform: rotate(-90deg);
-            font-weight: 700;
-            font-size: 0.85rem;
-            letter-spacing: 2px;
-            white-space: nowrap;
-          }
-
-          /* Clip */
-          .ca-clip-ring {
-            position: absolute;
-            top: 180px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 20px;
-            height: 35px;
-            border: 3px solid #e0e0e0;
-            border-radius: 10px;
-            z-index: 9;
-            background: transparent;
-          }
-
-          .ca-clip-base {
-            position: absolute;
-            top: 215px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 10px;
-            height: 15px;
-            background-color: #d0d0d0;
-            border-radius: 2px;
-            z-index: 11;
-          }
-
-          /* Badges */
-          .ca-badge {
-            position: absolute;
-            width: 220px;
-            height: 330px;
-            border-radius: 12px;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-            overflow: hidden;
-          }
-
-          .ca-badge-back {
-            background-color: #161616;
-            top: 230px;
-            left: 50%;
-            transform: translateX(-75%) rotate(-18deg);
-            z-index: 4;
-            display: flex;
-            align-items: center;
-          }
-
-          .ca-badge-back .back-logo {
-            color: #ffffff;
-            transform: rotate(-90deg);
-            font-size: 1.5rem;
-            font-weight: 800;
-            letter-spacing: 1px;
-            margin-left: -1rem;
-          }
-
-          .ca-badge-front {
-            background-color: #ffffff;
-            top: 230px;
-            left: 50%;
-            transform: translateX(-35%) rotate(2deg);
-            z-index: 8;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #f0f0f0;
-          }
-
-          .ca-badge-hole {
-            position: absolute;
-            top: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 12px;
-            height: 12px;
-            background-color: #fafafa; 
-            border-radius: 50%;
-            z-index: 20;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
-          }
-
-          .ca-badge-photo-placeholder {
+          .career-inserted-img {
             width: 100%;
-            height: 200px;
-            background-color: #2a2a2a; 
-          }
-
-          .ca-badge-info {
-            padding: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
             height: 100%;
-            color: #000000;
-          }
-
-          .ca-badge-info h2 {
-            margin: 0;
-            font-size: 1.4rem;
-            font-weight: 600;
-            line-height: 1.1;
-            letter-spacing: -0.02em;
-          }
-
-          .ca-badge-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: auto;
-            font-size: 0.55rem;
-            color: #555555;
-            font-weight: 500;
+            object-fit: cover;
+            border-radius: 24px 0 0 24px; /* Left side matches the parent wrapper shape exactly */
           }
 
           /* --- Right Content Column --- */
@@ -262,9 +119,8 @@ export default function Career() {
               border-top: 1px solid #f3f4f6;
               overflow: hidden;
             }
-            .guarantee-tape {
-              left: 50%;
-              transform: translateX(-80%) rotate(-12deg);
+            .career-inserted-img {
+              border-radius: 0 0 24px 24px; /* Adjusts corners nicely when stacked vertically on mobile */
             }
           }
         `}
@@ -272,69 +128,48 @@ export default function Career() {
 
       <section className="career-wrapper">
         
-        {/* Left Graphics (Badges & Tape) */}
+        {/* Left Graphics Area with Full-bleed Grass Image */}
         <div className="career-graphics">
-          <div className="guarantee-tape">100% Job Guarantee</div>
-          
-          <div className="ca-lanyard">
-            <span>NEXT UI</span>
-          </div>
-          <div className="ca-clip-ring"></div>
-          <div className="ca-clip-base"></div>
-
-          {/* Back Tilted Badge */}
-          <div className="ca-badge ca-badge-back">
-            <div className="back-logo">NEXT UI</div>
-          </div>
-
-          {/* Front Badge Profile */}
-          <div className="ca-badge ca-badge-front">
-            <div className="ca-badge-hole"></div>
-            
-            {/* Image Placeholder */}
-            <div className="ca-badge-photo-placeholder"></div>
-            
-            <div className="ca-badge-info">
-              <h2>Kamesh<br />Chandima</h2>
-              
-              <div className="ca-badge-footer">
-                <span>Associate Software Engineer</span>
-                <span>ID 0032</span>
-              </div>
-            </div>
-          </div>
+          <img 
+            src="/assets/grass.jpg" 
+            alt="Grass background" 
+            className="career-inserted-img"
+          />
         </div>
 
         {/* Right Content */}
         <div className="career-content">
-          <div className="ca-pill">Land a Job or 100% Refund</div>
+          <div className="ca-pill">The First Dedicated Student Task Network in Sri Lanka</div>
           
-          <h2>100% Job Guarantee with Our Career Accelerator Track</h2>
-          <h3>Exclusive Track for Top Performers – With a 95% Success Rate</h3>
+          <h2>Bridging the Gap Between Flexible Student Income and On-Demand Help</h2>
+          <h3>The Ultimate Solution for On-Campus Help, Skilled Digital Work, and Trusted Earnings</h3>
           
           <p>
-            No, this program isn't open for everyone. The Career Accelerator is an exclusive
-            track, handpicked for the top-performing students of STEM Link. After
-            completing one of our intensive bootcamps, a high-potential group is selected
-            every 3 months to enter this elite program.
+            University students always need extra money, but regular part-time jobs do not work because 
+            timetables change constantly from week to week. On the other side, regular people and local 
+            businesses find it really hard to find quick, trustworthy help for hands-on tasks like moving 
+            items, running errands, or event setup. Right now, there is absolutely no single, trusted website 
+            in Sri Lanka built to bring these two sides together and fix this problem.
           </p>
           
           <p>
-            The Career Accelerator isn't just about more learning, but it's about getting
-            results. Students in this program receive advanced technical coaching, personal
-            career mentoring, recruiter outreach support, and ongoing interview preparation
-            until they land their job.
+            UniWorkSL fixes this by focusing heavily on quick, physical tasks around the campus area—like 
+            lifting lab equipment, helping at events, or local deliveries—while also offering digital 
+            freelance work like simple design or typing tasks. Unlike confusing social media groups or big, 
+            corporate job boards that take weeks to reply, UniWorkSL is fast, completely local, and fits 
+            perfectly around a student's daily class hours.
           </p>
           
           <p>
-            We've proudly maintained a 95% success rate in placing our Career Accelerator
-            students in top software companies, startups, and even overseas tech firms. For
-            the few who make it in, this program becomes a fast track to employment in
-            tech.
+            To keep everyone 100% safe, every student goes through an official profile check using their 
+            university details before they can accept any work. Our main goal is to help students support 
+            themselves financially while making campus life easier for everyone. We keep the platform running 
+            by taking just a very small, clear service fee only after a job is successfully finished and the 
+            student gets paid. It is a worry-free system where everyone wins.
           </p>
 
           <div className="ca-read-more">
-            Read more stories below
+            Read more details below
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <polyline points="6 9 12 15 18 9"></polyline>
             </svg>

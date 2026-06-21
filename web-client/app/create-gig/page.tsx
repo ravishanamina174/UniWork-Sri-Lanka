@@ -26,14 +26,55 @@ export default async function CreateGigPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFDFB] text-[#191919]">
+    <div className="min-h-screen bg-[#FFFDFB] text-[#191919] overflow-x-hidden relative">
       <Navbar userRole={userRole} />
-      <main className="max-w-2xl mx-auto px-6 py-12">
-        <div className="mb-8">
+      <main className="max-w-2xl mx-auto px-6 py-12 relative z-10">
+        <div className="mb-8 flex-row text-center">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Create a New Task Card</h1>
-          <p className="text-slate-500 mt-1">Fill out the specifications below to deploy your requirement to the platform network.</p>
+          <p className="text-[#7f8185] font-medium mt-1">Fill out the specifications below to deploy your requirement to the platform network.</p>
         </div>
-        <CreateGigForm clerkId={userId} />
+        
+        {/* Relative wrapper for absolute doodle positioning */}
+        <div className="relative">
+          {/* Notion Doodle 1: Top Left Target/Bullseye */}
+          <div className="hidden lg:block absolute -top-12 -left-36 opacity-20 text-[#191919] pointer-events-none select-none">
+            <svg width="100" height="100" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M50 10 C 25 12, 12 25, 10 50 C 12 75, 25 88, 50 90 C 75 88, 88 75, 90 50 C 88 25, 75 12, 50 10 Z" />
+              <path d="M50 25 C 35 27, 27 35, 25 50 C 27 65, 35 73, 50 75 C 65 73, 73 35, 75 50" />
+              <path d="M50 40 A 10 10 0 1 0 50 60 A 10 10 0 1 0 50 40 Z" fill="currentColor" fillOpacity="0.3" />
+              <path d="M15 50 L 5 50 M95 50 L 85 50 M50 15 L 50 5 M50 95 L 50 85" />
+            </svg>
+          </div>
+
+          {/* Notion Doodle 2: Top Right Sparkles */}
+          <div className="hidden lg:block absolute -top-4 -right-32 opacity-25 text-[#191919] pointer-events-none select-none animate-pulse">
+            <svg width="80" height="80" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+              {/* Sparkle 1 */}
+              <path d="M30 10 Q 30 25 45 25 Q 30 25 30 40 Q 30 25 15 25 Q 30 25 30 10 Z" fill="currentColor" fillOpacity="0.1" />
+              {/* Sparkle 2 */}
+              <path d="M70 40 Q 70 50 80 50 Q 70 50 70 60 Q 70 50 60 50 Q 70 50 70 40 Z" fill="currentColor" fillOpacity="0.1" />
+            </svg>
+          </div>
+
+          {/* Notion Doodle 3: Bottom Left Gear/Idea Wheel */}
+          <div className="hidden lg:block absolute bottom-12 -left-40 opacity-20 text-[#191919] pointer-events-none select-none">
+            <svg width="110" height="110" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+              <circle cx="50" cy="50" r="20" strokeDasharray="3 3" />
+              <path d="M50 15 C 55 15, 53 25, 58 27 C 63 29, 68 20, 72 24 C 76 28, 69 35, 73 40 C 77 45, 85 45, 85 52 C 83 59, 75 58, 73 64 C 71 70, 77 76, 72 80 C 67 84, 61 77, 55 80 C 49 83, 48 91, 41 89 C 35 87, 38 79, 32 76 C 26 73, 18 76, 16 70 C 14 64, 22 60, 22 53 C 22 46, 14 44, 16 37 C 18 30, 27 34, 32 30 C 37 26, 36 15, 43 14 C 47 13, 48 15, 50 15 Z" />
+            </svg>
+          </div>
+
+          {/* Notion Doodle 4: Bottom Right Hand-drawn Star */}
+          <div className="hidden lg:block absolute -bottom-8 -right-36 opacity-25 text-[#191919] pointer-events-none select-none">
+            <svg width="95" height="95" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M50 5 L 63 36 L 95 38 L 70 58 L 78 90 L 50 72 L 22 90 L 30 58 L 5 38 L 37 36 Z" />
+              {/* Exclamation underline loop typical in doodles */}
+              <path d="M42 82 Q 50 85 58 81" strokeWidth="1.2" />
+            </svg>
+          </div>
+
+          <CreateGigForm clerkId={userId} />
+        </div>
       </main>
     </div>
   );
