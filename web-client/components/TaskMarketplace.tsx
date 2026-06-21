@@ -65,7 +65,7 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
             return (
               <div
                 key={task.id}
-                className="bg-white border border-slate-200/90 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-slate-300 transition-all flex flex-col overflow-hidden"
+                className="bg-white border border-slate-300 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b0b1f7] transition-all flex flex-col overflow-hidden"
               >
                 {/* Visual Header Block with Top Action Details */}
                 <div className="p-6 pb-4 flex-1 flex flex-col">
@@ -114,8 +114,8 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
 
                 {/* Full Width Integrated Interaction Action Button Block */}
                 <div className="px-6 pb-6 pt-2">
-                  <button className="w-full bg-[#6366F1] hover:bg-[#4F46E5] active:bg-[#4338CA] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-colors shadow-sm tracking-wide">
-                    Explore More
+                  <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
+                     Explore More
                   </button>
                 </div>
 

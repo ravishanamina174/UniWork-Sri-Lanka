@@ -60,12 +60,20 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
 
         {/* Left Side: Brand Logo & Notion-inspired dynamic text routes */}
         <div className="flex items-center gap-8">
-          <Link href="/" className="text-lg font-bold text-slate-900 tracking-tight flex items-center gap-1.5 group">
-            <div className="w-6 h-6 bg-slate-950 text-white font-black text-xs flex items-center justify-center rounded-md transform group-hover:scale-105 transition-transform">
-              U
+          <Link href="/" className="text-xl font-bold text-slate-900 tracking-tight flex items-center gap-2 group select-none">
+            {/* Notion Doodle-style Hand-drawn Uncolored Logo Icon */}
+            <div className="relative w-7 h-7 flex items-center justify-center text-slate-900 transition-transform duration-200 group-hover:scale-105 group-hover:-rotate-3">
+              <svg width="28" height="28" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="absolute inset-0 text-slate-900">
+                {/* Asymmetric hand-sketched box shape */}
+                <path d="M15 18 C 12 35, 14 70, 18 84 C 40 88, 72 85, 86 82 C 84 60, 88 35, 82 14 C 60 12, 35 15, 15 18 Z" fill="none" />
+                {/* Inside sketchy 'U' shape component */}
+                <path d="M38 32 C 37 48, 38 62, 48 62 C 58 62, 60 48, 61 32" strokeWidth="4.5" />
+                {/* Playful mini accent sparkle dot */}
+                <circle cx="72" cy="28" r="2.5" fill="currentColor" stroke="none" />
+              </svg>
             </div>
-            <span className="font-extrabold text-slate-900">
-              UniWork<span className="text-slate-400 font-normal mx-0.5">/</span><span className="text-amber-500">SL</span>
+            <span className="font-black text-[1.2rem] text-slate-900 tracking-tight">
+              UniWork<span className="text-slate-900 font-extrabold mx-0.5">SL</span>
             </span>
           </Link>
           

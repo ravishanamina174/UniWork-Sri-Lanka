@@ -1,131 +1,211 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 export default function HeroSection() {
   const [index, setIndex] = useState(0);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
+  // High-fidelity text colors that adapt cleanly between light and dark themes
   const words = [
-    { text: "Earn", color: "bg-emerald-50 text-emerald-700 border-emerald-200/60 target-student" },
-    { text: "Post", color: "bg-amber-50 text-amber-700 border-amber-200/60 target-poster" },
-    { text: "Scale", color: "bg-blue-50 text-blue-700 border-blue-200/60 target-corporate" }
+    { text: "Earn", color: "text-emerald-600 dark:text-emerald-400" },
+    { text: "Post", color: "text-amber-500 dark:text-amber-400" },
+    { text: "Scale", color: "text-[#007FFF] dark:text-blue-400" }
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prevIndex) => (prevIndex + 1) % words.length);
-    }, 2000);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
+  // Track cursor position precisely within the container limits
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (!sectionRef.current) return;
+      const rect = sectionRef.current.getBoundingClientRect();
+      setMousePos({
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      });
+    };
+
+    const sectionEl = sectionRef.current;
+    if (sectionEl) {
+      sectionEl.addEventListener("mousemove", handleMouseMove);
+    }
+    return () => {
+      if (sectionEl) sectionEl.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
   return (
-    <section className="relative w-full bg-white py-16 md:py-24 lg:py-28 overflow-hidden select-none">
-      {/* Structural Containment Box */}
-      <div className="mx-auto max-w-[73rem] px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+    <section 
+      ref={sectionRef}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      className="relative w-full bg-white dark:bg-black pt-20 pb-28 md:pt-24 md:pb-36 overflow-hidden transition-colors duration-300 select-none"
+    >
+      
+      {/* Dynamic Cursor Light Reveal Engine: Reveals dots only directly behind the user cursor area */}
+      <div 
+        className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+        style={{
+          opacity: isHovered ? 1 : 0,
+          backgroundImage: "radial-gradient(#94a3b8 1.5px, transparent 1.5px)",
+          backgroundSize: "24px 24px",
+          WebkitMaskImage: `radial-gradient(circle 140px at ${mousePos.x}px ${mousePos.y}px, black 20%, transparent 100%)`,
+          maskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 20%, transparent 100%)`,
+        }}
+      />
+
+      <div className="mx-auto max-w-[76rem] px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
+        
+        {/* Micro Professional Pill Tag */}
+        <div className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-neutral-900 border border-slate-200/80 dark:border-neutral-800 text-xs font-medium text-[#838991] dark:text-neutral-400 tracking-wide">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#007FFF] animate-pulse" />
+          The First Dedicated Student Task Network in Sri Lanka
+        </div>
+
+        {/* Centered Typography with ONLY External Fine Surrounding Doodles */}
+        <div className="relative max-w-4xl px-4">
           
-          {/* Left Column: Interactive Sentence Engine */}
-          <div className="col-span-1 lg:col-span-7 flex flex-col justify-center text-left space-y-6 z-10">
-            <h1 className="text-[2.5rem] sm:text-[3.5rem] lg:text-[3.8rem] font-extrabold tracking-tight text-neutral-900 leading-[1.15] sm:leading-[1.1]">
-              Where independent talents <br className="hidden sm:inline" />
-              and ecosystems{" "}
-              <span className="relative inline-block mt-2 sm:mt-0">
-                <span
-                  className={`inline-flex items-center px-4 sm:px-5 py-1 sm:py-1.5 rounded-full text-[2.2rem] sm:text-[3.2rem] lg:text-[3.5rem] font-bold border transition-all duration-500 ease-in-out transform scale-100 ${words[index].color}`}
-                >
-                  <span className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full mr-3 animate-pulse bg-current" />
-                  {words[index].text}
-                </span>
-              </span>{" "}
-              together.
-            </h1>
-
-            <p className="max-w-xl text-base sm:text-lg font-medium text-neutral-500/85 leading-relaxed">
-              Empowering student earners with flexible pathways, helping task posters find immediate execution, and enabling corporate clients to scale velocity seamlessly.
-            </p>
-
-            {/* Action Matrix */}
-            <div className="flex flex-wrap items-center gap-4 pt-4">
-              <button className="px-5 py-3 bg-neutral-900 text-white font-semibold text-sm rounded-xl hover:bg-neutral-800 active:scale-[0.98] transition-all duration-200 shadow-sm shadow-neutral-950/10">
-                Get Started free
-              </button>
-              
-              {/* Premium Vision Activation Button */}
-              <button className="group flex items-center gap-2 px-5 py-3 bg-transparent text-neutral-600 font-semibold text-sm rounded-xl hover:text-neutral-900 hover:bg-neutral-100 active:scale-[0.98] transition-all duration-200">
-                <span>Our Vision</span>
-                <svg 
-                  className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200 text-neutral-400 group-hover:text-neutral-900" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor" 
-                  strokeWidth={2.5}
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </button>
-            </div>
+          {/* COLOURED DOODLE A: Top Left Delicate Emerald Sparkle */}
+          <div className="absolute -top-6 left-2 text-emerald-500 dark:text-emerald-400/80 opacity-90 pointer-events-none animate-pulse">
+            <svg width="28" height="28" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="5" strokeLinecap="round">
+              <path d="M50 15 Q 50 50 15 50 Q 50 50 50 85 Q 50 50 85 50 Q 50 50 50 15 Z" />
+            </svg>
           </div>
 
-          {/* Right Column: Staggered Geometric Grid Layout */}
-          <div className="col-span-1 lg:col-span-5 relative w-full h-[360px] sm:h-[450px] lg:h-[480px] flex items-center justify-center mt-6 lg:mt-0">
-            <div className="relative w-full h-full max-w-[28rem] lg:max-w-none">
-              
-              {/* Card 01: The Base Anchor (Back Drop Left) */}
-              <div className="absolute top-[10%] left-0 w-[55%] h-[60%] rounded-2xl bg-neutral-50 border border-neutral-200/70 p-2 shadow-md shadow-neutral-100 transform -rotate-3 hover:rotate-0 hover:scale-[1.02] transition-all duration-300 ease-out group">
-                <div className="w-full h-full rounded-xl bg-gradient-to-br from-neutral-100 to-neutral-200 flex items-center justify-center overflow-hidden">
-                  <img 
-                    src="/assets/hero-student.jpg" 
-                    alt="Student Earners Workspace" 
-                    className="w-full h-full object-cover opacity-80 mix-blend-multiply filter grayscale-[10%] group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                      e.currentTarget.parentElement?.classList.add('bg-cloud-placeholder');
-                    }}
-                  />
-                  {/* Fallback cloud wireframe if asset missing */}
-                  <div className="absolute inset-0 flex items-center justify-center p-4 text-neutral-400 pointer-events-none">
-                    <svg className="w-8 h-8 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
-                  </div>
+          {/* COLOURED DOODLE B: Crown Silhouette Positioned Perfectly At Head Top */}
+          <div className="absolute -top-10 left-[43%] text-amber-500 dark:text-amber-400/70 opacity-80 pointer-events-none">
+            <svg width="40" height="30" viewBox="0 0 100 80" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M15 65 L 25 25 L 45 45 L 50 18 L 55 45 L 75 25 L 85 65 Z" />
+            </svg>
+          </div>
+
+          {/* COLOURED DOODLE C: Mid Right Swirling Blue Indicator Loop */}
+          <div className="absolute top-1/2 -right-8 text-[#007FFF] dark:text-blue-400 opacity-80 pointer-events-none hidden md:block">
+            <svg width="44" height="44" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="4.5" strokeLinecap="round">
+              <path d="M20 30 C 45 10, 85 30, 70 65 C 65 75, 45 75, 52 55" />
+              <polyline points="45 58 52 55 58 64" strokeLinejoin="round"/>
+            </svg>
+          </div>
+
+          <h1 className="text-[2.6rem] sm:text-[3.6rem] lg:text-[4rem] font-black tracking-tight text-slate-900 dark:text-white leading-[1.12]">
+            Where independent talents <br />
+            and ecosystems{" "}
+            <span className="relative inline-block mt-2 sm:mt-0 min-w-[120px] sm:min-w-[170px] text-center">
+              <span className={`transition-all duration-500 ease-in-out ${words[index].color}`}>
+                {words[index].text}
+              </span>
+            </span>{" "}
+            together.
+          </h1>
+        </div>
+
+        <p className="max-w-2xl mt-6 text-base sm:text-lg font-medium text-[#989a9c] dark:text-neutral-400 leading-relaxed antialiased">
+          Empowering student earners with flexible pathways, helping task posters find immediate execution, and enabling corporate clients to scale velocity seamlessly.
+        </p>
+
+        {/* CTA Hub Controls */}
+        <div className="flex flex-wrap items-center justify-center gap-4 pt-4 mb-16 md:mb-24">
+          <button className="px-6 py-3.5 bg-[#007FFF] text-white font-bold text-sm rounded-xl hover:bg-[#0066CC] active:scale-[0.98] transition-all duration-200 shadow-md shadow-blue-500/10">
+            Get Started free
+          </button>
+          
+          <button className="group flex items-center gap-2 px-5 py-3.5 text-slate-600 dark:text-neutral-400 font-semibold text-sm rounded-xl hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-neutral-900 transition-all duration-200">
+            <span>Our Vision</span>
+            <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            </svg>
+          </button>
+        </div>
+
+        {/* ================= ADVANCED NEXTUI LANYARD STYLE CARD DECK ================= */}
+        {/* All three cards feature the official verification layout, looking stunning in pure black dark mode */}
+        <div className="w-full max-w-[62rem] relative px-4 md:px-0">
+          <div className="relative h-[340px] sm:h-[400px] md:h-[440px] w-full flex items-center justify-center">
+            
+            {/* CARD 1: Student Verification Badge (Left Card Anchor) */}
+            <div className="absolute left-0 lg:left-[4%] top-[10%] w-[35%] sm:w-[31%] h-[80%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-neutral-800/80 transform -rotate-6 hover:rotate-0 hover:scale-[1.03] transition-all duration-500 ease-out z-10 overflow-hidden flex flex-col group">
+              <div className="h-[45%] w-full bg-slate-100 dark:bg-neutral-800 relative">
+                <img 
+                  src="/assets/hero-student.jpg" 
+                  alt="Student Sector Workspace" 
+                  className="w-full h-full object-cover filter contrast-[1.01] group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              </div>
+              <div className="h-[55%] w-full p-4 flex flex-col justify-between text-left">
+                <div>
+                  <h4 className="text-slate-900 dark:text-white font-extrabold text-xs sm:text-sm tracking-tight leading-tight">UniWork Verified</h4>
+                  <p className="text-slate-400 dark:text-neutral-500 text-[9px] sm:text-xs font-semibold mt-0.5">Student Earner Deck</p>
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-50 dark:border-neutral-800 pt-3 text-[9px] font-bold text-slate-400 tracking-wider uppercase">
+                  <span>ID 2026</span>
+                  <span className="text-emerald-500">Active</span>
                 </div>
               </div>
-
-              {/* Card 02: The Focal Hero (Center Front) */}
-              <div className="absolute top-[20%] right-4 w-[52%] h-[65%] rounded-2xl bg-white border border-neutral-300/80 p-2.5 shadow-xl shadow-neutral-200/80 z-20 transform rotate-2 hover:rotate-0 hover:scale-[1.04] transition-all duration-300 ease-out group">
-                <div className="w-full h-full rounded-xl bg-gradient-to-br from-neutral-200 via-neutral-100 to-neutral-200 flex items-center justify-center overflow-hidden">
-                  <img 
-                    src="/assets/hero-task.jpg" 
-                    alt="Task Execution Platform" 
-                    className="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center p-4 text-neutral-400 pointer-events-none">
-                    <svg className="w-10 h-10 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 03: High-Altitude Cap (Top Right Accent) */}
-              <div className="absolute top-0 right-[25%] w-[42%] h-[42%] rounded-xl bg-neutral-50 border border-neutral-200/60 p-1.5 shadow-sm shadow-neutral-100 z-10 transform -rotate-6 hover:rotate-0 hover:scale-[1.02] transition-all duration-300 ease-out group">
-                <div className="w-full h-full rounded-lg bg-gradient-to-tr from-neutral-100 to-neutral-200 flex items-center justify-center overflow-hidden">
-                  <img 
-                    src="/assets/hero-corporate.jpg" 
-                    alt="Corporate Analytics Dashboard" 
-                    className="w-full h-full object-cover opacity-75 mix-blend-luminosity group-hover:scale-105 transition-transform duration-500"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none';
-                    }}
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center p-4 text-neutral-400 pointer-events-none">
-                    <svg className="w-6 h-6 opacity-40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" /></svg>
-                  </div>
-                </div>
-              </div>
-
             </div>
+
+            {/* CARD 2: Task Execution Lanyard System (Premium Center Focal Card) */}
+            <div className="absolute top-0 w-[36%] sm:w-[30%] h-[92%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.22)] md:shadow-[0_45px_85px_-20px_rgba(0,0,0,0.6)] border border-slate-200/60 dark:border-neutral-800 transform rotate-2 hover:rotate-0 hover:scale-[1.04] transition-all duration-500 ease-out z-30 overflow-hidden flex flex-col group">
+              <div className="h-[45%] w-full bg-amber-500/10 dark:bg-neutral-800 relative">
+                <img 
+                  src="/assets/hero-task.jpg" 
+                  alt="Task Management Focal" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              </div>
+              <div className="h-[55%] w-full p-4 sm:p-5 flex flex-col justify-between text-left">
+                <div>
+                  <h4 className="text-slate-900 dark:text-white font-black text-sm sm:text-base tracking-tight leading-tight">UniWork Verified</h4>
+                  <p className="text-slate-400 dark:text-neutral-500 text-[10px] sm:text-xs font-bold mt-0.5">Micro-Gig Network</p>
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-100 dark:border-neutral-800/60 pt-3 text-[9px] font-bold text-slate-400 tracking-wider uppercase">
+                  <span>ID 0032</span>
+                  <span className="text-emerald-500">Active</span>
+                </div>
+              </div>
+            </div>
+
+            {/* CARD 3: Corporate Ledger Analytics Layer (Right Card Anchor) */}
+            <div className="absolute right-0 lg:right-[4%] top-[14%] w-[35%] sm:w-[31%] h-[76%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-neutral-800/80 transform rotate-6 hover:rotate-0 hover:scale-[1.03] transition-all duration-500 ease-out z-20 overflow-hidden flex flex-col group">
+              <div className="h-[45%] w-full bg-slate-100 dark:bg-neutral-800 relative">
+                <img 
+                  src="/assets/hero-corporate.jpg" 
+                  alt="Enterprise Engine Layout" 
+                  className="w-full h-full object-cover filter saturate-[0.9] group-hover:scale-105 transition-transform duration-700"
+                  onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                />
+              </div>
+              <div className="h-[55%] w-full p-4 flex flex-col justify-between text-left">
+                <div>
+                  <h4 className="text-slate-900 dark:text-white font-extrabold text-xs sm:text-sm tracking-tight leading-tight">UniWork Verified</h4>
+                  <p className="text-slate-400 dark:text-neutral-500 text-[9px] sm:text-xs font-semibold mt-0.5">Corporate Client Pool</p>
+                </div>
+                <div className="flex items-center justify-between border-t border-slate-50 dark:border-neutral-800 pt-3 text-[9px] font-bold text-slate-400 tracking-wider uppercase">
+                  <span>ID 7099</span>
+                  <span className="text-[#007FFF] dark:text-blue-400">Enterprise</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Under-canvas horizontal alignment support trace layout line */}
+          <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 w-64 h-2 opacity-10 dark:opacity-30 pointer-events-none">
+            <svg className="w-full h-full text-slate-900 dark:text-neutral-700" viewBox="0 0 300 10" fill="none" preserveAspectRatio="none">
+              <path d="M5 5 C 50 2, 150 8, 295 4" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
+            </svg>
           </div>
 
         </div>
+
       </div>
     </section>
   );
