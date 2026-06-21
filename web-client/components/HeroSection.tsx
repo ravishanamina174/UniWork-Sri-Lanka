@@ -133,7 +133,7 @@ export default function HeroSection() {
             <div className="absolute left-0 lg:left-[4%] top-[10%] w-[35%] sm:w-[31%] h-[80%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-neutral-800/80 transform -rotate-6 hover:rotate-0 hover:scale-[1.03] transition-all duration-500 ease-out z-10 overflow-hidden flex flex-col group">
               <div className="h-[45%] w-full bg-slate-100 dark:bg-neutral-800 relative">
                 <img 
-                  src="/assets/hero-student.jpg" 
+                  src="/assets/move.jpg" 
                   alt="Student Sector Workspace" 
                   className="w-full h-full object-cover filter contrast-[1.01] group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -155,7 +155,7 @@ export default function HeroSection() {
             <div className="absolute top-0 w-[36%] sm:w-[30%] h-[92%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_30px_70px_-15px_rgba(0,0,0,0.22)] md:shadow-[0_45px_85px_-20px_rgba(0,0,0,0.6)] border border-slate-200/60 dark:border-neutral-800 transform rotate-2 hover:rotate-0 hover:scale-[1.04] transition-all duration-500 ease-out z-30 overflow-hidden flex flex-col group">
               <div className="h-[45%] w-full bg-amber-500/10 dark:bg-neutral-800 relative">
                 <img 
-                  src="/assets/hero-task.jpg" 
+                  src="/assets/wall.jpg" 
                   alt="Task Management Focal" 
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
@@ -177,7 +177,7 @@ export default function HeroSection() {
             <div className="absolute right-0 lg:right-[4%] top-[14%] w-[35%] sm:w-[31%] h-[76%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-neutral-800/80 transform rotate-6 hover:rotate-0 hover:scale-[1.03] transition-all duration-500 ease-out z-20 overflow-hidden flex flex-col group">
               <div className="h-[45%] w-full bg-slate-100 dark:bg-neutral-800 relative">
                 <img 
-                  src="/assets/hero-corporate.jpg" 
+                  src="/assets/COP.jpg" 
                   alt="Enterprise Engine Layout" 
                   className="w-full h-full object-cover filter saturate-[0.9] group-hover:scale-105 transition-transform duration-700"
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
