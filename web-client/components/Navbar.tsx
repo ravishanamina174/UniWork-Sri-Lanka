@@ -15,13 +15,13 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
   // Navigation configurations grouped directly by PostgreSQL PlatformRoleEnum options
   const navigationTabs = {
     STUDENT_EARNER: [
-      { name: "Find Tasks", href: "/" },
+      { name: "Find Tasks", href: "/tasks" },
       { name: "Physical", href: "/" },
       { name: "Digital", href: "/" },
       { name: "About", href: "/about" },
     ],
     TASK_POSTER: [
-      { name: "Tasks", href: "/" },
+      { name: "Tasks", href: "/tasks" },
       { name: "Review Submissions", href: "/" },
       { name: "Escrow Balance", href: "/" },
       { name: "About", href: "/about" },
