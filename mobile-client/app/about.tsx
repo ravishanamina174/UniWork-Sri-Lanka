@@ -1,0 +1,111 @@
+import React from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Dimensions,
+  Image,
+} from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { X } from 'lucide-react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import Svg, { Path, Circle, Polyline } from 'react-native-svg';
+
+const { width: SCREEN_WIDTH } = Dimensions.get('window');
+
+export default function AboutPage() {
+  return (
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
+      {/* Premium 10% Mesh Accent Background Layer */}
+      <LinearGradient
+        colors={['rgba(243, 232, 255, 0.4)', 'rgba(238, 242, 255, 0.2)', 'transparent']}
+        style={styles.meshBackground}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+      />
+
+      {/* Floating Circle Close Button */}
+      <View style={styles.headerRow}>
+        <Link href="/" asChild>
+          <TouchableOpacity 
+            style={styles.closeButton} 
+            activeOpacity={0.7}
+            accessibilityLabel="Close page"
+          >
+            <X size={18} color="#0F172A" strokeWidth={2.5} />
+          </TouchableOpacity>
+        </Link>
+      </View>
+
+      <ScrollView
+        style={styles.scrollView}
+        contentContainerStyle={styles.scrollContent}
+        showsVerticalScrollIndicator={false}
+      >
+        {/* ==================== PREMIUM HERO SECTION ==================== */}
+        <View style={styles.heroSection}>
+          <View style={styles.crownDoodle}>
+            <Svg width="60" height="50" viewBox="0 0 100 80" fill="none">
+              <Path d="M10 70 L 20 25 L 42 45 L 50 15 L 58 45 L 80 25 L 90 70 Z" stroke="#0F172A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <Path d="M8 72 C 30 76, 70 76, 92 72" stroke="#0F172A" strokeWidth="2" strokeLinecap="round"/>
+              <Circle cx="20" cy="20" r="3" fill="#0F172A" />
+              <Circle cx="50" cy="10" r="3" fill="#0F172A" />
+              <Circle cx="80" cy="20" r="3" fill="#0F172A" />
+            </Svg>
+          </View>
+
+          <Text style={styles.mainHeadline}>
+            Empowering Sri Lankan Undergraduates,{'\n'}
+            <Text style={styles.accentTextInline}>One Micro-Gig at a Time.</Text>
+          </Text>
+        </View>
+
+        {/* ==================== CONTENT CARD SECTION ==================== */}
+        <View style={styles.infoCard}>
+          <Image 
+            source={require('@/assets/images/grass.jpg')} 
+            style={styles.cardImage} 
+            resizeMode="cover"
+          />
+          <View style={styles.cardContent}>
+            <View style={styles.badge}>
+              <Text style={styles.badgeText}>The First Dedicated Student Task Network in Sri Lanka</Text>
+            </View>
+            <Text style={styles.cardTitle}>Bridging the Gap Between Flexible Student Income and On-Demand Help</Text>
+            <Text style={styles.cardSubtitle}>The Ultimate Solution for On-Campus Help, Skilled Digital Work, and Trusted Earnings</Text>
+            <Text style={styles.cardBody}>
+              University students always need extra money, but regular part-time jobs do not work because timetables change constantly from week to week. On the other side, local businesses find it hard to find quick, trustworthy help for hands-on tasks.
+            </Text>
+          </View>
+        </View>
+
+      </ScrollView>
+    </SafeAreaView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: '#FFFFFF' },
+  meshBackground: { position: 'absolute', top: 0, left: 0, right: 0, height: 450 },
+  headerRow: { width: '100%', flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 20, paddingTop: 16, zIndex: 30 },
+  closeButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F1F5F9', justifyContent: 'center', alignItems: 'center' },
+  scrollView: { flex: 1 },
+  scrollContent: { paddingHorizontal: 24, paddingTop: 20, paddingBottom: 60 },
+  heroSection: { alignItems: 'center', marginBottom: 32 },
+  mainHeadline: { fontSize: 28, fontWeight: '800', color: '#0F172A', textAlign: 'center', lineHeight: 38 },
+  accentTextInline: { color: '#0F172A' },
+  crownDoodle: { marginBottom: 16, opacity: 0.2 },
+  
+  // Card Styles
+  infoCard: { backgroundColor: '#FFFFFF', borderRadius: 24, overflow: 'hidden', borderWidth: 1, borderColor: '#F1F5F9', elevation: 5, shadowColor: '#000', shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.1, shadowRadius: 12 },
+  cardImage: { width: '100%', height: 220 },
+  cardContent: { padding: 20 },
+  badge: { backgroundColor: '#F1F5F9', alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, marginBottom: 12 },
+  badgeText: { fontSize: 10, fontWeight: '700', color: '#64748B', textTransform: 'uppercase' },
+  cardTitle: { fontSize: 22, fontWeight: '800', color: '#0F172A', marginBottom: 10 },
+  cardSubtitle: { fontSize: 14, fontWeight: '600', color: '#475569', marginBottom: 12 },
+  cardBody: { fontSize: 14, lineHeight: 22, color: '#64748B' },
+});
