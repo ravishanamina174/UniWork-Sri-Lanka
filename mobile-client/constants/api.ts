@@ -1,7 +1,7 @@
 // mobile-client/constants/api.ts
 import type { TaskGig } from '@/components/TaskMarketplace';
 
-const MAC_IP = '192.168.6.251'; // Your Mac's IP
+const MAC_IP = '192.168.7.2'; // Your Mac's IP
 export const API_BASE_URL = `http://${MAC_IP}:8000/api/v1`; 
 
 export async function fetchAllGigs(): Promise<TaskGig[]> {

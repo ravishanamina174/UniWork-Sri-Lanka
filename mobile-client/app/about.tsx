@@ -76,8 +76,18 @@ export default function AboutPage() {
             </View>
             <Text style={styles.cardTitle}>Bridging the Gap Between Flexible Student Income and On-Demand Help</Text>
             <Text style={styles.cardSubtitle}>The Ultimate Solution for On-Campus Help, Skilled Digital Work, and Trusted Earnings</Text>
+            
+            {/* Expanded Paragraphs with forced margins for spacing */}
             <Text style={styles.cardBody}>
-              University students always need extra money, but regular part-time jobs do not work because timetables change constantly from week to week. On the other side, local businesses find it hard to find quick, trustworthy help for hands-on tasks.
+              University students always need extra money, but regular part-time jobs do not work because timetables change constantly from week to week. On the other side, local businesses find it hard to find quick, trustworthy help for hands-on tasks like moving items, running errands, or event setup. Right now, there is absolutely no single, trusted website in Sri Lanka built to bring these two sides together and fix this problem.
+            </Text>
+            
+            <Text style={styles.cardBody}>
+              UniWorkSL fixes this by focusing heavily on quick, physical tasks around the campus area—like lifting lab equipment, helping at events, or local deliveries—while also offering digital freelance work like simple design or typing tasks. Unlike confusing social media groups or big, corporate job boards that take weeks to reply, UniWorkSL is fast, completely local, and fits perfectly around a student's daily class hours.
+            </Text>
+            
+            <Text style={[styles.cardBody, { marginBottom: 0 }]}>
+              To keep everyone 100% safe, every student goes through an official profile check using their university details before they can accept any work. Our main goal is to help students support themselves financially while making campus life easier for everyone. We keep the platform running by taking just a very small, clear service fee only after a job is successfully finished and the student gets paid. It is a worry-free system where everyone wins.
             </Text>
           </View>
         </View>
@@ -106,6 +116,6 @@ const styles = StyleSheet.create({
   badge: { backgroundColor: '#F1F5F9', alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, marginBottom: 12 },
   badgeText: { fontSize: 10, fontWeight: '700', color: '#64748B', textTransform: 'uppercase' },
   cardTitle: { fontSize: 22, fontWeight: '800', color: '#0F172A', marginBottom: 10 },
-  cardSubtitle: { fontSize: 14, fontWeight: '600', color: '#475569', marginBottom: 12 },
-  cardBody: { fontSize: 14, lineHeight: 22, color: '#64748B' },
+  cardSubtitle: { fontSize: 14, fontWeight: '600', color: '#475569', marginBottom: 20 }, // Added gap below subtitle
+  cardBody: { fontSize: 14, lineHeight: 22, color: '#64748B', marginBottom: 16 }, // Added marginBottom to force paragraph spacing
 });
