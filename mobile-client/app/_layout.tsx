@@ -14,21 +14,29 @@ export default function RootLayout() {
           <Stack.Screen 
             name="about" 
             options={{
-              animation: 'fade_from_bottom',
+              animation: 'fade',
             }}
           />
 
           <Stack.Screen
             name="tasks"
             options={{
-              headerShown: true,
+              animation: 'fade',
+            }}
+          />
+          </Stack>
+
+          {/* <Stack.Screen
+            name="tasks"
+            options={{
+              headerShown: false,
               title: 'Find Tasks',
               headerTintColor: '#0F172A',
               headerStyle: { backgroundColor: '#FFFFFF' },
               headerShadowVisible: false,
             }}
           />
-        </Stack>
+        </Stack> */}
 
         {/* Floating global Glassmorphic Navigation Component */}
         <GlassNavbar />

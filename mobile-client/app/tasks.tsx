@@ -22,7 +22,9 @@ export default function TasksScreen() {
           <ActivityIndicator color="#007FFF" size="large" />
         </View>
       ) : (
-        <TaskMarketplace tasks={tasks} />
+        <View style={styles.marketplaceContainer}>
+          <TaskMarketplace tasks={tasks} />
+        </View>
       )}
     </SafeAreaView>
   );
@@ -37,5 +39,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  marketplaceContainer: {
+    flex: 1,
+    marginTop: 60,
   },
 });
