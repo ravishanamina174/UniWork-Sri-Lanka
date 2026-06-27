@@ -262,9 +262,9 @@ export default function AboutPage() {
           </div>
         </section> */}
 
-        <div className= "mt-36">
+        {/* <div className= "mt-36">
           <ShowcaseSection/>
-        </div>
+        </div> */}
 
       </div>
     </div>

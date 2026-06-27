@@ -48,7 +48,7 @@ export default function AboutPage() {
           onPress={handleSignOut}
           accessibilityLabel="Sign out"
         >
-          <LogOut size={18} color="#EA580C" strokeWidth={2.5} />
+          <LogOut size={18} color="#383534" strokeWidth={2.5} />
         </TouchableOpacity>
         <Link href="/" asChild>
           <TouchableOpacity 
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   meshBackground: { position: 'absolute', top: 0, left: 0, right: 0, height: 450 },
   headerRow: { width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 16, zIndex: 30 },
   closeButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F1F5F9', justifyContent: 'center', alignItems: 'center' },
-  signOutButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#FFF7ED', justifyContent: 'center', alignItems: 'center' },
+  signOutButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#f2f0f0', justifyContent: 'center', alignItems: 'center' },
   scrollView: { flex: 1 },
   scrollContent: { paddingHorizontal: 24, paddingTop: 20, paddingBottom: 60 },
   heroSection: { alignItems: 'center', marginBottom: 32 },
