@@ -9,14 +9,27 @@ import {
   Image,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
-import { X } from 'lucide-react-native';
+import { Link, useRouter } from 'expo-router';
+import { X, LogOut } from 'lucide-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path, Circle, Polyline } from 'react-native-svg';
+import { useAuth } from '@clerk/clerk-expo';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export default function AboutPage() {
+  const router = useRouter();
+  const { signOut } = useAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.replace('/sign-in');
+    } catch (error) {
+      console.error('Sign-out error:', error);
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       {/* Premium 10% Mesh Accent Background Layer */}
@@ -27,8 +40,16 @@ export default function AboutPage() {
         end={{ x: 0.5, y: 1 }}
       />
 
-      {/* Floating Circle Close Button */}
+      {/* Floating Circle Close Button + Sign-Out Button */}
       <View style={styles.headerRow}>
+        <TouchableOpacity
+          style={styles.signOutButton}
+          activeOpacity={0.7}
+          onPress={handleSignOut}
+          accessibilityLabel="Sign out"
+        >
+          <LogOut size={18} color="#EA580C" strokeWidth={2.5} />
+        </TouchableOpacity>
         <Link href="/" asChild>
           <TouchableOpacity 
             style={styles.closeButton} 
@@ -100,8 +121,9 @@ export default function AboutPage() {
 const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: '#FFFFFF' },
   meshBackground: { position: 'absolute', top: 0, left: 0, right: 0, height: 450 },
-  headerRow: { width: '100%', flexDirection: 'row', justifyContent: 'flex-end', paddingHorizontal: 20, paddingTop: 16, zIndex: 30 },
+  headerRow: { width: '100%', flexDirection: 'row', justifyContent: 'space-between', paddingHorizontal: 20, paddingTop: 16, zIndex: 30 },
   closeButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#F1F5F9', justifyContent: 'center', alignItems: 'center' },
+  signOutButton: { width: 40, height: 40, borderRadius: 20, backgroundColor: '#FFF7ED', justifyContent: 'center', alignItems: 'center' },
   scrollView: { flex: 1 },
   scrollContent: { paddingHorizontal: 24, paddingTop: 20, paddingBottom: 60 },
   heroSection: { alignItems: 'center', marginBottom: 32 },
@@ -116,6 +138,6 @@ const styles = StyleSheet.create({
   badge: { backgroundColor: '#F1F5F9', alignSelf: 'flex-start', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 8, marginBottom: 12 },
   badgeText: { fontSize: 10, fontWeight: '700', color: '#64748B', textTransform: 'uppercase' },
   cardTitle: { fontSize: 22, fontWeight: '800', color: '#0F172A', marginBottom: 10 },
-  cardSubtitle: { fontSize: 14, fontWeight: '600', color: '#475569', marginBottom: 20 }, // Added gap below subtitle
-  cardBody: { fontSize: 14, lineHeight: 22, color: '#64748B', marginBottom: 16 }, // Added marginBottom to force paragraph spacing
+  cardSubtitle: { fontSize: 14, fontWeight: '600', color: '#475569', marginBottom: 20 },
+  cardBody: { fontSize: 14, lineHeight: 22, color: '#64748B', marginBottom: 16 },
 });
