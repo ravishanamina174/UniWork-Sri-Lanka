@@ -1,5 +1,5 @@
 # backend/app/models/schemas_pydantic.py
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import List, Optional
 
 class BaseRegisterRequest(BaseModel):
@@ -50,3 +50,26 @@ class GigResponse(BaseModel):
     skills_required: List[str]
     poster_clerk_id: str
     created_at: str
+
+# For updating user profile Data
+class ProfileUpdateRequest(BaseModel):
+    display_name: str
+    email: EmailStr
+    phone_number: str
+    address: Optional[str] = ""
+    bio: Optional[str] = ""
+    # Role specific fields (Optional depending on who updates)
+    skill_tags: Optional[List[str]] = []
+    business_name: Optional[str] = ""
+
+class ProfileResponse(BaseModel):
+    clerk_id: str
+    role: str
+    display_name: str
+    email: str
+    phone_number: str
+    address: str
+    bio: str
+    # Role-based structures
+    metadata: dict
+    metrics: dict

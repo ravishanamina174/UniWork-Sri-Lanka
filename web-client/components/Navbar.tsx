@@ -36,9 +36,9 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
 
   // Profile Action Text Mapping matching exact role contexts
   const portalButtonConfig = {
-    STUDENT_EARNER: { text: "Student Portal", href: "/profile/student" },
-    TASK_POSTER: { text: "Poster Profile", href: "/profile/poster" },
-    CORPORATE_CLIENT: { text: "Profile", href: "/profile/corporate" },
+    STUDENT_EARNER: { text: "Student Portal", href: "/dashboard" },
+    TASK_POSTER: { text: "Poster Profile", href: "/dashboard" },
+    CORPORATE_CLIENT: { text: "Profile", href: "/dashboard" },
   };
 
   // Fallback cleanly to student layout if user role array context is undefined

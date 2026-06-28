@@ -33,9 +33,10 @@ app.add_middleware(
 )
 
 # Connect active operational routers
-from app.routers import auth , gigs
+from app.routers import auth , gigs , profiles
 app.include_router(auth.router)
 app.include_router(gigs.router)
+app.include_router(profiles.router)
 
 @app.get("/")
 def health_check():
