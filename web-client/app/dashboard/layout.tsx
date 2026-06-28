@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import TopHeader from '@/components/dashboard/TopHeader';
 import Navigation from '@/components/dashboard/Navigation';
 import { UserRole } from '@/config/navigation';
+import Navbar from "@/components/Navbar";
 
 export default async function DashboardLayout({
   children,
@@ -38,17 +39,19 @@ export default async function DashboardLayout({
   if (shouldRedirectToOnboard) redirect("/onboard");
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col md:flex-row">
-      {/* Mobile Top Header (Visible only on smaller screens) */}
-      <TopHeader />
-      
-      {/* Dynamic Navigation (Sidebar on desktop, Bottom bar on mobile) */}
+    <>
+      <Navbar />
+    <div className="min-h-screen bg-[#F7F7F5] flex flex-col md:flex-row font-sans text-gray-900 selection:bg-blue-100 selection:text-blue-900">
+      {/* Floating Blue Pill Navbar */}
       <Navigation userRole={userRole} />
       
-      {/* Main Content Area - pb-24 ensures content isn't hidden behind mobile bottom nav */}
-      <main className="flex-1 p-4 md:p-8 pb-24 md:pb-8 w-full max-w-7xl mx-auto">
-        {children}
+      {/* Main Content Area - Styled like a Notion Canvas */}
+      <main className="flex-1 md:py-4 md:pr-4 pb-24 md:pb-4 w-full max-w-[1600px] mx-auto h-screen md:overflow-y-auto">
+
+          {children}
+
       </main>
     </div>
+    </>
   );
 }

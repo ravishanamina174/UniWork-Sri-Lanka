@@ -12,7 +12,7 @@ export const getNavLinks = (role: UserRole) => {
     case 'STUDENT_EARNER':
       return [
         commonLinks[0],
-        { name: 'Available Tasks', href: '/dashboard/st-tasks', icon: Briefcase },// Example extra route
+        { name: 'Tasks', href: '/dashboard/st-tasks', icon: Briefcase },// Example extra route
         commonLinks[1],
       ];
     case 'TASK_POSTER':

@@ -49,7 +49,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-100 p-8 rounded-2xl shadow-sm">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-300 p-8 rounded-2xl ">
       <div>
         <label className="block text-sm font-semibold text-slate-700 mb-1">Task Project Title</label>
         <input

@@ -11,7 +11,6 @@ export default async function ProfilePage() {
   let profileData = null;
 
   try {
-    // 1. Fetch the real user role and base info from PostgreSQL
     const authRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
       next: { revalidate: 0 }
     });
@@ -24,7 +23,6 @@ export default async function ProfilePage() {
       if (authData.email) baseEmail = authData.email;
     }
 
-    // 2. Try to fetch extended profile data from MongoDB
     const profileRes = await fetch(`http://127.0.0.1:8000/api/v1/profiles/${userId}`, {
       cache: "no-store"
     });
@@ -32,7 +30,6 @@ export default async function ProfilePage() {
     if (profileRes.ok) {
       profileData = await profileRes.json();
     }
-    // If it returns 404, it's fine! It just means they haven't saved a profile to Mongo yet.
 
   } catch (err) {
     console.error("Error communicating with backend for profile sync:", err);

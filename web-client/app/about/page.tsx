@@ -4,10 +4,13 @@
 import Career from "@/components/Career";
 import ShowcaseSection from "@/components/Showcase";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 export default function AboutPage() {
 
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-purple-100 font-medium overflow-x-hidden relative">
       
       {/* Premium 10% Mesh Accent Background Layer */}
@@ -16,7 +19,7 @@ export default function AboutPage() {
       <div className="max-w-6xl mx-auto px-4 pt-20 pb-28 relative z-10">
         
         {/* Floating Circle Close Button linking to Home Page */}
-        <div className="absolute top-8 right-4 md:right-8">
+        {/* <div className="absolute top-8 right-4 md:right-8">
           <Link 
             href="/" 
             className="flex items-center justify-center w-10 height h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-900 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
@@ -27,7 +30,7 @@ export default function AboutPage() {
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </Link>
-        </div>
+        </div> */}
         
         {/* ==================== PREMIUM HERO SECTION ==================== */}
         <section className="text-center max-w-3xl mx-auto mb-20 relative">
@@ -268,5 +271,6 @@ export default function AboutPage() {
 
       </div>
     </div>
+    </>
   );
 }

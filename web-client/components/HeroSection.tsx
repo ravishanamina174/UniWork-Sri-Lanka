@@ -64,7 +64,7 @@ export default function HeroSection() {
       <div className="mx-auto max-w-[76rem] px-4 sm:px-6 lg:px-8 relative z-10 flex flex-col items-center text-center">
         
         {/* Micro Professional Pill Tag */}
-        <div className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-50 dark:bg-neutral-900 border border-slate-200/80 dark:border-neutral-800 text-xs font-medium text-[#838991] dark:text-neutral-400 tracking-wide">
+        <div className="mb-6 inline-flex items-center gap-2 px-4 py-1.5 rounded-lg bg-slate-50 dark:bg-neutral-900 border border-slate-200/80 dark:border-neutral-800 text-xs font-medium text-[#838991] dark:text-neutral-400 tracking-wide">
           <span className="w-1.5 h-1.5 rounded-full bg-[#007FFF] animate-pulse" />
           The First Dedicated Student Task Network in Sri Lanka
         </div>
@@ -112,11 +112,11 @@ export default function HeroSection() {
 
         {/* CTA Hub Controls */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-4 mb-16 md:mb-24">
-          <button className="px-6 py-3.5 bg-[#007FFF] text-white font-bold text-sm rounded-xl hover:bg-[#0066CC] active:scale-[0.98] transition-all duration-200 shadow-md shadow-blue-500/10">
+          <button className="px-6 py-3 bg-[#007FFF] text-white font-bold text-sm rounded-md hover:bg-[#0066CC] active:scale-[0.98] transition-all duration-200 shadow-md shadow-blue-500/10">
             Get Started free
           </button>
           
-          <button className="group flex items-center gap-2 px-5 py-3.5 text-slate-600 dark:text-neutral-400 font-semibold text-sm rounded-xl hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-neutral-900 transition-all duration-200">
+          <button className="group flex items-center gap-2 px-5 py-3 text-slate-600 dark:text-neutral-400 font-semibold text-sm rounded-md hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-neutral-900 transition-all duration-200">
             <span>Our Vision</span>
             <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
@@ -131,7 +131,7 @@ export default function HeroSection() {
             
             {/* CARD 1: Student Verification Badge (Left Card Anchor) */}
             <div className="absolute left-0 lg:left-[4%] top-[10%] w-[35%] sm:w-[31%] h-[80%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-neutral-800/80 transform -rotate-6 hover:rotate-0 hover:scale-[1.03] transition-all duration-500 ease-out z-10 overflow-hidden flex flex-col group">
-              <div className="h-[45%] w-full bg-slate-100 dark:bg-neutral-800 relative">
+              <div className="h-[50%] w-full bg-slate-100 dark:bg-neutral-800 relative">
                 <img 
                   src="/assets/move.jpg" 
                   alt="Student Sector Workspace" 
@@ -139,7 +139,7 @@ export default function HeroSection() {
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
               </div>
-              <div className="h-[55%] w-full p-4 flex flex-col justify-between text-left">
+              <div className="h-[50%] w-full p-4 flex flex-col justify-between text-left">
                 <div>
                   <h4 className="text-slate-900 dark:text-white font-extrabold text-xs sm:text-sm tracking-tight leading-tight">UniWork Verified</h4>
                   <p className="text-slate-400 dark:text-neutral-500 text-[9px] sm:text-xs font-semibold mt-0.5">Student Earner Deck</p>
@@ -175,7 +175,7 @@ export default function HeroSection() {
 
             {/* CARD 3: Corporate Ledger Analytics Layer (Right Card Anchor) */}
             <div className="absolute right-0 lg:right-[4%] top-[14%] w-[35%] sm:w-[31%] h-[76%] rounded-2xl bg-white dark:bg-neutral-900 shadow-[0_20px_50px_-12px_rgba(0,0,0,0.12)] border border-slate-100 dark:border-neutral-800/80 transform rotate-6 hover:rotate-0 hover:scale-[1.03] transition-all duration-500 ease-out z-20 overflow-hidden flex flex-col group">
-              <div className="h-[45%] w-full bg-slate-100 dark:bg-neutral-800 relative">
+              <div className="h-[50%] w-full bg-slate-100 dark:bg-neutral-800 relative">
                 <img 
                   src="/assets/COP.jpg" 
                   alt="Enterprise Engine Layout" 
@@ -183,7 +183,7 @@ export default function HeroSection() {
                   onError={(e) => { e.currentTarget.style.display = 'none'; }}
                 />
               </div>
-              <div className="h-[55%] w-full p-4 flex flex-col justify-between text-left">
+              <div className="h-[50%] w-full p-4 flex flex-col justify-between text-left">
                 <div>
                   <h4 className="text-slate-900 dark:text-white font-extrabold text-xs sm:text-sm tracking-tight leading-tight">UniWork Verified</h4>
                   <p className="text-slate-400 dark:text-neutral-500 text-[9px] sm:text-xs font-semibold mt-0.5">Corporate Client Pool</p>
