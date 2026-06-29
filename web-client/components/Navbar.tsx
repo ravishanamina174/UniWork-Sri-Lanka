@@ -66,10 +66,42 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
                 {/* Stylized 'U' embedded on the right face */}
                 <path d="M62 43V60C62 65 73 65 73 60V38" stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
+            </div>         
+            {/* Text Container with Looping Overlay Animation */}
+            <div className="relative font-semibold text-[17px] tracking-tight flex items-center">  
+              {/* 1. Base Dark Text (Default State) */}
+              <span className="text-[#37352f]">
+                UniWorkSL
+              </span>
+              {/* 2. Gradient Overlay Text (Animated Loop) */}
+              <span 
+                className="absolute left-0 top-0 text-transparent bg-clip-text"
+                style={{
+                  backgroundImage: 'linear-gradient(to right, #4f46e5, #0ea5e9, #8b5cf6, #f97316, #ec4899)',
+                  clipPath: 'inset(0 100% 0 0)',
+                  // Runs infinitely over a 9-second total cycle
+                  animation: 'logoWipeLoop 12s ease-in-out infinite'
+                }}
+                aria-hidden="true"
+              >
+                UniWorkSL
+              </span>
             </div>
-            <span className="font-semibold text-[17px] tracking-tight">
-              UniWorkSL
-            </span>
+
+            {/* Inline keyframes mathematically divided for the exact timings */}
+            <style>{`
+              @keyframes logoWipeLoop {
+                0%, 55.5% { 
+                  clip-path: inset(0 100% 0 0); /* 0 to 5 seconds: Stays hidden (Gray) */
+                }
+                66.6%, 88.8% { 
+                  clip-path: inset(0 0 0 0);    /* 6s to 8s: Fully revealed (Colored) for 2 seconds */
+                }
+                100% { 
+                  clip-path: inset(0 100% 0 0); /* 8s to 9s: Wipes back out to default smoothly */
+                }
+              }
+            `}</style>
           </Link>
           
           {/* Notion Workspace Dynamic Text Tabs */}
