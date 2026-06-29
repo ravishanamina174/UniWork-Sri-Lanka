@@ -1,6 +1,5 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import Navbar from "@/components/Navbar";
 import CreateGigForm from "./CreateGigForm";
 
 export default async function CreateGigPage() {
@@ -27,7 +26,6 @@ export default async function CreateGigPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFDFB] text-[#191919] overflow-x-hidden relative">
-      <Navbar userRole={userRole} />
       <main className="max-w-2xl mx-auto px-6 py-12 relative z-10">
         <div className="mb-8 flex-row text-center">
           <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">Create a New Task Card</h1>
@@ -49,9 +47,7 @@ export default async function CreateGigPage() {
           {/* Notion Doodle 2: Top Right Sparkles */}
           <div className="hidden lg:block absolute -top-4 -right-32 opacity-25 text-[#191919] pointer-events-none select-none animate-pulse">
             <svg width="80" height="80" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-              {/* Sparkle 1 */}
               <path d="M30 10 Q 30 25 45 25 Q 30 25 30 40 Q 30 25 15 25 Q 30 25 30 10 Z" fill="currentColor" fillOpacity="0.1" />
-              {/* Sparkle 2 */}
               <path d="M70 40 Q 70 50 80 50 Q 70 50 70 60 Q 70 50 60 50 Q 70 50 70 40 Z" fill="currentColor" fillOpacity="0.1" />
             </svg>
           </div>
@@ -68,7 +64,6 @@ export default async function CreateGigPage() {
           <div className="hidden lg:block absolute -bottom-8 -right-36 opacity-25 text-[#191919] pointer-events-none select-none">
             <svg width="95" height="95" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
               <path d="M50 5 L 63 36 L 95 38 L 70 58 L 78 90 L 50 72 L 22 90 L 30 58 L 5 38 L 37 36 Z" />
-              {/* Exclamation underline loop typical in doodles */}
               <path d="M42 82 Q 50 85 58 81" strokeWidth="1.2" />
             </svg>
           </div>

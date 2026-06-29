@@ -4,13 +4,11 @@
 import Career from "@/components/Career";
 import ShowcaseSection from "@/components/Showcase";
 import Link from "next/link";
-import Navbar from "@/components/Navbar";
 
 export default function AboutPage() {
 
   return (
     <>
-    <Navbar/>
     <div className="min-h-screen bg-white text-slate-900 font-sans antialiased selection:bg-purple-100 font-medium overflow-x-hidden relative">
       
       {/* Premium 10% Mesh Accent Background Layer */}
