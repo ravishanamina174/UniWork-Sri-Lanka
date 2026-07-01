@@ -1,6 +1,6 @@
 # backend/app/models/schemas_pydantic.py
-from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from pydantic import BaseModel, EmailStr, Field
+from typing import List, Optional, Tuple
 
 class BaseRegisterRequest(BaseModel):
     clerk_id: str
@@ -33,6 +33,13 @@ class UserResponse(BaseModel):
     class Config:
         orm_mode = True
 
+# --- NEW: Location Sub-Model ---
+class GeoJSONLocation(BaseModel):
+    type: str = "Point"
+    coordinates: Tuple[float, float] = Field(..., description="[longitude, latitude]")
+    address: Optional[str] = ""
+
+# --- UPDATED: Gig Schemas ---
 class GigCreateRequest(BaseModel):
     title: str
     description: str
@@ -40,6 +47,8 @@ class GigCreateRequest(BaseModel):
     deadline: str
     skills_required: List[str] = []
     poster_clerk_id: str
+    task_type: str = "remote"  # Expected: 'remote' or 'on-site'
+    location: Optional[GeoJSONLocation] = None
 
 class GigResponse(BaseModel):
     id: str
@@ -50,15 +59,15 @@ class GigResponse(BaseModel):
     skills_required: List[str]
     poster_clerk_id: str
     created_at: str
+    task_type: str
+    location: Optional[GeoJSONLocation] = None
 
-# For updating user profile Data
 class ProfileUpdateRequest(BaseModel):
     display_name: str
     email: EmailStr
     phone_number: str
     address: Optional[str] = ""
     bio: Optional[str] = ""
-    # Role specific fields (Optional depending on who updates)
     skill_tags: Optional[List[str]] = []
     business_name: Optional[str] = ""
 
@@ -70,6 +79,5 @@ class ProfileResponse(BaseModel):
     phone_number: str
     address: str
     bio: str
-    # Role-based structures
     metadata: dict
     metrics: dict
