@@ -12,19 +12,19 @@ export const getNavLinks = (role: UserRole) => {
     case 'STUDENT_EARNER':
       return [
         commonLinks[0],
-        { name: 'Tasks', href: '/dashboard/st-tasks', icon: Briefcase },// Example extra route
+        { name: 'Tasks', href: '/dashboard/student-tasks', icon: Briefcase },// Example extra route
         commonLinks[1],
       ];
     case 'TASK_POSTER':
       return [
         commonLinks[0],
-        { name: 'My Posted Tasks', href: '/dashboard/ps-tasks', icon: FileText },
+        { name: 'My Posted Tasks', href: '/dashboard/poster-tasks', icon: FileText },
         commonLinks[1],
       ];
     case 'CORPORATE_CLIENT':
       return [
         commonLinks[0],
-        { name: 'Enterprise Tasks', href: '/dashboard/co-tasks', icon: Briefcase },
+        { name: 'Enterprise Tasks', href: '/dashboard/corporate-tasks', icon: Briefcase },
         commonLinks[1],
       ];
     default:

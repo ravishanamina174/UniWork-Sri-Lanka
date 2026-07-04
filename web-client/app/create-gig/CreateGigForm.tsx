@@ -137,6 +137,9 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
     }
   };
 
+  // Helper to calculate words
+  const wordCount = formData.description.trim().split(/\s+/).filter(Boolean).length;
+
   return (
     <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-300 p-8 rounded-2xl">
       {/* Existing Text Inputs */}
@@ -153,14 +156,27 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-slate-700 mb-1">Detailed Description</label>
+        <div className="flex justify-between items-end mb-1">
+          <label className="block text-sm font-semibold text-slate-700">Detailed Description</label>
+          <span className={`text-xs ${wordCount >= 200 ? 'text-red-500 font-medium' : 'text-slate-400'}`}>
+            {wordCount}/200 words
+          </span>
+        </div>
         <textarea
           required
           rows={4}
-          placeholder="Break down details, expectations, constraints, or guidelines..."
+          placeholder="Break down details, expectations, constraints, or guidelines... (Max 100 words)"
           className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={(e) => {
+            const text = e.target.value;
+            const words = text.trim().split(/\s+/).filter(Boolean);
+            
+            // Allow typing if under 100 words, OR if the user is deleting characters (backspacing)
+            if (words.length <= 200 || text.length < formData.description.length) {
+              setFormData({ ...formData, description: text });
+            }
+          }}
         />
       </div>
 
