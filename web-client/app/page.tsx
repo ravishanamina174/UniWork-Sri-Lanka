@@ -9,6 +9,7 @@ export default async function Home() {
 
   let shouldRedirectToOnboard = false;
   let tasks: TaskGig[] = [];
+  let userRole = ""; // Declare variable to hold the user's role
 
   try {
     // 1. Fetch Auth Profile to verify onboarding status
@@ -18,6 +19,9 @@ export default async function Home() {
 
     if (backendRes.status === 404) {
       shouldRedirectToOnboard = true;
+    } else if (backendRes.ok) {
+      const userData = await backendRes.json();
+      userRole = userData.role || ""; // Extract role securely from server response
     }
 
     // 2. Fetch Shared Task Cards (Visible to all users)
@@ -35,13 +39,13 @@ export default async function Home() {
     <div className="relative min-h-screen bg-[#ffffff] text-[#191919] overflow-x-hidden font-sans flex flex-col selection:bg-slate-200/60">
       <div className="relative z-10 flex flex-col min-h-screen w-full">
         
-        {/* Hero Area (Navbar removed as layout.tsx injects it globally above this) */}
+        {/* Hero Area */}
         <div>
           <HeroSection />
         </div>
         
-        {/* Clean, Modularized Shared Marketplace Component */}
-        <TaskMarketplace tasks={tasks} />
+        {/* Clean, Modularized Shared Marketplace Component with userRole provided */}
+        <TaskMarketplace tasks={tasks} userRole={userRole} />
         
       </div>
     </div>

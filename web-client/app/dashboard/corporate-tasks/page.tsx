@@ -138,7 +138,7 @@ export default async function PosterTasksPage() {
                     <h3 className="font-bold text-base sm:text-lg text-slate-900 line-clamp-2 leading-snug min-h-[2.75rem]">
                       {task.title}
                     </h3>
-                    <div className="mt-2 text-lg sm:text-xl font-black text-[#007FFF] tracking-tight">
+                    <div className="text-lg sm:text-xl font-black text-[#007FFF] tracking-tight">
                       LKR {task.budget?.toLocaleString() || 0}
                     </div>
                   </div>

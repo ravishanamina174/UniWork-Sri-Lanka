@@ -1,4 +1,3 @@
-// web-client/components/TaskMarketplace.tsx
 "use client";
 
 import { useState } from "react";
@@ -20,9 +19,10 @@ export interface TaskGig {
 
 interface TaskMarketplaceProps {
   tasks: TaskGig[];
+  userRole?: string; // Added userRole prop
 }
 
-export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
+export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProps) {
   // State to track visible gigs, starting at 3
   const [visibleCount, setVisibleCount] = useState(3);
   
@@ -159,11 +159,14 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
                     </div>
                   </div>
 
-                  <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
-                    <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
-                       Explore More
-                    </button>
-                  </div>
+                  {/* Conditionally render the button based on userRole */}
+                  {userRole === "STUDENT_EARNER" && (
+                    <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
+                      <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
+                         Explore More
+                      </button>
+                    </div>
+                  )}
 
                 </div>
               );
