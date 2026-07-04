@@ -23,8 +23,18 @@ interface TaskMarketplaceProps {
 }
 
 export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
-  // NEW: Added state to track visible gigs, starting at 3
+  // State to track visible gigs, starting at 3
   const [visibleCount, setVisibleCount] = useState(3);
+  
+  // NEW: State to track which task descriptions are expanded
+  const [expandedTasks, setExpandedTasks] = useState<{ [key: string]: boolean }>({});
+  
+  const toggleDescription = (taskId: string) => {
+    setExpandedTasks((prev) => ({
+      ...prev,
+      [taskId]: !prev[taskId]
+    }));
+  };
   
   const getCategoryBadge = (title: string, skills: string[]) => {
     const text = title.toLowerCase() + skills.join(" ").toLowerCase();
@@ -68,10 +78,10 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* CHANGED: Slice the tasks array based on visibleCount */}
             {tasks.slice(0, visibleCount).map((task) => {
               const category = getCategoryBadge(task.title, task.skills_required || []);
               const isRemote = task.task_type === "remote";
+              const isExpanded = !!expandedTasks[task.id];
               
               return (
                 <div
@@ -95,12 +105,12 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
                       <h3 className="font-bold text-base sm:text-lg text-slate-900 line-clamp-2 leading-snug min-h-[2.75rem]">
                         {task.title}
                       </h3>
-                      <div className="mt-2 text-lg sm:text-xl font-black text-[#007FFF] tracking-tight">
+                      <div className="mt-1 text-lg sm:text-xl font-black text-[#007FFF] tracking-tight">
                         LKR {task.budget?.toLocaleString() || 0}
                       </div>
                     </div>
 
-                    {/* NEW: Location Indicator block */}
+                    {/* Location Indicator block */}
                     <div className="mb-3 flex items-center gap-1.5 text-xs font-medium bg-slate-50 border border-slate-100 py-1.5 px-2.5 rounded-lg w-fit max-w-full">
                       {isRemote ? (
                         <>
@@ -117,13 +127,23 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
                       )}
                     </div>
 
-                    {/* Description Paragraph Container */}
-                    <p className="text-xs text-slate-500 line-clamp-3 mb-5 leading-relaxed flex-1">
-                      {task.description}
-                    </p>
+                    {/* CHANGED: Description Paragraph Container with "see more" toggle */}
+                    <div className="mb-2 flex-1 flex flex-col items-start">
+                      <p className={`text-xs text-slate-500 leading-relaxed transition-all ${!isExpanded ? "line-clamp-4" : ""}`}>
+                        {task.description}
+                      </p>
+                      {task.description && task.description.length > 120 && (
+                        <span 
+                          onClick={() => toggleDescription(task.id)}
+                          className="text-xs font-bold text-slate-700 cursor-pointer hover:text-[#6366F1] mt-1 transition-colors"
+                        >
+                          {isExpanded ? "see less" : "see more"}
+                        </span>
+                      )}
+                    </div>
 
                     {/* Grid Aligned Skill Badges */}
-                    <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
+                    <div className="flex flex-wrap gap-1.5 mt-auto">
                       {(!task.skills_required || task.skills_required.length === 0) ? (
                         <span className="text-[10px] sm:text-xs text-slate-400 italic">General Task</span>
                       ) : (
@@ -150,7 +170,7 @@ export default function TaskMarketplace({ tasks }: TaskMarketplaceProps) {
             })}
           </div>
 
-          {/* NEW: Load More Button (matching Gig inner button styles) */}
+          {/* Load More Button */}
           {visibleCount < tasks.length && (
             <div className="mt-8 flex justify-center">
               <button 
