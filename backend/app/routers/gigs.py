@@ -4,6 +4,7 @@ from app.core.database import mongo_db
 from app.models.schemas_pydantic import GigCreateRequest
 from datetime import datetime
 import pymongo
+from bson import ObjectId  # NEW: Imported ObjectId to parse URL parameters
 
 router = APIRouter(prefix="/api/v1/gigs", tags=["Gigs Management"])
 
@@ -68,4 +69,44 @@ async def get_all_gigs():
         raise HTTPException(
             status_code=500, 
             detail=f"Failed to retrieve gigs from data store: {str(e)}"
+        )
+    
+@router.get("/{gig_id}")
+async def get_single_gig(gig_id: str):
+    try:
+        # Validate that the string payload is a legitimate 24-character hex ObjectId
+        if not ObjectId.is_valid(gig_id):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Provided target task identifier form layout mapping is invalid."
+            )
+            
+        # Search the document tree node directly
+        doc = await mongo_db["gigs"].find_one({"_id": ObjectId(gig_id)})
+        
+        if not doc:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="The requested gig entity record was not discovered inside active pools."
+            )
+            
+        # Map fields back to match your structural layout frontend schema parameters cleanly
+        return {
+            "id": str(doc["_id"]),
+            "title": doc["title"],
+            "description": doc["description"],
+            "budget": float(doc["budget"]),
+            "deadline": doc["deadline"],
+            "skills_required": doc.get("skills_required", []),
+            "poster_clerk_id": doc["poster_clerk_id"],
+            "created_at": doc.get("created_at", ""),
+            "task_type": doc.get("task_type", "remote"),
+            "location": doc.get("location", None)
+        }
+    except HTTPException as http_err:
+        raise http_err
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Internal database read exception triggered: {str(e)}"
         )

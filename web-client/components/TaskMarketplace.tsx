@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link"; // NEW: Import Link
 
 export interface TaskGig {
   id: string;
@@ -162,9 +163,12 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
                   {/* Conditionally render the button based on userRole */}
                   {userRole === "STUDENT_EARNER" && (
                     <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
-                      <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
-                         Explore More
-                      </button>
+                      {/* NEW: Wrap the button in a Link to the dynamic route */}
+                      <Link href={`/task-req/${task.id}`}>
+                        <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
+                           Request Task
+                        </button>
+                      </Link>
                     </div>
                   )}
 
@@ -180,7 +184,7 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
                 onClick={() => setVisibleCount((prev) => prev + 3)}
                 className="bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-sm font-medium py-2 px-6 rounded-xl transition-all shadow-sm tracking-wide"
               >
-                Load More Gigs
+                Load More Tasks
               </button>
             </div>
           )}

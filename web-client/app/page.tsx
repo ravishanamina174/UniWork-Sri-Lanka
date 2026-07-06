@@ -2,6 +2,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import HeroSection from "@/components/HeroSection";
 import TaskMarketplace, { TaskGig } from "@/components/TaskMarketplace";
+export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const { userId } = await auth();
