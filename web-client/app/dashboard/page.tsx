@@ -90,7 +90,7 @@ export default async function DashboardHome() {
             </div>
             <h4 className="text-lg font-bold text-[#37352f] mb-2 tracking-tight">1. Discover & Match</h4>
             <p className="text-[#787774] text-sm leading-relaxed">
-              Whether you're posting a gig or looking for work, our smart engine connects the right talent instantly.
+              Post quick gigs or browse active on-campus tasks. Our smart matching workspace instantly connects student earners with right-fit project requirements.
             </p>
           </div>
 
@@ -101,7 +101,7 @@ export default async function DashboardHome() {
             </div>
             <h4 className="text-lg font-bold text-[#37352f] mb-2 tracking-tight">2. Collaborate</h4>
             <p className="text-[#787774] text-sm leading-relaxed">
-              Use secure escrow balances and built-in messaging to manage requirements and deliverables safely.
+              Collaborate directly using milestone trackings and locked agreements. Lock down task details, ask clarifications, and execute tasks with absolute transparency.
             </p>
           </div>
 
@@ -112,7 +112,7 @@ export default async function DashboardHome() {
             </div>
             <h4 className="text-lg font-bold text-[#37352f] mb-2 tracking-tight">3. Complete & Earn</h4>
             <p className="text-[#787774] text-sm leading-relaxed">
-              Approve submissions to release funds instantly. Build your professional reputation with every successful task.
+              Deliver quality work, secure swift approval, and get paid directly in LKR. Consistently hit deadlines to scale your profile level and unlock high-budget tiers.
             </p>
           </div>
 
