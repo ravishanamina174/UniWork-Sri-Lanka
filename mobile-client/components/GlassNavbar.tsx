@@ -34,8 +34,8 @@ export default function GlassNavbar() {
       icon: Briefcase,
     },
     {
-      path: "/about",
-      label: "About",
+      path: "/dashboard",
+      label: "Profile",
       icon: User,
     },
   ];
