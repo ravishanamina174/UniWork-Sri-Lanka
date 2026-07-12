@@ -146,18 +146,18 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
   const category = getCategoryBadge(task.title, task.skills_required || []);
 
   return (
-    <div className="min-h-screen bg-[#F7F7F5] py-11 px-4 sm:px-6 flex flex-col items-center font-sans z-20">
+    <div className="min-h-screen bg-[#F7F7F5] py-15 px-4 sm:px-6 flex flex-col items-center font-sans z-20">
 
       {/* Container width adjusts based on Remote vs On-Site */}
       <div className={`w-full transition-all duration-300 ${isRemote ? 'max-w-[760px]' : 'max-w-[1100px]'}`}>
 
         {/* Back Button */}
-        <Link
+        {/* <Link
           href="/"
           className="inline-flex items-center text-sm font-semibold text-slate-600 hover:text-[#397a2c] mb-8 transition-colors"
         >
           <span className="mr-2 text-lg leading-none mb-0.5">←</span> Back to Gigs
-        </Link>
+        </Link> */}
 
         {/* Layout Grid */}
         <div className="flex flex-col lg:flex-row gap-6 items-stretch">
