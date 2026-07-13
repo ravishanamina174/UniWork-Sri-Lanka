@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '@clerk/clerk-expo';
 import {
   ActivityIndicator,
   ScrollView,
@@ -25,15 +26,37 @@ const WORDS = [
 ];
 
 export default function HomeScreen() {
+  const { userId } = useAuth();
+  
   const [tasks, setTasks] = useState<TaskGig[]>([]);
   const [loading, setLoading] = useState(true);
   const [wordIndex, setWordIndex] = useState(0);
+  const [userRole, setUserRole] = useState<string>("");
 
   useEffect(() => {
     fetchAllGigs()
       .then(setTasks)
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchUserRole = async () => {
+      try {
+        const res = await fetch(`http://192.168.1.10:8000/api/v1/auth/user/clerk/${userId}`);
+        
+        if (res.ok) {
+          const userData = await res.json();
+          setUserRole(userData.role || "");
+        }
+      } catch (err) {
+        console.error("Error fetching user role:", err);
+      }
+    };
+
+    fetchUserRole();
+  }, [userId]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -51,14 +74,12 @@ export default function HomeScreen() {
       >
         {/* ================= HERO & INTERACTIVE BACKGROUND REVEAL ENGINE ================= */}
         <View style={styles.heroContainer}>
-          {/* Dot Matrix Structural Array Layer */}
           <View style={styles.dotGridContainer} pointerEvents="none">
             {Array.from({ length: 120 }).map((_, i) => (
               <View key={`dot-${i}`} style={styles.gridDot} />
             ))}
           </View>
 
-          {/* Micro Professional Pill Tag */}
           <View style={styles.pill}>
             <View style={styles.pillDot} />
             <Text style={styles.pillText}>
@@ -66,19 +87,15 @@ export default function HomeScreen() {
             </Text>
           </View>
 
-          {/* Typography Engine Frame + Custom Geometric Fine Line Artwork */}
           <View style={styles.typographyWrapper}>
-            {/* FINE ARTWORK A: Delicate Emerald Sparkle Frame */}
             <View style={[styles.doodleContainer, { top: -12, left: -4, transform: [{ rotate: '-15deg' }] }]}>
               <Sparkles size={20} color="#10B981" strokeWidth={2.2} />
             </View>
 
-            {/* FINE ARTWORK B: Crown Silhouette */}
             <View style={[styles.doodleContainer, { top: -28, left: '46%' }]}>
               <Award size={24} color="#F59E0B" strokeWidth={2} />
             </View>
 
-            {/* FINE ARTWORK C: Loop Indicator Arcs */}
             <View style={styles.nativeLoopDoodle} pointerEvents="none">
               <View style={styles.loopArrowHead} />
             </View>
@@ -97,7 +114,6 @@ export default function HomeScreen() {
             immediate execution, and enabling corporate clients to scale velocity seamlessly.
           </Text>
 
-          {/* CTA Hub Controls */}
           <View style={styles.ctaButtonWrapper}>
             <Link href="/tasks" asChild>
               <TouchableOpacity style={styles.ctaButton} activeOpacity={0.85}>
@@ -107,9 +123,9 @@ export default function HomeScreen() {
             </Link>
 
             <Link href="/about" asChild>
-            <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.7}>
-              <Text style={styles.secondaryButtonText}>Our Vision</Text>
-            </TouchableOpacity>
+              <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.7}>
+                <Text style={styles.secondaryButtonText}>Our Vision</Text>
+              </TouchableOpacity>
             </Link>
           </View>
         </View>
@@ -117,7 +133,6 @@ export default function HomeScreen() {
         {/* ================= PREMIUM LANYARD CARD DECK ================= */}
         <View style={styles.deckSection}>
           <View style={styles.deckCanvas}>
-            {/* DECK CARD 1 */}
             <View style={[styles.deckCard, styles.cardLeft, styles.shadowCommon]}>
               <View style={styles.cardHeaderGraphic}>
                 <Image 
@@ -136,7 +151,6 @@ export default function HomeScreen() {
               </View>
             </View>
 
-            {/* DECK CARD 2 */}
             <View style={[styles.deckCard, styles.cardCenter, styles.shadowCenterPremium]}>
               <View style={styles.cardHeaderGraphic}>
                 <Image 
@@ -155,7 +169,6 @@ export default function HomeScreen() {
               </View>
             </View>
 
-            {/* DECK CARD 3 */}
             <View style={[styles.deckCard, styles.cardRight, styles.shadowCommon]}>
               <View style={styles.cardHeaderGraphic}>
                 <Image 
@@ -187,7 +200,7 @@ export default function HomeScreen() {
             <ActivityIndicator size="large" color="#007FFF" />
           </View>
         ) : (
-          <TaskMarketplace tasks={tasks} embedded />
+          <TaskMarketplace tasks={tasks} embedded userRole={userRole} />
         )}
       </ScrollView>
     </SafeAreaView>
@@ -203,7 +216,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    paddingBottom: 115, // Pushes bottom sheet layout over navbar bounds safely
+    paddingBottom: 115, 
   },
   heroContainer: {
     paddingHorizontal: 20,

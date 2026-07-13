@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -5,6 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import { Link } from 'expo-router';
 
 export interface TaskGig {
   id: string;
@@ -18,6 +20,7 @@ export interface TaskGig {
 interface TaskMarketplaceProps {
   tasks: TaskGig[];
   embedded?: boolean;
+  userRole?: string;
 }
 
 interface CategoryBadge {
@@ -82,7 +85,9 @@ function MarketplaceHeader() {
   );
 }
 
-function TaskCard({ task }: { task: TaskGig }) {
+// Pass userRole into the TaskCard component
+function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
+  const [isExpanded, setIsExpanded] = useState(false);
   const category = getCategoryBadge(task.title, task.skills_required);
 
   return (
@@ -104,9 +109,19 @@ function TaskCard({ task }: { task: TaskGig }) {
           <Text style={styles.budget}>{formatBudget(task.budget)}</Text>
         </View>
 
-        <Text style={styles.description} numberOfLines={3}>
-          {task.description}
-        </Text>
+        {/* Description & See More Toggle */}
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.description} numberOfLines={isExpanded ? undefined : 3}>
+            {task.description}
+          </Text>
+          {task.description && task.description.length > 120 && (
+            <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)} activeOpacity={0.6}>
+              <Text style={styles.seeMoreText}>
+                {isExpanded ? 'see less' : 'see more'}
+              </Text>
+            </TouchableOpacity>
+          )}
+        </View>
 
         <View style={styles.skillsRow}>
           {task.skills_required.length === 0 ? (
@@ -129,11 +144,16 @@ function TaskCard({ task }: { task: TaskGig }) {
         </View>
       </View>
 
-      <View style={styles.cardFooter}>
-        <TouchableOpacity style={styles.exploreButton} activeOpacity={0.7}>
-          <Text style={styles.exploreButtonText}>Explore More</Text>
-        </TouchableOpacity>
-      </View>
+      {/* Conditionally render the button based on userRole */}
+      {userRole === "STUDENT_EARNER" && (
+        <View style={styles.cardFooter}>
+          <Link href={`/task-req/${task.id}`} asChild>
+            <TouchableOpacity style={styles.exploreButton} activeOpacity={0.7}>
+              <Text style={styles.exploreButtonText}>Request Task</Text>
+            </TouchableOpacity>
+          </Link>
+        </View>
+      )}
     </View>
   );
 }
@@ -148,12 +168,40 @@ function EmptyState() {
   );
 }
 
-export default function TaskMarketplace({ tasks, embedded = false }: TaskMarketplaceProps) {
+export default function TaskMarketplace({ tasks, embedded = false, userRole }: TaskMarketplaceProps) {
+  const [visibleCount, setVisibleCount] = useState(3);
+
+  const visibleTasks = tasks.slice(0, visibleCount);
+
+  const renderLoadMoreButton = () => {
+    if (visibleCount >= tasks.length) return null;
+    return (
+      <View style={styles.loadMoreContainer}>
+        <TouchableOpacity
+          style={styles.loadMoreButton}
+          activeOpacity={0.7}
+          onPress={() => setVisibleCount((prev) => prev + 3)}
+        >
+          <Text style={styles.loadMoreButtonText}>Load More Tasks</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  };
+
   if (embedded) {
     return (
       <View style={styles.container}>
         <MarketplaceHeader />
-        {tasks.length === 0 ? <EmptyState /> : tasks.map((task) => <TaskCard key={task.id} task={task} />)}
+        {tasks.length === 0 ? (
+          <EmptyState />
+        ) : (
+          <>
+            {visibleTasks.map((task) => (
+              <TaskCard key={task.id} task={task} userRole={userRole} />
+            ))}
+            {renderLoadMoreButton()}
+          </>
+        )}
       </View>
     );
   }
@@ -169,10 +217,11 @@ export default function TaskMarketplace({ tasks, embedded = false }: TaskMarketp
 
   return (
     <FlatList
-      data={tasks}
+      data={visibleTasks}
       keyExtractor={(item) => item.id}
-      renderItem={({ item }) => <TaskCard task={item} />}
+      renderItem={({ item }) => <TaskCard task={item} userRole={userRole} />}
       ListHeaderComponent={MarketplaceHeader}
+      ListFooterComponent={renderLoadMoreButton}
       contentContainerStyle={styles.listContent}
       showsVerticalScrollIndicator={false}
     />
@@ -187,7 +236,7 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 24,
     paddingBottom: 96,
-    gap: 24,
+    gap: 24, // FlatList handles spacing natively, but we keep this for consistency
   },
   header: {
     borderTopWidth: 1,
@@ -284,11 +333,19 @@ const styles = StyleSheet.create({
     color: '#007FFF',
     letterSpacing: -0.3,
   },
+  descriptionContainer: {
+    marginBottom: 20,
+  },
   description: {
     fontSize: 12,
     color: '#64748B',
     lineHeight: 18,
-    marginBottom: 20,
+  },
+  seeMoreText: {
+    fontSize: 12,
+    fontWeight: '700',
+    color: '#475569',
+    marginTop: 4,
   },
   skillsRow: {
     flexDirection: 'row',
@@ -326,8 +383,31 @@ const styles = StyleSheet.create({
   },
   exploreButtonText: {
     fontSize: 12,
-    fontWeight: '500',
-    color: '#000000',
+    fontWeight: '600',
+    color: '#191919',
+    letterSpacing: 0.3,
+  },
+  loadMoreContainer: {
+    alignItems: 'center',
+    paddingVertical: 16,
+  },
+  loadMoreButton: {
+    backgroundColor: '#FFFFFF',
+    borderWidth: 1,
+    borderColor: '#6366F1',
+    borderRadius: 12,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 1,
+  },
+  loadMoreButtonText: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#191919',
     letterSpacing: 0.3,
   },
 });

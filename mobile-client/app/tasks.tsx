@@ -1,19 +1,44 @@
 import { useEffect, useState } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useAuth } from '@clerk/clerk-expo'; // Imported useAuth
 
 import TaskMarketplace, { TaskGig } from '@/components/TaskMarketplace';
 import { fetchAllGigs } from '@/constants/api';
 
 export default function TasksScreen() {
+  const { userId } = useAuth(); // Extract userId from Clerk
+  
   const [tasks, setTasks] = useState<TaskGig[]>([]);
   const [loading, setLoading] = useState(true);
+  const [userRole, setUserRole] = useState<string>(""); // State to hold the role
 
+  // Fetch all tasks
   useEffect(() => {
     fetchAllGigs()
       .then(setTasks)
       .finally(() => setLoading(false));
   }, []);
+
+  // Fetch the user role dynamically from your backend
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchUserRole = async () => {
+      try {
+        const res = await fetch(`http://192.168.1.10:8000/api/v1/auth/user/clerk/${userId}`);
+        
+        if (res.ok) {
+          const userData = await res.json();
+          setUserRole(userData.role || "");
+        }
+      } catch (err) {
+        console.error("Error fetching user role:", err);
+      }
+    };
+
+    fetchUserRole();
+  }, [userId]);
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['bottom']}>
@@ -23,7 +48,8 @@ export default function TasksScreen() {
         </View>
       ) : (
         <View style={styles.marketplaceContainer}>
-          <TaskMarketplace tasks={tasks} />
+          {/* Passed userRole to TaskMarketplace */}
+          <TaskMarketplace tasks={tasks} userRole={userRole} />
         </View>
       )}
     </SafeAreaView>
