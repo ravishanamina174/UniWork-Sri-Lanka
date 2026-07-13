@@ -15,6 +15,12 @@ export interface TaskGig {
   budget: number;
   deadline: string;
   skills_required: string[];
+  task_type?: 'remote' | 'on-site';
+  location?: {
+    type: string;
+    coordinates: [number, number];
+    address: string;
+  };
 }
 
 interface TaskMarketplaceProps {
@@ -85,10 +91,10 @@ function MarketplaceHeader() {
   );
 }
 
-// Pass userRole into the TaskCard component
 function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
   const category = getCategoryBadge(task.title, task.skills_required);
+  const isRemote = task.task_type === 'remote';
 
   return (
     <View style={styles.card}>
@@ -107,6 +113,23 @@ function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
             {task.title}
           </Text>
           <Text style={styles.budget}>{formatBudget(task.budget)}</Text>
+        </View>
+
+        {/* Location Block */}
+        <View style={styles.locationBadgeContainer}>
+          {isRemote ? (
+            <>
+              <Text style={styles.locationIcon}>🌐</Text>
+              <Text style={styles.locationText}>Remote Task</Text>
+            </>
+          ) : (
+            <>
+              <Text style={styles.locationIcon}>📍</Text>
+              <Text style={styles.locationText} numberOfLines={1}>
+                {task.location?.address || 'Location specified on map'}
+              </Text>
+            </>
+          )}
         </View>
 
         {/* Description & See More Toggle */}
@@ -144,8 +167,7 @@ function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
         </View>
       </View>
 
-      {/* Conditionally render the button based on userRole */}
-      {userRole === "STUDENT_EARNER" && (
+      {userRole === 'STUDENT_EARNER' && (
         <View style={styles.cardFooter}>
           <Link href={`/task-req/${task.id}`} asChild>
             <TouchableOpacity style={styles.exploreButton} activeOpacity={0.7}>
@@ -236,7 +258,6 @@ const styles = StyleSheet.create({
   listContent: {
     paddingHorizontal: 24,
     paddingBottom: 96,
-    gap: 24, // FlatList handles spacing natively, but we keep this for consistency
   },
   header: {
     borderTopWidth: 1,
@@ -333,6 +354,29 @@ const styles = StyleSheet.create({
     color: '#007FFF',
     letterSpacing: -0.3,
   },
+  locationBadgeContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#F8FAFC',
+    borderWidth: 1,
+    borderColor: '#F1F5F9',
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    borderRadius: 8,
+    alignSelf: 'flex-start',
+    maxWidth: '100%',
+    marginBottom: 16,
+  },
+  locationIcon: {
+    fontSize: 12,
+    marginRight: 6,
+  },
+  locationText: {
+    fontSize: 12,
+    fontWeight: '500',
+    color: '#475569',
+    flexShrink: 1,
+  },
   descriptionContainer: {
     marginBottom: 20,
   },
@@ -403,6 +447,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 1,
+    marginBottom: 24,
   },
   loadMoreButtonText: {
     fontSize: 14,
