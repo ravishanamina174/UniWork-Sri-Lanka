@@ -18,7 +18,7 @@ export default function OnboardScreen() {
     nic: '',
     encrypted_uni_id: '',
     faculty: '',
-    university_campus: 'University of Moratuwa',
+    university_campus: '',
     academic_department: '',
     business_name: '',
     registration_number: '',
@@ -138,6 +138,16 @@ export default function OnboardScreen() {
 
         {role === 'STUDENT' && (
           <>
+            <View style={styles.inputGroup}>
+              <Text style={styles.label}>University Name</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="University of Moratuwa"
+                placeholderTextColor="#94a3b8"
+                value={formData.university_campus}
+                onChangeText={(val) => handleInputChange('university_campus', val)}
+              />
+            </View>
             <View style={styles.inputGroup}>
               <Text style={styles.label}>Student ID</Text>
               <TextInput

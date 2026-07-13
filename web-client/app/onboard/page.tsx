@@ -17,7 +17,7 @@ export default function OnboardingPage() {
     nic: "",
     encrypted_uni_id: "",
     faculty: "",
-    university_campus: "University of Moratuwa",
+    university_campus: "",
     academic_department: "",
     business_name: "",
     registration_number: "",
@@ -188,6 +188,17 @@ export default function OnboardingPage() {
 
             {role === "STUDENT" && (
               <>
+
+                <div>
+                  <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">University</label>
+                  <input 
+                    required 
+                    name="university_campus" 
+                    onChange={handleInputChange} 
+                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    placeholder="University of Moratuwa" 
+                  />
+                </div>
                 <div>
                   <label className="block text-xs font-semibold text-slate-900 uppercase tracking-wider mb-1.5">Student ID</label>
                   <input 
