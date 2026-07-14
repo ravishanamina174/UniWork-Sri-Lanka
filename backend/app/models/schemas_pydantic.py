@@ -81,3 +81,26 @@ class ProfileResponse(BaseModel):
     bio: str
     metadata: dict
     metrics: dict
+
+# --- NEW: Application Schemas ---
+
+class ApplicationCreateRequest(BaseModel):
+    student_clerk_id: str
+    gig_id: str
+    student_message: Optional[str] = ""
+
+class ApplicationResponse(BaseModel):
+    id: str
+    student_clerk_id: str
+    gig_id: str
+    gig_title: str
+    poster_clerk_id: str
+    applied: bool
+    student_message: str
+    applied_at: str
+    task_deadline: str
+    # Add these new metadata fields
+    student_display_name: str
+    student_university_campus: str
+    student_reputation_rating: float
+    student_completed_tasks: int

@@ -2,6 +2,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import ApplyTaskButton from "@/components/ApplyTaskButton";
 
 // Force Next.js to never cache this dynamic page
 export const dynamic = "force-dynamic";
@@ -151,18 +152,10 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
       {/* Container width adjusts based on Remote vs On-Site */}
       <div className={`w-full transition-all duration-300 ${isRemote ? 'max-w-[760px]' : 'max-w-[1100px]'}`}>
 
-        {/* Back Button */}
-        {/* <Link
-          href="/"
-          className="inline-flex items-center text-sm font-semibold text-slate-600 hover:text-[#397a2c] mb-8 transition-colors"
-        >
-          <span className="mr-2 text-lg leading-none mb-0.5">←</span> Back to Gigs
-        </Link> */}
-
         {/* Layout Grid */}
         <div className="flex flex-col lg:flex-row gap-6 items-stretch">
 
-          {/* LEFT CARD: Main Task Information (Using exact borders/shadows from TaskMarketplace) */}
+          {/* LEFT CARD: Main Task Information */}
           <div className="flex-1 bg-white border border-slate-300 rounded-[6px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-8 sm:p-10 flex flex-col">
             
             {/* Header Row: Category & Deadline */}
@@ -180,7 +173,7 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
               {task.title}
             </h1>
 
-            {/* Budget using the exact exact color from marketplace (#007FFF) */}
+            {/* Budget */}
             <div className="mb-6">
               <div className="text-3xl sm:text-4xl font-black text-[#007FFF] tracking-tight">
                 LKR {task.budget?.toLocaleString() || 0}
@@ -228,10 +221,9 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
                 )}
               </div>
 
-              {/* Exact Marketplace Action Button - Scaled slightly for prominence */}
-              <button className="w-full sm:w-auto shrink-0 bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-sm font-medium py-2 px-7 rounded-[5px] transition-all shadow-sm tracking-wide">
-                Request Task
-              </button>
+              {/* NEW: Interactive Apply Button Component */}
+              <ApplyTaskButton gigId={task.id} studentClerkId={userId} />
+              
             </div>
 
           </div>
@@ -241,7 +233,6 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
 
         </div>
       </div>
-
     </div>
   );
 }
