@@ -44,7 +44,7 @@ export default function HomeScreen() {
 
     const fetchUserRole = async () => {
       try {
-        const res = await fetch(`http://192.168.1.10:8000/api/v1/auth/user/clerk/${userId}`);
+        const res = await fetch(`http://192.168.1.5:8000/api/v1/auth/user/clerk/${userId}`);
         
         if (res.ok) {
           const userData = await res.json();

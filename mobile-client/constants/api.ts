@@ -2,8 +2,8 @@
 import type { TaskGig } from '@/components/TaskMarketplace';
 
 // Use environment variable or fallback to local IP
-export const API_BASE_URL = 'http://192.168.1.10:8000/api/v1'
-  process.env.EXPO_PUBLIC_API_BASE_URL ?? 'http://192.168.1.10:8000/api/v1'; 
+export const API_BASE_URL = 'http://192.168.1.5:8000/api/v1'
+  process.env.EXPO_PUBLIC_API_BASE_URL ?? 'http://192.168.1.5:8000/api/v1'; 
 
 export async function fetchAllGigs(): Promise<TaskGig[]> {
   try {

@@ -4,7 +4,7 @@ import { useAuth } from '@clerk/clerk-expo';
 import { ActivityIndicator, View, Platform } from 'react-native';
 
 // Helper for local backend access on Android Emulators
-export const API_BASE = Platform.OS === 'android' ? 'http://192.168.1.10:8000' : 'http://127.0.0.1:8000';
+export const API_BASE = Platform.OS === 'android' ? 'http://192.168.1.5:8000' : 'http://127.0.0.1:8000';
 
 export default function DashboardLayout() {
   const { isLoaded, userId } = useAuth();
