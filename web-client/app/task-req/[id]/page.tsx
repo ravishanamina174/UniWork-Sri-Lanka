@@ -147,16 +147,80 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
   const category = getCategoryBadge(task.title, task.skills_required || []);
 
   return (
-    <div className="min-h-screen bg-[#F7F7F5] py-15 px-4 sm:px-6 flex flex-col items-center font-sans z-20">
+    <div className="min-h-screen bg-[#F7F7F5] py-15 px-4 sm:px-6 flex flex-col items-center font-sans z-20 overflow-hidden">
 
       {/* Container width adjusts based on Remote vs On-Site */}
-      <div className={`w-full transition-all duration-300 ${isRemote ? 'max-w-[760px]' : 'max-w-[1100px]'}`}>
+      <div className={`w-full transition-all duration-300 ${isRemote ? 'max-w-[760px]' : 'max-w-[1100px]'} relative mt-12 mb-20`}>
 
-        {/* Layout Grid */}
-        <div className="flex flex-col lg:flex-row gap-6 items-stretch">
+        {/* --- DOODLE ART BACKGROUND LAYER --- */}
+        {/* Doodle 1: Hand-drawn Crown above Cards */}
+        <div className="hidden md:block absolute -top-12 left-12 opacity-20 text-slate-900 pointer-events-none select-none z-0">
+          <svg width="60" height="50" viewBox="0 0 100 80" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M10 70 L 20 25 L 42 45 L 50 15 L 58 45 L 80 25 L 90 70 Z" />
+            <path d="M8 72 C 30 76, 70 76, 92 72" />
+            <circle cx="20" cy="20" r="3" fill="currentColor" />
+            <circle cx="50" cy="10" r="3" fill="currentColor" />
+            <circle cx="80" cy="20" r="3" fill="currentColor" />
+          </svg>
+        </div>
+
+        {/* Doodle 2: Top Left Hand-drawn Connecting Arrow */}
+        <div className="hidden xl:block absolute -top-8 -left-28 opacity-25 text-slate-900 pointer-events-none select-none z-0">
+          <svg width="90" height="90" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M20 20 Q 40 10, 50 30 T 40 70 Q 35 80, 65 65" />
+            <polyline points="55 63 67 65 63 77" />
+          </svg>
+        </div>
+
+        {/* Doodle 3: Far Left Spark Idea Bulb loop */}
+        <div className="hidden lg:block absolute top-1/3 -left-32 opacity-20 text-slate-900 pointer-events-none select-none z-0">
+          <svg width="75" height="75" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+            <path d="M50 20 C 35 20, 30 35, 35 50 C 38 58, 43 65, 43 75 L 57 75 C 57 65, 62 58, 65 50 C 70 35, 65 20, 50 20 Z" />
+            <path d="M43 80 H 57 M46 85 H 54" />
+            <path d="M50 5 L 50 12 M20 35 L 28 38 M80 35 L 72 38" />
+          </svg>
+        </div>
+
+        {/* Doodle 4: Top Right Sparkles */}
+        <div className="hidden md:block absolute -top-6 -right-12 opacity-30 text-slate-900 pointer-events-none select-none animate-pulse z-0">
+          <svg width="60" height="60" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
+            <path d="M40 15 Q 40 30 55 30 Q 40 30 40 45 Q 40 30 25 30 Q 40 30 40 15 Z" fill="currentColor" fillOpacity="0.05" />
+            <path d="M75 45 Q 75 52 82 52 Q 75 52 75 59 Q 75 52 68 52 Q 75 52 75 45 Z" fill="currentColor" fillOpacity="0.05" />
+          </svg>
+        </div>
+
+        {/* Doodle 5: Far Right Scribble / Star loop */}
+        <div className="hidden xl:block absolute top-1/4 -right-32 opacity-25 text-slate-900 pointer-events-none select-none z-0">
+          <svg width="85" height="85" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M50 15 L 58 38 L 83 38 L 63 53 L 71 78 L 50 63 L 29 78 L 37 53 L 17 38 L 42 38 Z" />
+            <path d="M15 20 Q 25 15, 20 30" />
+            <path d="M85 70 Q 75 80, 80 60" />
+          </svg>
+        </div>
+
+        {/* Doodle 6: Bottom Left Focus / Concept Circle */}
+        <div className="hidden lg:block absolute -bottom-10 -left-16 opacity-20 text-slate-900 pointer-events-none select-none z-0">
+          <svg width="85" height="85" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="3 3">
+            <circle cx="50" cy="50" r="35" />
+            <path d="M50 5 L 50 20 M50 95 L 50 80 M5 50 L 20 50 M95 50 L 80 50" strokeDasharray="none" />
+          </svg>
+        </div>
+
+        {/* Doodle 7: Bottom Right Double Under-Arrow */}
+        <div className="hidden md:block absolute -bottom-14 -right-8 opacity-20 text-slate-900 pointer-events-none select-none z-0">
+          <svg width="70" height="70" viewBox="0 0 100 100" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round">
+            <path d="M20 50 C 40 80, 70 70, 75 40" />
+            <polyline points="65 44 75 38 78 49" />
+            <path d="M35 65 C 50 85, 75 78, 80 55" strokeWidth="1" />
+          </svg>
+        </div>
+        {/* --- END DOODLE ART --- */}
+
+        {/* Layout Grid (Added relative z-10 so cards stay above the doodles) */}
+        <div className="flex flex-col lg:flex-row gap-6 items-stretch relative z-10">
 
           {/* LEFT CARD: Main Task Information */}
-          <div className="flex-1 bg-white border border-slate-300 rounded-[6px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-8 sm:p-10 flex flex-col">
+          <div className="flex-1 bg-white border border-slate-300 rounded-[6px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-8 sm:p-10 flex flex-col relative bg-clip-padding">
             
             {/* Header Row: Category & Deadline */}
             <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
