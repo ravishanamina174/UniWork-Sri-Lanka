@@ -27,19 +27,7 @@ Because student safety is paramount, the platform implements a strict multi-laye
 
 ---
 
-## 🛠️ Tech Stack & Architecture
-[ Next.js Web App ]       [ React Native Mobile ]
-          │                         │
-          └───────────┬─────────────┘
-                      ▼
-                [ API Gateway ]
-                      │
-                      ▼
-           [ FastAPI Backend Engine ]
-                      │
-     ┌────────────────┼────────────────┐
-     ▼                ▼                ▼
-[MongoDB]       [PostgreSQL]       [Pinecone]
+## 🛠️ Tech Stack
 
 ### Frontend Ecosystem
 *   **React Native:** Cross-platform mobile app optimized for low-data footprints, low-tier Android devices, and spotty local cellular connectivity.
