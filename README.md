@@ -1,7 +1,7 @@
 # UniWork Sri Lanka 🚀
 ### University Students Micro-Gig & Errand Marketplace
 
-<img src="assets/uni.png" alt="Students Micro-Gig Platform" />
+<img src="assets/uniwork-git.png" alt="Students Micro-Gig Platform" />
 
 **UniWork** is a mobile-first marketplace connecting Sri Lankan state university students with short-term digital and physical tasks. It provides undergraduates with a flexible income stream without the rigid commitment of standard part-time jobs, designed to handle the volatile schedules of local campus life.
 
