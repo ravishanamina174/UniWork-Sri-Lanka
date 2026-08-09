@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import ApplyTaskButton from "@/components/ApplyTaskButton";
+import TaskMap from "@/components/TaskMap"; // NEW: Imported the Map component
 
 // Force Next.js to never cache this dynamic page
 export const dynamic = "force-dynamic";
@@ -32,7 +33,8 @@ const getSkillBadgeColor = (index: number) => {
 // -------------------------------------------------------------------------------------------
 
 // Location Card Redesigned as a sibling card with the exact same hover effects
-const LargeLocationCard = ({ address }: { address?: string }) => {
+// CHANGED: Added coordinates to props
+const LargeLocationCard = ({ address, coordinates }: { address?: string, coordinates?: [number, number] }) => {
   return (
     <div className="w-full lg:w-[360px] shrink-0 bg-white border border-slate-300 rounded-[6px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-6 sm:p-8 flex flex-col group/card">
       <div className="flex items-center justify-between mb-5">
@@ -42,12 +44,13 @@ const LargeLocationCard = ({ address }: { address?: string }) => {
       </div>
 
       <div className="flex-1 bg-slate-50/80 border border-slate-200 rounded-[6px] flex flex-col items-center justify-center p-6 text-center relative overflow-hidden group min-h-[260px] w-full">
-        {/* Map Grid Background */}
-        <div className="absolute inset-0 bg-[radial-gradient(#CBD5E1_1.5px,transparent_1.5px)] [background-size:16px_16px] opacity-60"></div>
+        {/* NEW: Interactive Pigeon Map Background */}
+        <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+          <TaskMap coordinates={coordinates} />
+        </div>
 
-        {/* Map Pin Box */}
-        <div className="bg-white px-6 py-5 rounded-[6px] border border-slate-200 shadow-sm flex flex-col items-center z-10 w-[95%] transition-transform duration-300 group-hover:-translate-y-1">
-          <span className="text-red-500 text-3xl mb-3 leading-none drop-shadow-sm">📍</span>
+        {/* Map Pin Box - Kept as UI overlay on top of the map */}
+        <div className="bg-white/95 backdrop-blur-sm px-4 py-4 rounded-[6px] border border-slate-200 shadow-sm flex flex-col items-center z-10 w-[95%] transition-transform duration-300 group-hover:-translate-y-1 mt-auto">
           <span className="text-sm font-semibold text-slate-700 leading-snug">
             {address || "Exact location pinned on map"}
           </span>
@@ -285,7 +288,7 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
                 )}
               </div>
 
-              {/* NEW: Interactive Apply Button Component */}
+              {/* Interactive Apply Button Component */}
               <ApplyTaskButton gigId={task.id} studentClerkId={userId} />
               
             </div>
@@ -293,7 +296,13 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
           </div>
 
           {/* RIGHT CARD: Dedicated Large Location Map (Only On-Site) */}
-          {!isRemote && <LargeLocationCard address={task.location?.address} />}
+          {/* CHANGED: Now passing coordinates array down into the card */}
+          {!isRemote && (
+            <LargeLocationCard 
+              address={task.location?.address} 
+              coordinates={task.location?.coordinates} 
+            />
+          )}
 
         </div>
       </div>
