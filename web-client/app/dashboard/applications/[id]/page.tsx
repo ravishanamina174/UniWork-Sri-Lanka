@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useParams, useRouter } from 'next/navigation';
-import { Send, ArrowLeft, Loader2 } from 'lucide-react';
+import { Send, ArrowLeft, Loader2, CheckCircle2, AlertCircle } from 'lucide-react';
 import Link from 'next/link';
 
 interface Message {
@@ -74,20 +74,16 @@ export default function PosterApplicationChatPage() {
   useEffect(() => {
     if (!user?.id) return;
 
-    // Connect to backend WebSocket endpoint
     const ws = new WebSocket(`ws://127.0.0.1:8000/ws/${user.id}`);
 
     ws.onmessage = (event) => {
       try {
         const payload = JSON.parse(event.data);
-        
-        // Listen for incoming messages targeting this specific task
         if (
           payload.type === 'NEW_MESSAGE' && 
           payload.data.application_id === applicationId
         ) {
           setMessages((prev) => {
-            // Avoid adding duplicate messages if the sender already added it locally
             if (prev.some((msg) => msg.id === payload.data.id)) return prev;
             return [...prev, payload.data];
           });
@@ -134,40 +130,64 @@ export default function PosterApplicationChatPage() {
   };
 
   if (loading) {
-    return <div className="flex h-full items-center justify-center"><Loader2 className="animate-spin text-blue-600" /></div>;
+    return (
+      <div className="flex h-full min-h-[50vh] items-center justify-center">
+        <Loader2 className="animate-spin text-[#007bff] w-8 h-8" />
+      </div>
+    );
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-6rem)] md:h-[calc(100vh-2rem)] bg-white rounded-lg border border-[#ededed] overflow-hidden">
-      {/* Header */}
-      <div className="flex items-center gap-3 p-4 border-b border-[#ededed] bg-[#fbfbfa] shrink-0">
-        <Link href="/dashboard/applications" className="p-2 hover:bg-[#efefef] rounded-md transition-colors text-[#787774]">
-          <ArrowLeft size={20} />
-        </Link>
-        <div>
-          <h2 className="font-semibold text-[#37352f] text-[16px]">{application?.gig_title || 'Ongoing Task'}</h2>
-          <span className="text-[12px] text-green-600 font-medium">✓ Task Approved</span>
+    <div className="flex flex-col h-[calc(100dvh-5rem)] my-14 md:h-[calc(80dvh-6rem)] lg:h-[calc(95dvh-8rem)] bg-white rounded-[0.5rem] border border-gray-200 overflow-hidden mx-auto  md:max-w-4xl max-w-5xl w-full">
+      
+      {/* Header - Matches the UI of task cards */}
+      <div className="flex items-center justify-between gap-3 p-4 md:p-6 border-b border-gray-100 bg-white shrink-0">
+        <div className="flex items-center gap-3 md:gap-4">
+          <Link 
+            href="/dashboard/student-tasks" 
+            className="p-2 md:p-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all text-gray-600 hover:text-gray-900"
+          >
+            <ArrowLeft size={16} className="md:w-4 md:h-4" />
+          </Link>
+          <div className="flex flex-col">
+            <h2 className="font-bold text-gray-900 text-lg md:text-xl tracking-tight line-clamp-1">
+              {application?.gig_title || 'Workspace'}
+            </h2>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="flex items-center gap-1 text-[#1e7e34] px-0.5 py-0.5 rounded-md text-xs font-semibold">
+                <CheckCircle2 size={12} strokeWidth={3} />
+                Task Approved
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Messages Area */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/30">
+      <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-5 bg-[#f8f9fa]">
         {messages.length === 0 ? (
-          <div className="text-center text-[#787774] text-sm mt-10">
-            No messages yet. Send a message to get started!
+          <div className="flex flex-col items-center justify-center h-full text-gray-400 space-y-3">
+            <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center">
+              <AlertCircle size={24} className="text-gray-400" />
+            </div>
+            <p className="text-sm font-medium">No messages yet. Say hello to get started!</p>
           </div>
         ) : (
           messages.map((msg) => {
             const isMe = msg.sender_id === user?.id;
             return (
-              <div key={msg.id} className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}>
-                <div className={`max-w-[85%] md:max-w-[60%] rounded-2xl px-4 py-2.5 text-[14px] leading-relaxed shadow-sm ${
-                  isMe 
-                    ? 'bg-blue-600 text-white rounded-br-none' 
-                    : 'bg-white border border-[#ededed] text-[#37352f] rounded-bl-none'
-                }`}>
-                  <p>{msg.text}</p>
-                  <span className={`text-[10px] mt-1.5 block font-medium ${isMe ? 'text-blue-200' : 'text-[#787774]'}`}>
+              <div key={msg.id} className={`flex w-full ${isMe ? 'justify-end' : 'justify-start'}`}>
+                <div className={`flex flex-col max-w-[85%] md:max-w-[65%] lg:max-w-[55%] ${isMe ? 'items-end' : 'items-start'}`}>
+                  <div 
+                    className={`px-3.5 py-2 md:py-2 text-[14px] leading-relaxed ${
+                      isMe 
+                        ? 'bg-[#ffffff] border border-green-600 text-gray-800 rounded-xl ' 
+                        : 'bg-white border border-gray-200 text-gray-800 rounded-xl '
+                    }`}
+                  >
+                    <p className="whitespace-pre-wrap word-break">{msg.text}</p>
+                  </div>
+                  <span className="text-[11px] font-medium text-gray-400 mt-1.5 px-1">
                     {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </span>
                 </div>
@@ -178,22 +198,31 @@ export default function PosterApplicationChatPage() {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Input Form */}
-      <form onSubmit={sendMessage} className="p-3 md:p-4 border-t border-[#ededed] bg-white shrink-0 pb-safe">
-        <div className="flex gap-2">
-          <input
-            type="text"
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            placeholder="Message..."
-            className="flex-1 rounded-full border border-[#ededed] bg-[#fbfbfa] px-4 py-2 text-[14px] focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-shadow"
-          />
+      {/* Input Form - Pill shaped, mobile responsive padding */}
+      <form onSubmit={sendMessage} className="p-3 md:p-5 border-t border-gray-200 bg-white shrink-0 pb-safe">
+        <div className="flex items-end gap-2 md:gap-3 max-w-4xl mx-auto">
+          <div className="flex-1 bg-white border border-gray-200 rounded-[0.5rem] overflow-hidden focus-within:ring-2 focus-within:ring-green-100 focus-within:border-green-400 transition-all">
+            <textarea
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  sendMessage(e);
+                }
+              }}
+              placeholder="Type your message..."
+              className="w-full bg-transparent px-4 py-2 md:px-5 md:py-3.5 text-[14px] md:text-[15px] text-gray-800 focus:outline-none resize-none max-h-32 min-h-[48px] md:min-h-[52px]"
+              rows={1}
+            />
+          </div>
           <button 
             type="submit"
             disabled={!inputText.trim()}
-            className="bg-blue-600 text-white rounded-full p-2.5 hover:bg-blue-700 transition-colors disabled:opacity-50 flex-shrink-0"
+            className="bg-[#1ca646] text-white rounded-[0.5rem] p-3 mb-2 md:p-3.5 hover:bg-green-700 transition-all disabled:opacity-80 disabled:hover:bg-[#046f0b] flex-shrink-0 shadow-md shadow-blue-500/20 active:scale-95"
+            aria-label="Send message"
           >
-            <Send size={18} />
+            <Send size={20} className="md:w-4 md:h-4 ml-0.5" />
           </button>
         </div>
       </form>
