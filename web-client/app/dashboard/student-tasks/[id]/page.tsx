@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
 import { useParams, useRouter } from 'next/navigation';
 import { Send, ArrowLeft, Loader2 } from 'lucide-react';
@@ -29,26 +29,33 @@ export default function StudentTaskChatPage() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(true);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Fetch application details and chat history
+  // Auto-scroll to bottom on new messages
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  // 1. Initial Load: Application Details + Historical Messages
   useEffect(() => {
     const loadData = async () => {
       if (!applicationId) return;
       try {
-        // 1. Get Application Details
         const appRes = await fetch(`http://127.0.0.1:8000/api/v1/applications/${applicationId}`);
         if (appRes.ok) {
           const appData = await appRes.json();
           setApplication(appData);
           
-          // Redirect if not approved
           if (appData.application_confirm !== 'approve') {
             router.push('/dashboard/student-tasks');
             return;
           }
         }
 
-        // 2. Get Messages
         const msgRes = await fetch(`http://127.0.0.1:8000/api/v1/messages/${applicationId}`);
         if (msgRes.ok) {
           const msgData = await msgRes.json();
@@ -63,27 +70,63 @@ export default function StudentTaskChatPage() {
     loadData();
   }, [applicationId, router]);
 
+  // 2. Real-Time WebSocket Connection
+  useEffect(() => {
+    if (!user?.id) return;
+
+    // Connect to backend WebSocket endpoint
+    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/${user.id}`);
+
+    ws.onmessage = (event) => {
+      try {
+        const payload = JSON.parse(event.data);
+        
+        // Listen for incoming messages targeting this specific task
+        if (
+          payload.type === 'NEW_MESSAGE' && 
+          payload.data.application_id === applicationId
+        ) {
+          setMessages((prev) => {
+            // Avoid adding duplicate messages if the sender already added it locally
+            if (prev.some((msg) => msg.id === payload.data.id)) return prev;
+            return [...prev, payload.data];
+          });
+        }
+      } catch (err) {
+        console.error("WebSocket message parse error:", err);
+      }
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, [user?.id, applicationId]);
+
+  // 3. Send Message Function
   const sendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputText.trim() || !user || !applicationId) return;
 
-    const payload = {
-      application_id: applicationId,
-      sender_id: user.id,
-      text: inputText
-    };
+    const textToSend = inputText;
+    setInputText('');
 
     try {
       const res = await fetch('http://127.0.0.1:8000/api/v1/messages/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        body: JSON.stringify({
+          application_id: applicationId,
+          sender_id: user.id,
+          text: textToSend
+        })
       });
 
       if (res.ok) {
         const newMessage = await res.json();
-        setMessages((prev) => [...prev, newMessage]);
-        setInputText('');
+        setMessages((prev) => {
+          if (prev.some((msg) => msg.id === newMessage.id)) return prev;
+          return [...prev, newMessage];
+        });
       }
     } catch (err) {
       console.error("Failed to send message", err);
@@ -132,6 +175,7 @@ export default function StudentTaskChatPage() {
             );
           })
         )}
+        <div ref={messagesEndRef} />
       </div>
 
       {/* Input Form */}
