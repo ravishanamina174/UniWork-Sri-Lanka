@@ -34,7 +34,8 @@ app.add_middleware(
 )
 
 # Connect active operational routers
-from app.routers import auth , gigs , profiles , applications
+from app.routers import auth , gigs , profiles , applications 
+# app.include_router(messages.router)
 app.include_router(auth.router)
 app.include_router(gigs.router)
 app.include_router(profiles.router)
