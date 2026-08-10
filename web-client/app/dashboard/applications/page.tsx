@@ -143,11 +143,11 @@ export default async function ApplicationsDashboardPage() {
                 {group.applicants.map((app) => (
                   <div 
                     key={app.id} 
-                    className="bg-white border border-slate-300 rounded-[12px] p-5 sm:p-6 flex flex-col hover:border-[#6a77cb] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 group"
+                    className="bg-[#fdfdfe] border border-slate-300 rounded-[12px] p-5 sm:p-6 flex flex-col hover:border-[#6a77cb] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 group"
                   >
                     {/* Date Applied Badge */}
                     <div className="flex justify-end mb-4">
-                      <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                      <span className="text-[10px] font-semibold text-slate-500 tracking-wider bg-[#ffffff] px-2 py-1 rounded border border-slate-200">
                         Applied: {new Date(app.applied_at).toLocaleDateString()}
                       </span>
                     </div>
@@ -184,11 +184,11 @@ export default async function ApplicationsDashboardPage() {
                     </div>
 
                     {/* Cover Message */}
-                    <div className="flex-1 mb-6 w-full">
-                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                    <div className="flex-1 mb-10 w-full">
+                      <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">
                         Message from Applicant
                       </p>
-                      <div className="bg-[#f9fafb] border border-slate-100 rounded-md p-3.5 h-full">
+                      <div className="bg-[#ffffff] border border-slate-100 rounded-md p-3.5 h-full">
                         <p className="text-[13px] text-slate-600 leading-relaxed italic line-clamp-4">
                           "{app.student_message || "I am highly interested in this task and available to start immediately."}"
                         </p>

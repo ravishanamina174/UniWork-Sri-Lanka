@@ -149,12 +149,12 @@ export default async function StudentTasksPage() {
                     {/* Application Approval Status Button / Pill */}
                     <div className="mb-4">
                       {isApproved ? (
-                        <div className="w-full py-2 px-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae5] border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 ">
                           <span>✓</span> Task Approved
                         </div>
                       ) : (
-                        <div className="w-full py-2 px-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
-                          <span>⏳</span> Task Pending
+                        <div className="w-full py-2 px-3 rounded-lg bg-white border border-[#9fa1a4] text-[#646668] text-xs font-bold flex items-center justify-center gap-1.5 ">
+                          <span>⏳</span> Task Pending...
                         </div>
                       )}
                     </div>
