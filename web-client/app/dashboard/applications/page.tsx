@@ -1,4 +1,3 @@
-// web-client/app/dashboard/applications/page.tsx
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -77,10 +76,23 @@ export default async function ApplicationsDashboardPage() {
     console.error("Failed to fetch applications:", err);
   }
 
+  // 3. Group Applications by gig_id for the UI Wrapper
+  const groupedApplications = applications.reduce((acc, app) => {
+    if (!acc[app.gig_id]) {
+      acc[app.gig_id] = {
+        gig_title: app.gig_title,
+        task_deadline: app.task_deadline,
+        applicants: []
+      };
+    }
+    acc[app.gig_id].applicants.push(app);
+    return acc;
+  }, {} as Record<string, { gig_title: string; task_deadline: string; applicants: Application[] }>);
+
   return (
-    <div className="flex-1 font-sans text-[#37352f] px-2 sm:px-16 sm:py-10 max-w-[1500px] w-full">
+    <div className="flex-1 font-sans text-[#37352f] px-4 sm:px-8 md:px-16 py-8 sm:py-10 max-w-[1500px] w-full">
       {/* Header */}
-      <div className="mb-8">
+      <div className="mb-10">
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">
           Incoming Applications
         </h1>
@@ -103,69 +115,91 @@ export default async function ApplicationsDashboardPage() {
           </div>
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch pb-10">
-          {applications.map((app) => (
+        <div className="flex flex-col gap-10 pb-10 w-full">
+          {Object.entries(groupedApplications).map(([gigId, group]) => (
             <div 
-              key={app.id} 
-              className="bg-white border border-slate-200 rounded-[12px] p-6 flex flex-col hover:border-[#b4b4bb] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 group"
+              key={gigId} 
+              className="bg-white border border-slate-200 rounded-[10px] p-6 sm:p-8 flex flex-col w-full"
             >
-              {/* Task Title & Date Applied */}
-              <div className="flex justify-between items-start gap-4 mb-4">
-                <h3 className="font-bold text-lg text-slate-900 leading-tight line-clamp-2">
-                  {app.gig_title}
-                </h3>
-                <span className="text-[11px] font-medium text-slate-400 whitespace-nowrap bg-slate-50 px-2 py-1 rounded">
-                  {new Date(app.applied_at).toLocaleDateString()}
+              {/* Group Wrapper Header */}
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
+                <div>
+                  <h2 className="text-lg sm:text-[1.25rem] font-bold text-slate-900 tracking-tight leading-tight">
+                    {group.gig_title}
+                  </h2>
+                  <p className="text-xs font-medium text-slate-500 mt-1.5 flex items-center gap-1.5">
+                    📅 Deadline: {group.task_deadline || "Not specified"}
+                  </p>
+                </div>
+                <span className="bg-[#E8F0FE] text-[#1A73E8] text-xs font-bold px-3 py-1 rounded-[5px] border border-blue-100 whitespace-nowrap shrink-0">
+                  {group.applicants.length} Applicant{group.applicants.length > 1 ? 's' : ''}
                 </span>
               </div>
 
-              {/* Student Info Snapshot */}
-              <div className="flex items-center gap-3 mb-5 pb-5 border-b border-slate-100">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#E8F0FE] to-[#e0e7ff] flex items-center justify-center text-[#1A73E8] font-bold text-sm shrink-0 border border-blue-100">
-                  {app.student_display_name.charAt(0).toUpperCase()}
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-sm font-bold text-slate-800">
-                    {app.student_display_name}
-                  </span>
-                  <span className="text-xs text-slate-500 font-medium flex items-center gap-1 mt-0.5">
-                    🎓 {app.student_university_campus}
-                  </span>
-                </div>
-              </div>
+              {/* Inner Applicants Grid */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 items-stretch w-full">
+                {group.applicants.map((app) => (
+                  <div 
+                    key={app.id} 
+                    className="bg-white border border-slate-300 rounded-[12px] p-5 sm:p-6 flex flex-col hover:border-[#6a77cb] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 group"
+                  >
+                    {/* Date Applied Badge */}
+                    <div className="flex justify-end mb-4">
+                      <span className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider bg-slate-50 px-2 py-1 rounded border border-slate-100">
+                        Applied: {new Date(app.applied_at).toLocaleDateString()}
+                      </span>
+                    </div>
 
-              {/* Student Metrics */}
-              <div className="flex gap-2 mb-5">
-                <div className="flex-1 bg-amber-50/50 border border-amber-100 rounded-md py-1.5 px-2 flex flex-col items-center justify-center">
-                  <span className="text-xs text-amber-700 font-bold flex items-center gap-1">
-                    ⭐ {app.student_reputation_rating.toFixed(1)}
-                  </span>
-                  <span className="text-[10px] text-amber-600/70 font-medium">Rating</span>
-                </div>
-                <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-md py-1.5 px-2 flex flex-col items-center justify-center">
-                  <span className="text-xs text-emerald-700 font-bold">
-                    ✓ {app.student_completed_tasks}
-                  </span>
-                  <span className="text-[10px] text-emerald-600/70 font-medium">Completed</span>
-                </div>
-              </div>
+                    {/* Student Info Snapshot */}
+                    <div className="flex items-center gap-3 mb-5 pb-5 border-b border-slate-100 w-full">
+                      <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-[#E8F0FE] to-[#e0e7ff] flex items-center justify-center text-[#1A73E8] font-bold text-sm shrink-0 border border-blue-100">
+                        {app.student_display_name.charAt(0).toUpperCase()}
+                      </div>
+                      <div className="flex flex-col overflow-hidden">
+                        <span className="text-sm font-bold text-slate-800 truncate w-full">
+                          {app.student_display_name}
+                        </span>
+                        <span className="text-xs text-slate-500 font-medium flex items-center gap-1 mt-0.5 truncate w-full">
+                          🎓 {app.student_university_campus}
+                        </span>
+                      </div>
+                    </div>
 
-              {/* Cover Message */}
-              <div className="flex-1 mb-6">
-                <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
-                  Message from Applicant
-                </p>
-                <div className="bg-[#f9fafb] border border-slate-100 rounded-md p-3">
-                  <p className="text-[13px] text-slate-600 leading-relaxed italic line-clamp-4">
-                    "{app.student_message || "I am highly interested in this task and available to start immediately."}"
-                  </p>
-                </div>
-              </div>
+                    {/* Student Metrics */}
+                    <div className="flex gap-2 mb-5 w-full">
+                      <div className="flex-1 bg-amber-50/50 border border-amber-100 rounded-md py-2 px-2 flex flex-col items-center justify-center">
+                        <span className="text-xs text-amber-700 font-bold flex items-center gap-1">
+                          ⭐ {app.student_reputation_rating.toFixed(1)}
+                        </span>
+                        <span className="text-[10px] text-amber-600/70 font-medium mt-0.5">Rating</span>
+                      </div>
+                      <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-md py-2 px-2 flex flex-col items-center justify-center">
+                        <span className="text-xs text-emerald-700 font-bold">
+                          ✓ {app.student_completed_tasks}
+                        </span>
+                        <span className="text-[10px] text-emerald-600/70 font-medium mt-0.5">Completed</span>
+                      </div>
+                    </div>
 
-              {/* Action Button */}
-              <button className="w-full shrink-0 bg-white hover:bg-[#F8FAFC] border border-slate-200 hover:border-[#6366F1] text-slate-800 hover:text-[#4338CA] text-sm font-medium py-2.5 px-4 rounded-[8px] transition-all duration-200 tracking-wide">
-                Confirm Candidate
-              </button>
+                    {/* Cover Message */}
+                    <div className="flex-1 mb-6 w-full">
+                      <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
+                        Message from Applicant
+                      </p>
+                      <div className="bg-[#f9fafb] border border-slate-100 rounded-md p-3.5 h-full">
+                        <p className="text-[13px] text-slate-600 leading-relaxed italic line-clamp-4">
+                          "{app.student_message || "I am highly interested in this task and available to start immediately."}"
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Action Button */}
+                    <button className="w-full shrink-0 bg-white hover:bg-[#f1f3f5] border border-slate-300 hover:border-[#6366F1] mt-3 text-slate-800 hover:text-[#4338CA] text-sm font-medium py-2.5 px-4 rounded-[8px] transition-all duration-200 tracking-wide">
+                      Confirm Candidate
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
