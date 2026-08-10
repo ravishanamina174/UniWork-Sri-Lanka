@@ -88,17 +88,17 @@ export default async function StudentTasksPage() {
 
         {/* Empty State / Error State */}
         {appliedTasks.length === 0 ? (
-          <div className="bg-white border border-slate-200 rounded-xl p-12 text-center flex flex-col items-center justify-center min-h-[40vh] shadow-sm">
+          <div className="bg-white border border-slate-200 rounded-lg p-12 text-center flex flex-col items-center justify-center min-h-[40vh] ">
             <div className="w-16 h-16 bg-slate-50 rounded-full flex items-center justify-center text-3xl mb-4 border border-slate-100">
               📂
             </div>
             <h2 className="text-lg font-bold text-slate-900 mb-2">No applications yet</h2>
-            <p className="text-slate-500 text-sm mb-6 max-w-sm">
+            <p className="text-[#72757a] text-sm mb-6 max-w-sm">
               You haven't applied to any tasks yet. Browse the marketplace to find gigs that match your skills.
             </p>
             <Link 
-              href="/"
-              className="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-medium py-2.5 px-6 rounded-lg transition-colors shadow-sm"
+              href="/tasks"
+              className="bg-[#6366F1] hover:bg-[#4F46E5] text-white text-sm font-medium py-1.5 px-4 rounded-md transition-colors shadow-sm"
             >
               Explore Marketplace
             </Link>
