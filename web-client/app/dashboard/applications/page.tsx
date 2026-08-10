@@ -184,7 +184,7 @@ export default async function ApplicationsDashboardPage() {
                     </div>
 
                     {/* Cover Message */}
-                    <div className="flex-1 mb-10 w-full">
+                    <div className="flex-1 mb-8 w-full">
                       <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-2">
                         Message from Applicant
                       </p>
@@ -195,11 +195,22 @@ export default async function ApplicationsDashboardPage() {
                       </div>
                     </div>
 
-                    {/* Interactive Action Button */}
-                    <ConfirmCandidateButton 
-                      applicationId={app.id} 
-                      initialStatus={app.application_confirm} 
+                    {/* Interactive Action Area */}
+                    <div className="flex flex-col gap-2 mt-auto">
+                      <ConfirmCandidateButton 
+                        applicationId={app.id} 
+                        initialStatus={app.application_confirm} 
                     />
+                      {/* Dynamic Routing specifically for approved applications */}
+                      {app.application_confirm === "approve" && (
+                        <Link 
+                          href={`/dashboard/applications/${app.id}`}
+                          className="w-full py-2.5 px-3 rounded-lg bg-blue-50 border border-blue-200 text-blue-700 hover:bg-blue-100 text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                        >
+                          <span>💬</span> Open Task Workspace
+                        </Link>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>

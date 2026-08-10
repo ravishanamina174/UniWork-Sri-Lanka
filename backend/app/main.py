@@ -1,28 +1,26 @@
-# backend/app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.core.websocket import ws_router
 
-# 1. Import your Postgres engine and Base from database.py
+# 1. Import Postgres engine and Base
 from app.core.database import engine, Base
 
-# 2. CRITICAL: Import all your database models so SQLAlchemy knows they exist
+# 2. Import database models
 from app.models.domain_postgres import UserModel, StudentProfileModel, PosterProfileModel, CorporateProfileModel
 
-# 3. Create a lifespan event to run table creation automatically at startup
+# 3. Lifespan event to run table creation
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("🔄 Checking and syncing PostgreSQL database tables...")
     try:
-        # This scans the imported models and creates any tables missing in the database
         Base.metadata.create_all(bind=engine)
         print("✅ Database tables verified and synced successfully!")
     except Exception as e:
         print(f"❌ Failed to auto-sync database tables: {e}")
     yield
 
-# 4. Pass the lifespan context into your FastAPI app instance
+# 4. Pass lifespan context into FastAPI app
 app = FastAPI(title="UniWorkSL API", lifespan=lifespan)
 
 app.add_middleware(
@@ -33,15 +31,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Connect active operational routers
-from app.routers import auth , gigs , profiles , applications 
-# app.include_router(messages.router)
+# Connect active operational routers (UPDATED: Added messages router)
+from app.routers import auth, gigs, profiles, applications, messages
+
 app.include_router(auth.router)
 app.include_router(gigs.router)
 app.include_router(profiles.router)
 app.include_router(applications.router)
+app.include_router(messages.router)
 
-# Add the WebSocket router to the main app
+# Add the WebSocket router
 app.include_router(ws_router)
 
 @app.get("/")

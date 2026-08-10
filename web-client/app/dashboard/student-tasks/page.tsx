@@ -109,9 +109,14 @@ export default async function StudentTasksPage() {
             {appliedTasks.map((task) => {
               const category = getCategoryBadge(task.gig_title, task.skills_required);
               const isApproved = task.application_confirm === "approve";
+              
+              // Dynamic Routing Logic: Go to chat if approved, otherwise show gig details
+              const targetUrl = isApproved 
+                ? `/dashboard/student-tasks/${task.id}` 
+                : `/task-req/${task.gig_id}`;
 
               return (
-                <Link href={`/task-req/${task.gig_id}`} key={task.id} className="group flex">
+                <Link href={targetUrl} key={task.id} className="group flex w-full">
                   <div className="w-full bg-white border border-slate-200 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-6 flex flex-col cursor-pointer">
                     
                     {/* Header: Category & Deadline */}
@@ -175,8 +180,8 @@ export default async function StudentTasksPage() {
                     {/* Application Approval Status Button / Pill */}
                     <div className="mb-1 mt-5">
                       {isApproved ? (
-                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae5] border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 ">
-                          <span>✓</span> Task Approved
+                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae5] border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#bbf7d0] transition-colors">
+                          <span>✓</span> Task Approved - Open Workspace
                         </div>
                       ) : (
                         <div className="w-full py-2 px-3 rounded-lg bg-white border border-[#9fa1a4] text-[#646668] text-xs font-bold flex items-center justify-center gap-1.5 ">

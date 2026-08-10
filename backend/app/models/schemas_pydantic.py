@@ -1,4 +1,5 @@
 # backend/app/models/schemas_pydantic.py
+from datetime import datetime
 from pydantic import BaseModel, EmailStr, Field
 from typing import List, Optional, Tuple
 
@@ -107,3 +108,15 @@ class ApplicationResponse(BaseModel):
     student_reputation_rating: float
     student_completed_tasks: int
     application_confirm: str = "pending"
+    
+class MessageCreate(BaseModel):
+    application_id: str
+    sender_id: str
+    text: str
+
+class MessageResponse(BaseModel):
+    id: str
+    application_id: str
+    sender_id: str
+    text: str
+    timestamp: datetime

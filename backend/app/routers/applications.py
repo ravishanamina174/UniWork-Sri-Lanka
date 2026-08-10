@@ -183,4 +183,26 @@ async def update_application_confirmation(application_id: str, payload: Applicat
         )
 
     return {"status": "success", "message": "Application confirmed successfully."}
+
+@router.get("/{application_id}")
+async def get_single_application(application_id: str):
+    """Retrieves a single application by its ID for the dynamic chat page."""
+    if not ObjectId.is_valid(application_id):
+        raise HTTPException(status_code=400, detail="Invalid application ID.")
+        
+    doc = await mongo_db["applications"].find_one({"_id": ObjectId(application_id)})
+    
+    if not doc:
+        raise HTTPException(status_code=404, detail="Application not found.")
+        
+    # Format the document for frontend consumption
+    return {
+        "id": str(doc["_id"]),
+        "student_clerk_id": doc["student_clerk_id"],
+        "gig_id": doc["gig_id"],
+        "gig_title": doc.get("gig_title", "Untitled Task"),
+        "poster_clerk_id": doc["poster_clerk_id"],
+        "application_confirm": doc.get("application_confirm", "pending"),
+        "student_display_name": doc.get("student_display_name", "Unknown Student")
+    }
     
