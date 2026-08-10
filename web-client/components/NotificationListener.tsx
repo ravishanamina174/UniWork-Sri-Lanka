@@ -45,16 +45,16 @@ export default function NotificationListener() {
   if (!notification) return null;
 
   return (
-    <div className="fixed top-5 right-5 z-[9999] max-w-md w-full bg-white border border-emerald-200 shadow-xl rounded-xl p-4 flex items-start gap-3 animate-in slide-in-from-top-4 duration-300 font-sans">
+    <div className="fixed top-18 right-5 z-[9999] max-w-md w-full bg-white border border-emerald-200 shadow-2xl rounded-lg p-3 flex items-start gap-3 animate-in slide-in-from-top-4 duration-300 font-sans">
       {/* Icon Badge */}
-      <div className="w-9 h-9 rounded-full bg-[#EAFAEA] border border-emerald-200 flex items-center justify-center text-[#2E7D32] shrink-0 text-base">
+      {/* <div className="w-9 h-9 rounded-full bg-[#EAFAEA] border border-emerald-200 flex items-center justify-center text-[#2E7D32] shrink-0 text-base">
         🎉
-      </div>
+      </div> */}
 
       {/* Message Content */}
       <div className="flex-1 min-w-0 pr-2">
         <h4 className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-0.5">
-          Application Update
+          Application Update 🎉
         </h4>
         <p className="text-sm font-semibold text-slate-900 leading-snug truncate">
           {notification.message}
@@ -68,7 +68,7 @@ export default function NotificationListener() {
           }}
           className="mt-3 bg-[#2E7D32] hover:bg-[#236327] text-white text-xs font-bold py-1.5 px-3.5 rounded-md transition-all shadow-sm flex items-center gap-1.5"
         >
-          Look at ➔
+          View Details ➔
         </button>
       </div>
 
