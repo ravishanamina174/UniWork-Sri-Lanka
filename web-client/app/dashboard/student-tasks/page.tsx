@@ -63,7 +63,8 @@ export default async function StudentTasksPage() {
           description: gigData?.description || "No description available.",
           skills_required: gigData?.skills_required || [],
           poster_display_name: profileData?.display_name || "Unknown Company/Poster",
-          applied_at: app.applied_at
+          applied_at: app.applied_at,
+          application_confirm: app.application_confirm || "pending"
         };
       });
 
@@ -74,7 +75,7 @@ export default async function StudentTasksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] py-10 px-4 sm:px-6 lg:px-10 z-20 relative">
+    <div className="min-h-screen py-10 px-4 sm:px-6 lg:px-10 z-20 relative">
       <div className="max-w-[1400px] mx-auto">
         
         {/* Page Header */}
@@ -107,6 +108,7 @@ export default async function StudentTasksPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {appliedTasks.map((task) => {
               const category = getCategoryBadge(task.gig_title, task.skills_required);
+              const isApproved = task.application_confirm === "approve";
 
               return (
                 <Link href={`/task-req/${task.gig_id}`} key={task.id} className="group flex">
@@ -142,6 +144,19 @@ export default async function StudentTasksPage() {
                     <div className="mb-4 flex items-center gap-1.5 text-[11px] font-medium bg-slate-50 border border-slate-100 py-1.5 px-2.5 rounded w-fit text-slate-600">
                       <span className="text-red-500">📍</span>
                       Specific location pinned on map
+                    </div>
+
+                    {/* Application Approval Status Button / Pill */}
+                    <div className="mb-4">
+                      {isApproved ? (
+                        <div className="w-full py-2 px-3 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                          <span>✓</span> Task Approved
+                        </div>
+                      ) : (
+                        <div className="w-full py-2 px-3 rounded-lg bg-amber-50 border border-amber-200 text-amber-700 text-xs font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                          <span>⏳</span> Task Pending
+                        </div>
+                      )}
                     </div>
 
                     {/* Description Snippet */}

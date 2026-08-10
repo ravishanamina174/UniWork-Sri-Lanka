@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import ConfirmCandidateButton from "./ConfirmCandidateButton";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ interface Application {
   student_message: string;
   applied_at: string;
   task_deadline: string;
+  application_confirm: string;
   student_display_name: string;
   student_university_campus: string;
   student_reputation_rating: number;
@@ -193,10 +195,11 @@ export default async function ApplicationsDashboardPage() {
                       </div>
                     </div>
 
-                    {/* Action Button */}
-                    <button className="w-full shrink-0 bg-white hover:bg-[#f1f3f5] border border-slate-300 hover:border-[#6366F1] mt-3 text-slate-800 hover:text-[#4338CA] text-sm font-medium py-2.5 px-4 rounded-[8px] transition-all duration-200 tracking-wide">
-                      Confirm Candidate
-                    </button>
+                    {/* Interactive Action Button */}
+                    <ConfirmCandidateButton 
+                      applicationId={app.id} 
+                      initialStatus={app.application_confirm} 
+                    />
                   </div>
                 ))}
               </div>

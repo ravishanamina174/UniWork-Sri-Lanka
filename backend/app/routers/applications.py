@@ -1,7 +1,6 @@
-# backend/app/routers/applications.py
 from fastapi import APIRouter, HTTPException, status
 from app.core.database import mongo_db
-from app.models.schemas_pydantic import ApplicationCreateRequest
+from app.models.schemas_pydantic import ApplicationCreateRequest, ApplicationStatusUpdateRequest
 from datetime import datetime
 from bson import ObjectId
 
@@ -55,8 +54,9 @@ async def apply_for_gig(payload: ApplicationCreateRequest):
             "student_message": payload.student_message,
             "applied_at": datetime.utcnow().isoformat(),
             "task_deadline": gig_doc.get("deadline", ""),
+            "application_confirm": "pending",  # Default status
             
-            # --- NEW: Student Profile Snapshot ---
+            # --- Student Profile Snapshot ---
             "student_display_name": student_meta.get("display_name", "Unknown Student"),
             "student_university_campus": student_meta.get("university_campus", "Not Specified"),
             "student_reputation_rating": student_meta.get("reputation_rating", 5.0),
@@ -85,7 +85,7 @@ async def apply_for_gig(payload: ApplicationCreateRequest):
 async def get_applications_for_poster(poster_clerk_id: str):
     """
     Retrieves all applications filed for gigs owned by a specific corporate/poster.
-    Includes the newly added student metadata for UI display.
+    Includes student metadata and confirmation status.
     """
     try:
         cursor = mongo_db["applications"].find({"poster_clerk_id": poster_clerk_id})
@@ -102,8 +102,9 @@ async def get_applications_for_poster(poster_clerk_id: str):
                 "student_message": doc.get("student_message", ""),
                 "applied_at": doc.get("applied_at", ""),
                 "task_deadline": doc.get("task_deadline", ""),
+                "application_confirm": doc.get("application_confirm", "pending"),
                 
-                # Exposing student metadata to the frontend
+                # Student Metadata
                 "student_display_name": doc.get("student_display_name", ""),
                 "student_university_campus": doc.get("student_university_campus", ""),
                 "student_reputation_rating": doc.get("student_reputation_rating", 5.0),
@@ -138,6 +139,7 @@ async def get_applications_by_student(student_clerk_id: str):
                 "student_message": doc.get("student_message", ""),
                 "applied_at": doc.get("applied_at", ""),
                 "task_deadline": doc.get("task_deadline", ""),
+                "application_confirm": doc.get("application_confirm", "pending"),
                 "student_display_name": doc.get("student_display_name", "")
             })
 
@@ -146,4 +148,42 @@ async def get_applications_by_student(student_clerk_id: str):
         raise HTTPException(
             status_code=500,
             detail=f"Failed to retrieve student applications: {str(e)}"
+        )
+
+
+@router.patch("/{application_id}/confirm", status_code=status.HTTP_200_OK)
+async def update_application_confirmation(application_id: str, payload: ApplicationStatusUpdateRequest):
+    """
+    Updates the application_confirm field ('approve' or 'pending').
+    """
+    try:
+        if not ObjectId.is_valid(application_id):
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Invalid application ID format."
+            )
+
+        result = await mongo_db["applications"].update_one(
+            {"_id": ObjectId(application_id)},
+            {"$set": {"application_confirm": payload.status}}
+        )
+
+        if result.matched_count == 0:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Application record not found."
+            )
+
+        return {
+            "status": "success",
+            "message": f"Application status updated to '{payload.status}' successfully.",
+            "application_id": application_id,
+            "application_confirm": payload.status
+        }
+    except HTTPException as http_err:
+        raise http_err
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Failed to update application status: {str(e)}"
         )

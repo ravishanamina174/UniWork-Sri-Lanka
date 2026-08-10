@@ -89,6 +89,9 @@ class ApplicationCreateRequest(BaseModel):
     gig_id: str
     student_message: Optional[str] = ""
 
+class ApplicationStatusUpdateRequest(BaseModel):
+    status: str  # "pending" or "approve"
+
 class ApplicationResponse(BaseModel):
     id: str
     student_clerk_id: str
@@ -99,8 +102,8 @@ class ApplicationResponse(BaseModel):
     student_message: str
     applied_at: str
     task_deadline: str
-    # Add these new metadata fields
     student_display_name: str
     student_university_campus: str
     student_reputation_rating: float
     student_completed_tasks: int
+    application_confirm: str = "pending"
