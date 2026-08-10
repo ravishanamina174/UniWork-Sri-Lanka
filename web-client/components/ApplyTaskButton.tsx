@@ -1,7 +1,6 @@
-// web-client/app/task-req/[id]/ApplyTaskButton.tsx
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface ApplyTaskButtonProps {
   gigId: string;
@@ -11,6 +10,36 @@ interface ApplyTaskButtonProps {
 export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButtonProps) {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    // Fetch specifically the student's applications on mount/refresh
+    const checkApplicationStatus = async () => {
+      try {
+        const res = await fetch(`http://127.0.0.1:8000/api/v1/applications/student/${studentClerkId}`, {
+          cache: "no-store" // Ensure fresh data on every page reload
+        });
+
+        if (res.ok) {
+          const applications = await res.json();
+          
+          // Check if this specific gig is in the student's application history and applied is true
+          const hasApplied = applications.some(
+            (app: any) => app.gig_id === gigId && app.applied === true
+          );
+
+          if (hasApplied) {
+            setStatus("success");
+          }
+        }
+      } catch (err) {
+        console.error("Failed to fetch application status:", err);
+      }
+    };
+
+    if (gigId && studentClerkId) {
+      checkApplicationStatus();
+    }
+  }, [gigId, studentClerkId]);
 
   const handleApply = async () => {
     setStatus("loading");
@@ -32,6 +61,11 @@ export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButt
       const data = await res.json();
 
       if (!res.ok) {
+        // Graceful fallback: If they somehow double-click and trigger the backend duplicate check
+        if (res.status === 400 && data.detail === "You have already submitted an application for this task.") {
+          setStatus("success");
+          return;
+        }
         throw new Error(data.detail || "Failed to submit application");
       }
 
@@ -65,7 +99,7 @@ export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButt
       </button>
       
       {status === "error" && (
-        <span className="text-xs text-red-500 font-medium">
+        <span className="text-xs text-red-500 font-medium w-full text-center sm:text-right">
           {errorMessage}
         </span>
       )}
