@@ -146,21 +146,8 @@ export default async function StudentTasksPage() {
                       Specific location pinned on map
                     </div>
 
-                    {/* Application Approval Status Button / Pill */}
-                    <div className="mb-4">
-                      {isApproved ? (
-                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae5] border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 ">
-                          <span>✓</span> Task Approved
-                        </div>
-                      ) : (
-                        <div className="w-full py-2 px-3 rounded-lg bg-white border border-[#9fa1a4] text-[#646668] text-xs font-bold flex items-center justify-center gap-1.5 ">
-                          <span>⏳</span> Task Pending...
-                        </div>
-                      )}
-                    </div>
-
                     {/* Description Snippet */}
-                    <p className="text-xs text-slate-500 line-clamp-3 mb-6 flex-1">
+                    <p className="text-xs text-slate-500 line-clamp-3 mb-4 flex-1">
                       {task.description}
                     </p>
 
@@ -185,6 +172,18 @@ export default async function StudentTasksPage() {
                       )}
                     </div>
 
+                    {/* Application Approval Status Button / Pill */}
+                    <div className="mb-1 mt-5">
+                      {isApproved ? (
+                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae5] border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 ">
+                          <span>✓</span> Task Approved
+                        </div>
+                      ) : (
+                        <div className="w-full py-2 px-3 rounded-lg bg-white border border-[#9fa1a4] text-[#646668] text-xs font-bold flex items-center justify-center gap-1.5 ">
+                          <span>⏳</span> Task Pending...
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </Link>
               );
