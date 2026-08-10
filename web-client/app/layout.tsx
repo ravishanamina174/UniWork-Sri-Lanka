@@ -5,6 +5,7 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Navbar from "@/components/Navbar"; // Adjust import path if necessary
+import NotificationListener from "@/components/NotificationListener";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -58,6 +59,7 @@ export default async function RootLayout({
           
           {/* Page Content */}
           <main className="flex-1 flex flex-col">
+            <NotificationListener />
             {children}
           </main>
         </body>

@@ -2,6 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
+from app.core.websocket import ws_router
 
 # 1. Import your Postgres engine and Base from database.py
 from app.core.database import engine, Base
@@ -38,6 +39,9 @@ app.include_router(auth.router)
 app.include_router(gigs.router)
 app.include_router(profiles.router)
 app.include_router(applications.router)
+
+# Add the WebSocket router to the main app
+app.include_router(ws_router)
 
 @app.get("/")
 def health_check():

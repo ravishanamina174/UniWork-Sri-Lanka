@@ -3,6 +3,7 @@ from app.core.database import mongo_db
 from app.models.schemas_pydantic import ApplicationCreateRequest, ApplicationStatusUpdateRequest
 from datetime import datetime
 from bson import ObjectId
+from app.core.websocket import ws_manager
 
 router = APIRouter(prefix="/api/v1/applications", tags=["Applications Management"])
 
@@ -153,37 +154,33 @@ async def get_applications_by_student(student_clerk_id: str):
 
 @router.patch("/{application_id}/confirm", status_code=status.HTTP_200_OK)
 async def update_application_confirmation(application_id: str, payload: ApplicationStatusUpdateRequest):
-    """
-    Updates the application_confirm field ('approve' or 'pending').
-    """
-    try:
-        if not ObjectId.is_valid(application_id):
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Invalid application ID format."
-            )
+    if not ObjectId.is_valid(application_id):
+        raise HTTPException(status_code=400, detail="Invalid application ID.")
 
-        result = await mongo_db["applications"].update_one(
-            {"_id": ObjectId(application_id)},
-            {"$set": {"application_confirm": payload.status}}
+    # 1. Update confirmation status
+    result = await mongo_db["applications"].find_one_and_update(
+        {"_id": ObjectId(application_id)},
+        {"$set": {"application_confirm": payload.status}},
+        return_document=True
+    )
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Application record not found.")
+
+    # 2. If approved, send real-time notification to the target student
+    if payload.status == "approve":
+        student_id = result.get("student_clerk_id")
+        gig_title = result.get("gig_title", "Task")
+
+        await ws_manager.send_personal_message(
+            {
+                "type": "APPLICATION_CONFIRMED",
+                "title": gig_title,
+                "message": f"Your application is confirmed - {gig_title}",
+                "redirect_url": "/dashboard/student-tasks"
+            },
+            user_id=student_id
         )
 
-        if result.matched_count == 0:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="Application record not found."
-            )
-
-        return {
-            "status": "success",
-            "message": f"Application status updated to '{payload.status}' successfully.",
-            "application_id": application_id,
-            "application_confirm": payload.status
-        }
-    except HTTPException as http_err:
-        raise http_err
-    except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Failed to update application status: {str(e)}"
-        )
+    return {"status": "success", "message": "Application confirmed successfully."}
+    
