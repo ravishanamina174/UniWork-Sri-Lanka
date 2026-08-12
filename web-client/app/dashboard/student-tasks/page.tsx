@@ -180,7 +180,7 @@ export default async function StudentTasksPage() {
                     {/* Application Approval Status Button / Pill */}
                     <div className="mb-1 mt-5">
                       {isApproved ? (
-                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae5] border border-emerald-200 text-emerald-700 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#bbf7d0] transition-colors">
+                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae591] border border-emerald-200 text-emerald-600 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#bbf7d0] transition-colors">
                           <span>✓</span> Task Approved - Open Workspace
                         </div>
                       ) : (

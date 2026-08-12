@@ -169,14 +169,14 @@ export default async function ApplicationsDashboardPage() {
 
                     {/* Student Metrics - Option 3: Modern Mini-Cards */}
                     <div className="grid grid-cols-2 gap-2 mb-5 w-full">
-                      <div className="bg-white border-t-2 border-t-amber-400 border border-slate-200/80 rounded-md px-2.5 py-1.5 flex flex-col items-start">
+                      <div className="bg-white border-t-2 border-t-amber-200 border border-slate-200/80 rounded-md px-2.5 py-1.5 flex flex-col items-start">
                         <span className="text-[8px] mt-0.5 font-medium text-slate-400 tracking-wider">Rating</span>
                         <span className="text-xs font-bold text-slate-800 flex items-center gap-1 mt-0.5">
                           {app.student_reputation_rating.toFixed(1)}
                           <span className="text-amber-400 text-xs">★</span>
                         </span>
                       </div>
-                      <div className="bg-white border-t-2 border-t-[#6a77cb] border border-slate-200/80 rounded-md px-2.5 py-1.5 flex flex-col items-start">
+                      <div className="bg-white border-t-2 border-t-[#6a77cb7d] border border-slate-200/80 rounded-md px-2.5 py-1.5 flex flex-col items-start">
                         <span className="text-[8px] mt-0.5 font-medium text-slate-400 tracking-wider">Tasks Done</span>
                         <span className="text-sm font-bold text-slate-800 mt-0.5">
                           {app.student_completed_tasks}

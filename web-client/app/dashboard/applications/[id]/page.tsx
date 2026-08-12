@@ -141,7 +141,7 @@ export default function PosterApplicationChatPage() {
     <div className="flex flex-col h-[calc(100dvh-5rem)] my-14 md:h-[calc(80dvh-6rem)] lg:h-[calc(95dvh-8rem)] bg-white rounded-[0.5rem] border border-gray-200 overflow-hidden mx-auto  md:max-w-4xl max-w-5xl w-full">
       
       {/* Header - Matches the UI of task cards */}
-      <div className="flex items-center justify-between gap-3 p-4 md:p-6 border-b border-gray-100 bg-white shrink-0">
+      <div className="flex items-center justify-between gap-3 p-4 md:px-6 border-b border-gray-100 bg-white shrink-0">
         <div className="flex items-center gap-3 md:gap-4">
           <Link 
             href="/dashboard/applications" 
@@ -150,7 +150,7 @@ export default function PosterApplicationChatPage() {
             <ArrowLeft size={16} className="md:w-4 md:h-4" />
           </Link>
           <div className="flex flex-col">
-            <h2 className="font-bold text-gray-900 text-lg md:text-xl tracking-tight line-clamp-1">
+            <h2 className="font-bold text-gray-900 text-md md:text-lg tracking-tight line-clamp-1">
               {application?.gig_title || 'Workspace'}
             </h2>
             <div className="flex items-center gap-1.5 mt-0.5">
@@ -199,7 +199,7 @@ export default function PosterApplicationChatPage() {
       </div>
 
       {/* Input Form - Pill shaped, mobile responsive padding */}
-      <form onSubmit={sendMessage} className="p-3 md:p-5 border-t border-gray-200 bg-white shrink-0 pb-safe">
+      <form onSubmit={sendMessage} className="p-3 md:p-3 border-t border-gray-200 bg-white shrink-0 pb-safe">
         <div className="flex items-end gap-2 md:gap-3 max-w-4xl mx-auto">
           <div className="flex-1 bg-white border border-gray-200 rounded-[0.5rem] overflow-hidden focus-within:ring-2 focus-within:ring-[#67b5ec3b] focus-within:border-[#2f96df8a] transition-all">
             <textarea
@@ -212,7 +212,7 @@ export default function PosterApplicationChatPage() {
                 }
               }}
               placeholder="Type your message..."
-              className="w-full bg-transparent px-4 py-2 md:px-5 md:py-3.5 text-[14px] md:text-[15px] text-gray-800 focus:outline-none resize-none max-h-32 min-h-[48px] md:min-h-[52px]"
+              className="w-full bg-transparent px-4 py-2 md:px-5 md:py-4 text-[14px] md:text-[14px] text-gray-800 focus:outline-none resize-none max-h-32 min-h-[48px] md:min-h-[52px]"
               rows={1}
             />
           </div>
