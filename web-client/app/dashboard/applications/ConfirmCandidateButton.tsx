@@ -47,7 +47,7 @@ export default function ConfirmCandidateButton({
     return (
       <button
         disabled
-        className="w-full shrink-0 bg-emerald-50 border border-emerald-300 text-emerald-700 text-sm font-semibold py-2.5 px-4 rounded-[8px] transition-all duration-200 tracking-wide flex items-center justify-center gap-1.5 cursor-default"
+        className="w-full shrink-0 bg-emerald-50 border border-emerald-300 text-emerald-700 text-sm font-semibold py-1.5 px-4 rounded-[8px] transition-all duration-200 tracking-wide flex items-center justify-center gap-1.5 cursor-default"
       >
         <span>✓</span> Candidate Confirmed
       </button>
