@@ -1,5 +1,6 @@
 // app/dashboard/poster-tasks/page.tsx
 import { auth } from "@clerk/nextjs/server";
+import Link from "next/dist/client/link";
 import { redirect } from "next/navigation";
 
 export interface TaskGig {
@@ -183,11 +184,11 @@ export default async function PosterTasksPage() {
                 </div>
 
                 {/* Optional: Modify the button behavior for the dashboard view */}
-                <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
-                  <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
-                    Manage Task
-                  </button>
-                </div>
+                <Link href={`/dashboard/applications`} className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
+                    <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
+                      See Applicants
+                    </button>
+                </Link>
               </div>
             );
           })}
