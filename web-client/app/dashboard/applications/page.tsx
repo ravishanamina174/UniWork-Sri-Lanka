@@ -205,7 +205,7 @@ export default async function ApplicationsDashboardPage() {
                       {app.application_confirm === "approve" && (
                         <Link 
                           href={`/dashboard/applications/${app.id}`}
-                          className="w-full py-2.5 px-3 rounded-lg bg-white border border-[#766fc976] text-[#776fc9] hover:bg-[#f5f4fb] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                          className="w-full py-2.5 px-3 rounded-lg bg-white border border-[#766fc976] text-[#776fc9] hover:bg-[#edecf5] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                         >
                           <span>💬</span> Open Task Workspace
                         </Link>

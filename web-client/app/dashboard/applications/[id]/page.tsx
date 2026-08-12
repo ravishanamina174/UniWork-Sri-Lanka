@@ -144,7 +144,7 @@ export default function PosterApplicationChatPage() {
       <div className="flex items-center justify-between gap-3 p-4 md:p-6 border-b border-gray-100 bg-white shrink-0">
         <div className="flex items-center gap-3 md:gap-4">
           <Link 
-            href="/dashboard/student-tasks" 
+            href="/dashboard/applications" 
             className="p-2 md:p-2.5 bg-gray-50 hover:bg-gray-100 border border-gray-200 rounded-md transition-all text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft size={16} className="md:w-4 md:h-4" />
