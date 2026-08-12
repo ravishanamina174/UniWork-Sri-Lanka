@@ -154,7 +154,7 @@ export default function PosterApplicationChatPage() {
               {application?.gig_title || 'Workspace'}
             </h2>
             <div className="flex items-center gap-1.5 mt-0.5">
-              <span className="flex items-center gap-1 text-[#1e7e34] px-0.5 py-0.5 rounded-md text-xs font-semibold">
+              <span className="flex items-center gap-1 text-[#2f96df] px-0.5 py-0.5 rounded-md text-xs font-semibold">
                 <CheckCircle2 size={12} strokeWidth={3} />
                 Task Approved
               </span>
@@ -181,7 +181,7 @@ export default function PosterApplicationChatPage() {
                   <div 
                     className={`px-3.5 py-2 md:py-2 text-[14px] leading-relaxed ${
                       isMe 
-                        ? 'bg-[#ffffff] border border-green-600 text-gray-800 rounded-xl ' 
+                        ? 'bg-[#ffffff] border border-[#2f96df] text-gray-800 rounded-xl ' 
                         : 'bg-white border border-gray-200 text-gray-800 rounded-xl '
                     }`}
                   >
@@ -201,7 +201,7 @@ export default function PosterApplicationChatPage() {
       {/* Input Form - Pill shaped, mobile responsive padding */}
       <form onSubmit={sendMessage} className="p-3 md:p-5 border-t border-gray-200 bg-white shrink-0 pb-safe">
         <div className="flex items-end gap-2 md:gap-3 max-w-4xl mx-auto">
-          <div className="flex-1 bg-white border border-gray-200 rounded-[0.5rem] overflow-hidden focus-within:ring-2 focus-within:ring-green-100 focus-within:border-green-400 transition-all">
+          <div className="flex-1 bg-white border border-gray-200 rounded-[0.5rem] overflow-hidden focus-within:ring-2 focus-within:ring-[#67b5ec3b] focus-within:border-[#2f96df8a] transition-all">
             <textarea
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
@@ -219,7 +219,7 @@ export default function PosterApplicationChatPage() {
           <button 
             type="submit"
             disabled={!inputText.trim()}
-            className="bg-[#1ca646] text-white rounded-[0.5rem] p-3 mb-2 md:p-3.5 hover:bg-green-700 transition-all disabled:opacity-80 disabled:hover:bg-[#046f0b] flex-shrink-0 shadow-md shadow-blue-500/20 active:scale-95"
+            className="bg-[#2f96df] text-white rounded-[0.5rem] p-3 mb-2 md:p-3.5 hover:bg-[#268ad1] transition-all disabled:opacity-80 disabled:hover:bg-[#0a67a9] flex-shrink-0 shadow-md shadow-[blue-500/20] active:scale-95"
             aria-label="Send message"
           >
             <Send size={20} className="md:w-4 md:h-4 ml-0.5" />

@@ -167,19 +167,20 @@ export default async function ApplicationsDashboardPage() {
                       </div>
                     </div>
 
-                    {/* Student Metrics */}
-                    <div className="flex gap-2 mb-5 w-full">
-                      <div className="flex-1 bg-amber-50/50 border border-amber-100 rounded-md py-2 px-2 flex flex-col items-center justify-center">
-                        <span className="text-xs text-amber-700 font-bold flex items-center gap-1">
-                          ⭐ {app.student_reputation_rating.toFixed(1)}
+                    {/* Student Metrics - Option 3: Modern Mini-Cards */}
+                    <div className="grid grid-cols-2 gap-2 mb-5 w-full">
+                      <div className="bg-white border-t-2 border-t-amber-400 border border-slate-200/80 rounded-md px-2.5 py-1.5 flex flex-col items-start">
+                        <span className="text-[8px] mt-0.5 font-medium text-slate-400 tracking-wider">Rating</span>
+                        <span className="text-xs font-bold text-slate-800 flex items-center gap-1 mt-0.5">
+                          {app.student_reputation_rating.toFixed(1)}
+                          <span className="text-amber-400 text-xs">★</span>
                         </span>
-                        <span className="text-[10px] text-amber-600/70 font-medium mt-0.5">Rating</span>
                       </div>
-                      <div className="flex-1 bg-emerald-50/50 border border-emerald-100 rounded-md py-2 px-2 flex flex-col items-center justify-center">
-                        <span className="text-xs text-emerald-700 font-bold">
-                          ✓ {app.student_completed_tasks}
+                      <div className="bg-white border-t-2 border-t-[#6a77cb] border border-slate-200/80 rounded-md px-2.5 py-1.5 flex flex-col items-start">
+                        <span className="text-[8px] mt-0.5 font-medium text-slate-400 tracking-wider">Tasks Done</span>
+                        <span className="text-sm font-bold text-slate-800 mt-0.5">
+                          {app.student_completed_tasks}
                         </span>
-                        <span className="text-[10px] text-emerald-600/70 font-medium mt-0.5">Completed</span>
                       </div>
                     </div>
 
@@ -200,12 +201,12 @@ export default async function ApplicationsDashboardPage() {
                       <ConfirmCandidateButton 
                         applicationId={app.id} 
                         initialStatus={app.application_confirm} 
-                    />
+                      />
                       {/* Dynamic Routing specifically for approved applications */}
                       {app.application_confirm === "approve" && (
                         <Link 
                           href={`/dashboard/applications/${app.id}`}
-                          className="w-full py-2.5 px-3 rounded-lg bg-white border border-[#766fc976] text-[#776fc9] hover:bg-[#edecf5] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
+                          className="w-full py-2.5 px-3 rounded-lg bg-white border border-[#2f96df85] text-[#2f96df] hover:bg-[#f3f8fbb0] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
                         >
                           <span>💬</span> Open Task Workspace
                         </Link>
