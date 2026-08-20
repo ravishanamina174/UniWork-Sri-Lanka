@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-// import ChatInterface from './chatinterface';
+import ChatInterface from './chatinterface';
 
 export default function StudentTaskChatPage() {
   const params = useParams();
@@ -14,7 +14,7 @@ export default function StudentTaskChatPage() {
         For example: <TopStatsBanner /> or <ActionButtons /> 
       */}
       
-      {/* <ChatInterface applicationId={applicationId} /> */}
+      <ChatInterface applicationId={applicationId} />
       
       {/* Or added below */}
     </div>
