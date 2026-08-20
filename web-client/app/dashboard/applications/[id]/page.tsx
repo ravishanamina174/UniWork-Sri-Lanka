@@ -14,7 +14,7 @@ export default function PosterApplicationChatPage() {
         like headers, sidebars, or task details panes here in the future. 
       */}
       
-      {/* <ChatInterface applicationId={applicationId} /> */}
+      <ChatInterface applicationId={applicationId} />
       
     </div>
   );
