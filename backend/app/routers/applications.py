@@ -203,6 +203,7 @@ async def get_single_application(application_id: str):
         "gig_title": doc.get("gig_title", "Untitled Task"),
         "poster_clerk_id": doc["poster_clerk_id"],
         "application_confirm": doc.get("application_confirm", "pending"),
-        "student_display_name": doc.get("student_display_name", "Unknown Student")
+        "student_display_name": doc.get("student_display_name", "Unknown Student"),
+        "task_deadline": doc.get("task_deadline", "") 
     }
     
