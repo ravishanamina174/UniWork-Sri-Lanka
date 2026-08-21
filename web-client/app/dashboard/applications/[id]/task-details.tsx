@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Calendar, MapPin, User, Mail, Phone, Loader2, AlertCircle } from 'lucide-react';
+import TaskMap from "@/components/TaskMap";
 
 interface TaskDetailsProps {
   applicationId: string;
@@ -222,10 +223,38 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
          <p className="text-slate-400 font-medium">Task Starter Component (Coming Soon)</p>
       </div>
 
-      {/* 4. Map Component (Empty UI) */}
-      <div className="col-span-12 md:col-span-6 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-8 flex items-center justify-center min-h-[160px]">
-         <p className="text-slate-400 font-medium">Map Component (Coming Soon)</p>
-      </div>
+     {/* 5. Map Component */}
+      {gigData.task_type === 'remote' ? (
+        <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center min-h-[500px]">
+          <div className="w-12 h-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mb-3">
+            <MapPin size={24} />
+          </div>
+          <p className="text-slate-500 font-medium">Remote Task</p>
+          <p className="text-xs text-slate-400 mt-1">No physical location required</p>
+        </div>
+      ) : (
+        <div className="col-span-12 md:col-span-6 bg-white rounded-xl border border-gray-200 p-6 min-h-[500px] hover:shadow-xs flex flex-col group/card">
+          <h3 className="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
+            <MapPin className="text-[#6366F1]" size={18}/> Task Location
+          </h3>
+          
+          <div className="flex-1 bg-slate-50/80 border border-slate-200 rounded-lg flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group min-h-[180px] w-full">
+            
+            {/* Interactive Pigeon Map Background */}
+            <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
+              <TaskMap coordinates={gigData.location?.coordinates} />
+            </div>
+
+            {/* Map Pin Box - UI overlay on top of the map */}
+            <div className="bg-white/95 backdrop-blur-sm px-4 py-3 rounded-[6px] border border-slate-200 shadow-sm flex flex-col items-center z-10 w-[95%] transition-transform duration-300 group-hover:-translate-y-1 mt-auto">
+              <span className="text-sm font-semibold text-slate-700 leading-snug truncate w-full">
+                {gigData.location?.address || "Exact location pinned on map"}
+              </span>
+            </div>
+
+          </div>
+        </div>
+      )}
 
     </div>
   );
