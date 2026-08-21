@@ -112,16 +112,21 @@ export default function HeroSection() {
 
         {/* CTA Hub Controls */}
         <div className="flex flex-wrap items-center justify-center gap-4 pt-4 mb-16 md:mb-24">
-          <button className="px-6 py-3 bg-[#007FFF] text-white font-bold text-sm rounded-md hover:bg-[#0066CC] active:scale-[0.98] transition-all duration-200 shadow-md shadow-blue-500/10">
-            Get Started free
-          </button>
+          <a href="/dashboard">
+            <button className="px-6 py-3 bg-[#007FFF] text-white font-bold text-sm rounded-md hover:bg-[#0066CC] active:scale-[0.98] transition-all duration-200 shadow-md shadow-blue-500/10">
+               Get Started free
+            </button>
+          </a>
           
-          <button className="group flex items-center gap-2 px-5 py-3 text-slate-600 font-semibold text-sm rounded-md hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
+          <a href="/about">
+            <button className="group flex items-center gap-2 px-5 py-3 text-slate-600 font-semibold text-sm rounded-md hover:text-slate-900 hover:bg-slate-100 transition-all duration-200">
             <span>Our Vision</span>
             <svg className="w-4 h-4 transform group-hover:translate-x-1 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
             </svg>
-          </button>
+            </button>
+          </a>
+          
         </div>
 
         {/* ================= ADVANCED NEXTUI LANYARD STYLE CARD DECK ================= */}
