@@ -468,7 +468,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
               ) : (
                 <div>
                   <p className="text-xs text-[#959595] font-medium mb-2 flex items-center gap-1">
-                    <ShieldCheck size={14} /> Code Verified! Verify your physical presence within 10 meters of the task pin.
+                    <ShieldCheck size={14} /> Code Verified! Verify your physical presence within 50 meters of the task pin.
                   </p>
                   <button
                     onClick={handleVerifyLocation}
