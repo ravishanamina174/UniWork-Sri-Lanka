@@ -32,14 +32,15 @@ app.add_middleware(
 )
 
 # Connect active operational routers
-from app.routers import auth, gigs, profiles, applications, messages, started_tasks
+from app.routers import auth, gigs, profiles, applications, messages, started_tasks, feedback
 
 app.include_router(auth.router)
 app.include_router(gigs.router)
 app.include_router(profiles.router)
 app.include_router(applications.router)
 app.include_router(messages.router)
-app.include_router(started_tasks.router)  # Registered started_tasks router
+app.include_router(started_tasks.router)
+app.include_router(feedback.router) # Registered feedback router
 
 # Add the WebSocket router
 app.include_router(ws_router)

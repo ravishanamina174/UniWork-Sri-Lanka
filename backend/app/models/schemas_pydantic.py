@@ -157,3 +157,20 @@ class StartedTaskResponse(BaseModel):
     task_close_time: Optional[str] = None
     start_code: Optional[str] = None
     end_code: Optional[str] = None
+
+
+# --- NEW:User Feedback ---
+
+class FeedbackCreate(BaseModel):
+    user_clerk_id: str
+    user_role: Optional[str] = "student"
+    issue_cards: List[str] = Field(default_factory=list)
+    feedback_description: Optional[str] = ""
+
+class FeedbackResponse(BaseModel):
+    id: str
+    user_clerk_id: str
+    user_role: str
+    issue_cards: List[str]
+    feedback_description: str
+    created_at: datetime
