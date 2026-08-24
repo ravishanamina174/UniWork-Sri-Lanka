@@ -171,12 +171,12 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         <div className="w-12 h-12 bg-[#f4f6fc] text-[#566b7b] rounded-full flex items-center justify-center mb-3">
           <Calendar size={24} />
         </div>
-        <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Deadline</h3>
+        <h3 className="text-sm font-bold text-[#4d5154] uppercase tracking-wider mb-1">Deadline</h3>
         <div className="flex items-baseline gap-1 my-1">
-          <span className="text-5xl font-black text-slate-800">{daysLeft}</span>
+          <span className="text-[41px] font-black text-slate-800">{daysLeft}</span>
           <span className="text-lg font-bold text-slate-400">Days</span>
         </div>
-        <p className="text-xs font-medium text-slate-400 mt-2 text-center">
+        <p className="text-xs font-medium text-slate-500 mt-2 text-center">
           {daysLeft === 0 ? "Deadline has passed or is today" : `Until ${appData.task_deadline}`}
         </p>
       </div>
