@@ -168,7 +168,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
       {/* 2. Day Count Down */}
       <div className="col-span-12 md:col-span-4 bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center justify-center min-h-[200px] hover:shadow-xs ">
-        <div className="w-12 h-12 bg-[#EEF2FF] text-[#6366F1] rounded-full flex items-center justify-center mb-3">
+        <div className="w-12 h-12 bg-[#f4f6fc] text-[#566b7b] rounded-full flex items-center justify-center mb-3">
           <Calendar size={24} />
         </div>
         <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-1">Deadline</h3>
@@ -184,7 +184,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
       {/* 3. Posters Details */}
       <div className="col-span-12 md:col-span-8 bg-white rounded-xl border border-gray-200 p-6 min-h-[200px] hover:shadow-xs ">
         <h3 className="font-bold text-lg text-slate-900 mb-5 flex items-center gap-2">
-          <User className="text-[#6366F1]" size={18}/> Corporate Client Profile
+          <User className="text-[#c27f13]" size={18}/> Corporate Client Profile
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-5 gap-x-6">
           <div>
@@ -234,8 +234,8 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         </div>
       ) : (
         <div className="col-span-12 md:col-span-6 bg-white rounded-xl border border-gray-200 p-6 min-h-[500px] hover:shadow-xs flex flex-col group/card">
-          <h3 className="font-bold text-lg text-slate-900 mb-4 flex items-center gap-2">
-            <MapPin className="text-[#6366F1]" size={18}/> Task Location
+          <h3 className="font-bold text-[16px] text-slate-900 mb-3 flex items-center gap-2">
+            <MapPin className="text-[#1d9c45]" size={18}/> Task Location
           </h3>
           
           <div className="flex-1 bg-slate-50/80 border border-slate-200 rounded-lg flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group min-h-[180px] w-full">
