@@ -159,7 +159,7 @@ export default function HeroSection() {
               <span className="relative inline-block mt-2">
                 One Micro-Gig at a Time.
                 {/* Authentic Underline */}
-                <svg className="absolute left-0 -bottom-3 w-full h-3 text-[#007FFF] opacity-40 pointer-events-none" viewBox="0 0 300 10" fill="none" preserveAspectRatio="none">
+                <svg className="absolute left-0 -bottom-3 w-full h-3 text-[#ff6a00] opacity-40 pointer-events-none" viewBox="0 0 300 10" fill="none" preserveAspectRatio="none">
                   <path d="M5 5 C 50 2, 150 8, 295 4 C 200 6, 80 3, 15 7" stroke="currentColor" strokeWidth="3" strokeLinecap="round" />
                 </svg>
               </span>
@@ -175,15 +175,15 @@ export default function HeroSection() {
               
               {/* Primary Button */}
               <div className="btn-gradient-wrapper w-full sm:w-auto cursor-pointer">
-                <button className="btn-inner w-full sm:w-auto px-8 py-3.5 text-[#111827] font-bold text-base shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
-                  <Sparkles size={16} className="text-[#007FFF]" />
+                <button className="btn-inner w-full sm:w-auto px-6 py-3 text-[#111827] font-bold text-base shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
+                  <Sparkles size={16} className="text-[#b27f40]" />
                   Explore Student Portal
                 </button>
               </div>
 
               {/* Secondary Button */}
               <div className="btn-gradient-wrapper w-full sm:w-auto cursor-pointer">
-                <button className="btn-inner w-full sm:w-auto px-8 py-3.5 text-[#787774] font-semibold text-base shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
+                <button className="btn-inner w-full sm:w-auto px-6 py-3 text-[#787774] font-semibold text-base shadow-[0_4px_12px_rgba(0,0,0,0.03)]">
                   <Search size={18} />
                   Find Active Tasks
                 </button>
