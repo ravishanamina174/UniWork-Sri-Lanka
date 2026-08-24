@@ -365,9 +365,9 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-              <Play className="text-[#007FFF]" size={18} /> Task Starter
+              <Play className="text-[#FFC349]" size={18} /> Task Starter
             </h3>
-            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-blue-50 text-[#007FFF]">
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gray-100 text-[#615f59]">
               Student Terminal
             </span>
           </div>
@@ -420,9 +420,9 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
               <button
                 onClick={handleStudentEndTask}
                 disabled={starterLoading}
-                className="w-full py-2.5 bg-red-600 hover:bg-red-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full py-2.5 bg-[#BE1A1A] hover:bg-[#a41717] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
               >
-                {starterLoading ? <Loader2 className="animate-spin" size={14} /> : "End Task Direct"}
+                {starterLoading ? <Loader2 className="animate-spin" size={14} /> : "End Task"}
               </button>
             </div>
           ) : (
@@ -436,7 +436,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                   <button
                     onClick={handleInitiateStart}
                     disabled={starterLoading}
-                    className="w-full py-2.5 bg-[#007FFF] hover:bg-blue-600 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full py-2.5 bg-[#EC5B38] hover:bg-[#f8a601] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <KeyRound size={14} />}
                     Start Task
@@ -454,12 +454,12 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                       value={startCodeInput}
                       onChange={(e) => setStartCodeInput(e.target.value.replace(/\D/g, ''))}
                       placeholder="4-Digit PIN"
-                      className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-center tracking-widest text-lg font-bold text-slate-800 focus:outline-none focus:border-[#007FFF]"
+                      className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-center tracking-widest text-lg font-bold text-slate-800 focus:outline-none focus:border-[#6FAF4F]"
                     />
                     <button
                       onClick={handleVerifyStartCode}
                       disabled={starterLoading || startCodeInput.length !== 4}
-                      className="px-4 py-2 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                      className="px-4 py-2 bg-[#6eb34c] hover:bg-[#3b8618] text-white font-bold text-xs rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
                     >
                       {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <ShieldCheck size={14} />} Verify Code
                     </button>
@@ -467,13 +467,13 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                 </div>
               ) : (
                 <div>
-                  <p className="text-xs text-emerald-700 font-medium mb-2 flex items-center gap-1">
+                  <p className="text-xs text-[#959595] font-medium mb-2 flex items-center gap-1">
                     <ShieldCheck size={14} /> Code Verified! Verify your physical presence within 10 meters of the task pin.
                   </p>
                   <button
                     onClick={handleVerifyLocation}
                     disabled={starterLoading}
-                    className="w-full py-2.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                    className="w-full py-2.5 bg-[#BC4F4F] hover:bg-[#a64040] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                   >
                     {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <Navigation size={14} />}
                     Verify Location (GPS) & Start

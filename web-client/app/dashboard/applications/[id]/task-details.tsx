@@ -301,9 +301,9 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
-              <Play className="text-[#007FFF]" size={18} /> Task Starter
+              <Play className="text-[#FFC349]" size={18} /> Task Starter
             </h3>
-            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700">
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-gray-100 text-[#615f59]">
               Poster Control
             </span>
           </div>
@@ -350,10 +350,10 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                 <button
                   onClick={handleInitiateEnd}
                   disabled={starterLoading}
-                  className="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-2.5 bg-[#e66d22] hover:bg-[#d76f2f] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <KeyRound size={14} />}
-                  Initiate Task End
+                  Task End With Code
                 </button>
               ) : (
                 <div className="space-y-2">
@@ -384,14 +384,14 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
             /* NOT STARTED STATE */
             <div className="space-y-3">
               {taskState?.start_code ? (
-                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                <div className="bg-[#f7f7f7] border border-slate-200 rounded-lg p-4 text-center">
+                  <p className="text-xs font-semibold text-black uppercase tracking-wider mb-1">
                     Provide This Start Code To Student
                   </p>
-                  <p className="text-3xl font-black text-[#007FFF] tracking-widest my-1">
+                  <p className="text-3xl font-black text-[#6FAF4F] tracking-widest my-1">
                     {taskState.start_code}
                   </p>
-                  <p className="text-[11px] text-slate-400 mt-1">
+                  <p className="text-[11px] text-slate-500 mt-1">
                     Student must enter this 4-digit code on their terminal to verify identity.
                   </p>
                 </div>
