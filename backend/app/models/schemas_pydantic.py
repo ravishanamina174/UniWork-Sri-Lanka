@@ -120,3 +120,40 @@ class MessageResponse(BaseModel):
     sender_id: str
     text: str
     timestamp: datetime
+
+
+
+# --- NEW: Task Starter Schemas ---
+
+class InitiateStartRequest(BaseModel):
+    application_id: str
+
+class VerifyStartCodeRequest(BaseModel):
+    application_id: str
+    code: str
+
+class VerifyLocationRequest(BaseModel):
+    application_id: str
+    latitude: float
+    longitude: float
+
+class InitiateEndRequest(BaseModel):
+    application_id: str
+
+class VerifyEndCodeRequest(BaseModel):
+    application_id: str
+    code: str
+
+class StudentEndTaskRequest(BaseModel):
+    application_id: str
+
+class StartedTaskResponse(BaseModel):
+    id: str
+    application_id: str
+    task_start: bool
+    inside_location_approve: bool
+    task_close: bool
+    task_start_time: Optional[str] = None
+    task_close_time: Optional[str] = None
+    start_code: Optional[str] = None
+    end_code: Optional[str] = None

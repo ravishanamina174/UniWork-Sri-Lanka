@@ -1,7 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Calendar, MapPin, User, Mail, Phone, Loader2, AlertCircle } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
+import { 
+  Calendar, MapPin, User, Mail, Phone, Loader2, AlertCircle, 
+  Play, CheckCircle2, Clock, KeyRound, ShieldCheck 
+} from 'lucide-react';
 import TaskMap from "@/components/TaskMap";
 
 interface TaskDetailsProps {
@@ -34,8 +37,29 @@ const getSkillBadgeColor = (index: number) => {
 export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
   const [appData, setAppData] = useState<any>(null);
   const [gigData, setGigData] = useState<any>(null);
-  const [studentData, setStudentData] = useState<any>(null); // Changed from posterData
+  const [studentData, setStudentData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
+  // Task Starter States
+  const [taskState, setTaskState] = useState<any>(null);
+  const [starterLoading, setStarterLoading] = useState(false);
+  const [endCodeInput, setEndCodeInput] = useState('');
+  const [starterError, setStarterError] = useState<string | null>(null);
+  const [starterSuccess, setStarterSuccess] = useState<string | null>(null);
+
+  // Fetch Task Starter Live State
+  const fetchTaskStarterState = useCallback(async () => {
+    if (!applicationId) return;
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/application/${applicationId}`);
+      if (res.ok) {
+        const data = await res.json();
+        setTaskState(data);
+      }
+    } catch (err) {
+      console.error("Error fetching task starter state:", err);
+    }
+  }, [applicationId]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,13 +73,13 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         // 2. Concurrently fetch Gig Details and STUDENT Profile
         const [gigRes, studentRes] = await Promise.all([
           fetch(`http://127.0.0.1:8000/api/v1/gigs/${appInfo.gig_id}`),
-          // Changed to fetch by student_clerk_id
           fetch(`http://127.0.0.1:8000/api/v1/profiles/${appInfo.student_clerk_id}`) 
         ]);
 
         if (gigRes.ok) setGigData(await gigRes.json());
         if (studentRes.ok) setStudentData(await studentRes.json());
-        
+
+        await fetchTaskStarterState();
       } catch (err) {
         console.error("Error loading task board data:", err);
       } finally {
@@ -64,7 +88,61 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     };
 
     if (applicationId) fetchData();
-  }, [applicationId]);
+
+    // Auto-polling interval for live state updates without refresh
+    const interval = setInterval(() => {
+      fetchTaskStarterState();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [applicationId, fetchTaskStarterState]);
+
+  // Task Starter Handlers
+  const handleInitiateEnd = async () => {
+    setStarterLoading(true);
+    setStarterError(null);
+    setStarterSuccess(null);
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/initiate-end`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ application_id: applicationId }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Failed to initiate end.");
+      setStarterSuccess("End request sent! Ask student for the code on their screen.");
+      await fetchTaskStarterState();
+    } catch (err: any) {
+      setStarterError(err.message);
+    } finally {
+      setStarterLoading(false);
+    }
+  };
+
+  const handleVerifyEndCode = async () => {
+    if (endCodeInput.length !== 4) {
+      setStarterError("Please enter a valid 4-digit code.");
+      return;
+    }
+    setStarterLoading(true);
+    setStarterError(null);
+    setStarterSuccess(null);
+    try {
+      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/verify-end-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ application_id: applicationId, code: endCodeInput }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Invalid code.");
+      setStarterSuccess("Task closed successfully!");
+      await fetchTaskStarterState();
+    } catch (err: any) {
+      setStarterError(err.message);
+    } finally {
+      setStarterLoading(false);
+    }
+  };
 
   // Calculate day countdown
   const calculateDaysLeft = (deadlineStr: string) => {
@@ -181,7 +259,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         </p>
       </div>
 
-      {/* 3. Student Details (Replaced Poster Details) */}
+      {/* 3. Student Details */}
       <div className="col-span-12 md:col-span-8 bg-white rounded-xl border border-gray-200 p-6 min-h-[200px] hover:shadow-xs ">
         <h3 className="font-bold text-lg text-slate-900 mb-5 flex items-center gap-2">
           <User className="text-[#c27f13]" size={18}/> Student Profile
@@ -218,9 +296,115 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         </div>
       </div>
 
-      {/* 4. Task Starter (Empty UI) */}
-      <div className="col-span-12 md:col-span-6 bg-slate-50 border-2 border-dashed border-slate-200 rounded-xl p-8 flex items-center justify-center min-h-[160px]">
-         <p className="text-slate-400 font-medium">Task Starter Component (Coming Soon)</p>
+      {/* 4. Task Starter Component (Poster View) */}
+      <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-xl p-6 flex flex-col justify-between hover:shadow-xs min-h-[220px]">
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
+              <Play className="text-[#007FFF]" size={18} /> Task Starter
+            </h3>
+            <span className="text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700">
+              Poster Control
+            </span>
+          </div>
+
+          {starterError && (
+            <div className="mb-3 text-xs bg-red-50 text-red-600 border border-red-200 p-2.5 rounded-lg flex items-center gap-2">
+              <AlertCircle size={14} className="shrink-0" /> {starterError}
+            </div>
+          )}
+
+          {starterSuccess && (
+            <div className="mb-3 text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 p-2.5 rounded-lg flex items-center gap-2">
+              <CheckCircle2 size={14} className="shrink-0" /> {starterSuccess}
+            </div>
+          )}
+
+          {/* COMPLETED STATE */}
+          {taskState?.task_close ? (
+            <div className="bg-emerald-50 border border-emerald-100 rounded-lg p-4 flex flex-col items-center justify-center text-center my-2">
+              <CheckCircle2 className="text-emerald-600 mb-1" size={28} />
+              <p className="text-sm font-bold text-emerald-900">Task Officially Closed</p>
+              <p className="text-xs text-emerald-600 mt-0.5">
+                Ended at: {taskState?.task_close_time ? new Date(taskState.task_close_time).toLocaleTimeString() : 'N/A'}
+              </p>
+            </div>
+          ) : taskState?.task_start ? (
+            /* ACTIVE STATE */
+            <div className="space-y-3">
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-3.5 flex items-center justify-between">
+                <div>
+                  <p className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                    <Clock size={14} className="text-blue-600" /> Student On Site & Working
+                  </p>
+                  <p className="text-[11px] text-blue-700 mt-1">
+                    Started: {taskState?.task_start_time ? new Date(taskState.task_start_time).toLocaleTimeString() : 'N/A'}
+                  </p>
+                </div>
+                <span className="text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white px-2 py-0.5 rounded">
+                  Active
+                </span>
+              </div>
+
+              {!taskState?.end_code ? (
+                <button
+                  onClick={handleInitiateEnd}
+                  disabled={starterLoading}
+                  className="w-full py-2.5 bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                >
+                  {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <KeyRound size={14} />}
+                  Initiate Task End
+                </button>
+              ) : (
+                <div className="space-y-2">
+                  <p className="text-xs text-slate-600 font-medium">
+                    Enter the 4-digit code displayed on student's screen to complete task:
+                  </p>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      maxLength={4}
+                      value={endCodeInput}
+                      onChange={(e) => setEndCodeInput(e.target.value.replace(/\D/g, ''))}
+                      placeholder="4-Digit PIN"
+                      className="flex-1 border border-slate-300 rounded-lg px-3 py-2 text-center tracking-widest text-lg font-bold text-slate-800 focus:outline-none focus:border-[#007FFF]"
+                    />
+                    <button
+                      onClick={handleVerifyEndCode}
+                      disabled={starterLoading || endCodeInput.length !== 4}
+                      className="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1.5"
+                    >
+                      {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <ShieldCheck size={14} />} Confirm End
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            /* NOT STARTED STATE */
+            <div className="space-y-3">
+              {taskState?.start_code ? (
+                <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 text-center">
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">
+                    Provide This Start Code To Student
+                  </p>
+                  <p className="text-3xl font-black text-[#007FFF] tracking-widest my-1">
+                    {taskState.start_code}
+                  </p>
+                  <p className="text-[11px] text-slate-400 mt-1">
+                    Student must enter this 4-digit code on their terminal to verify identity.
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-slate-50 border border-slate-100 rounded-lg p-4 text-center">
+                  <p className="text-xs text-slate-500">
+                    Waiting for student to initiate the task from their device...
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
       </div>
 
      {/* 5. Map Component */}
