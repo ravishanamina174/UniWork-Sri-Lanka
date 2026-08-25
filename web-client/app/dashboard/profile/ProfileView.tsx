@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { Save, X, Mail, Phone, MapPin, Edit3 } from 'lucide-react';
+import { Save, X, Mail, Phone, MapPin, Edit3, ShieldAlert, MessageCircle } from 'lucide-react';
 
 interface ProfileViewProps {
   userId: string;
@@ -13,13 +13,16 @@ interface ProfileViewProps {
 export default function ProfileView({ userId, userRole, baseEmail, initialProfile }: ProfileViewProps) {
   const [profile, setProfile] = useState(initialProfile);
   const [isEditing, setIsEditing] = useState(initialProfile === null);
-  
+
   const [formData, setFormData] = useState({
     display_name: initialProfile?.display_name || '',
     email: initialProfile?.email || baseEmail || '',
     phone_number: initialProfile?.phone_number || '',
     address: initialProfile?.address || '',
-    bio: initialProfile?.bio || ''
+    bio: initialProfile?.bio || '',
+    // New Safety Fields - Prefilled with your demo number for the university panel
+    is_safety_enabled: initialProfile?.is_safety_enabled || false,
+    emergency_whatsapp_number: initialProfile?.emergency_whatsapp_number || '0701470882'
   });
 
   const handleSave = async () => {
@@ -53,19 +56,18 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
 
   return (
     <div className="w-full max-w-5xl py-10 px-20 font-sans text-[#37352f]">
-      
+
       {/* Notion-style Clean Page Container */}
-      <div className="bg-white rounded-md sm:p-10">
-        
+      <div className="bg-white rounded-md sm:p-10 shadow-sm border border-[#e0e0e0]/50">
+
         {/* Top Header & Actions */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
-          
           <div className="flex items-center gap-4">
             {/* Minimalist Icon Box */}
             <div className="w-16 h-16 rounded shadow-sm border border-[#e0e0e0] flex items-center justify-center text-3xl bg-white shrink-0">
               {userRole === 'STUDENT_EARNER' ? '🎓' : userRole === 'TASK_POSTER' ? '💡' : '🏢'}
             </div>
-            
+
             <div className="space-y-1">
               {isEditing ? (
                 <input
@@ -80,7 +82,7 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
                   {profile?.display_name || "Anonymous User"}
                 </h1>
               )}
-              
+
               {/* Notion-style Status Tag */}
               <div className="inline-flex items-center gap-2 px-2 py-0.5 rounded bg-[#f1f1ef] text-[#37352f] text-sm font-medium">
                 <div className={`w-2 h-2 rounded-full ${getRoleIndicator(userRole)}`} />
@@ -88,7 +90,7 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
               </div>
             </div>
           </div>
-          
+
           {/* Notion-style Buttons */}
           <div className="flex w-full sm:w-auto gap-2">
             {isEditing ? (
@@ -117,11 +119,10 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
           </div>
         </div>
 
-        <div className="w-full h-px bg-[#ededed] mb-10" /> {/* Clean Divider */}
+        <div className="w-full h-px bg-[#ededed] mb-10" /> 
 
-        {/* Clean Form Grid (Inspired by the Sales Contact Form) */}
+        {/* Clean Form Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 mb-10">
-          
           {/* Email Input */}
           <div className="space-y-2">
             <label className="text-sm font-medium text-[#787774] flex items-center gap-2">
@@ -201,6 +202,58 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
             )}
           </div>
         </div>
+
+        {/* --- NEW SECURITY COMPONENT (Only for Students) --- */}
+        {userRole === 'STUDENT_EARNER' && (
+          <div className="mb-10 p-5 rounded-lg border border-red-100 bg-red-50/30">
+            <div className="flex items-start gap-4">
+              <div className="mt-1 bg-red-100 p-2 rounded text-red-600">
+                <ShieldAlert size={20} />
+              </div>
+              <div className="flex-1 space-y-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <h3 className="text-base font-semibold text-[#37352f]">Emergency Location Alerts</h3>
+                    <p className="text-sm text-[#787774] mt-0.5">Automatically send a WhatsApp message with your live location to a trusted contact when starting a physical task.</p>
+                  </div>
+                  
+                  {/* Tailwind Toggle Switch */}
+                  <button
+                    type="button"
+                    disabled={!isEditing}
+                    onClick={() => setFormData({ ...formData, is_safety_enabled: !formData.is_safety_enabled })}
+                    className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${!isEditing ? 'opacity-60 cursor-not-allowed' : ''} ${formData.is_safety_enabled ? 'bg-red-500' : 'bg-gray-200'}`}
+                  >
+                    <span className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${formData.is_safety_enabled ? 'translate-x-5' : 'translate-x-0'}`} />
+                  </button>
+                </div>
+
+                {/* WhatsApp Number Input (Reveals when toggled ON) */}
+                {formData.is_safety_enabled && (
+                  <div className="pt-2">
+                    <label className="text-sm font-medium text-[#787774] flex items-center gap-2 mb-2">
+                      <MessageCircle size={14} className="text-green-600" /> WhatsApp Emergency Number
+                    </label>
+                    {isEditing ? (
+                      <input 
+                        type="text" 
+                        value={formData.emergency_whatsapp_number} 
+                        onChange={(e) => setFormData({ ...formData, emergency_whatsapp_number: e.target.value })} 
+                        className="w-full max-w-md bg-white border border-[#e0e0e0] rounded px-3 py-2 text-sm text-[#37352f] focus:outline-none focus:border-red-400 transition-colors" 
+                        placeholder="e.g. 0701470882"
+                      />
+                    ) : (
+                      <div className="px-3 py-2 text-sm font-medium text-[#37352f] bg-white border border-[#e0e0e0] rounded max-w-md">
+                        {profile?.emergency_whatsapp_number || formData.emergency_whatsapp_number}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+        {/* --- END SECURITY COMPONENT --- */}
 
         {/* Minimalist Metrics Footer */}
         {profile?.metrics && (

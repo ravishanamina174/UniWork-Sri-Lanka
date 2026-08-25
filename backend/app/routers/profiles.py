@@ -1,6 +1,13 @@
+# app/routers/profiles.py
+from datetime import datetime
+from typing import Optional
 from fastapi import APIRouter, HTTPException, status
 from app.core.database import mongo_db
-from app.models.schemas_pydantic import ProfileUpdateRequest, ProfileResponse
+from app.models.schemas_pydantic import (
+    ProfileUpdateRequest, 
+    ProfileResponse, 
+    EmergencyLogRequest
+)
 import logging
 
 router = APIRouter(prefix="/api/v1/profiles", tags=["Profiles Management"])
@@ -27,7 +34,9 @@ async def get_user_profile(clerk_id: str):
             "address": "",
             "bio": "",
             "skill_tags": auth_user.get("skill_tags", []) if role == "STUDENT_EARNER" else [],
-            "business_name": auth_user.get("business_name", "") if role == "CORPORATE_CLIENT" else ""
+            "business_name": auth_user.get("business_name", "") if role == "CORPORATE_CLIENT" else "",
+            "is_safety_enabled": False,
+            "emergency_whatsapp_number": ""
         }
         await mongo_db["user_profiles"].insert_one(profile)
 
@@ -37,7 +46,6 @@ async def get_user_profile(clerk_id: str):
     metadata = {}
 
     if role == "STUDENT_EARNER":
-        # Pull real task completions count from database instances
         metrics["primary_label"] = "Completed Tasks"
         metrics["secondary_label"] = "Total Earnings (LKR)"
         metadata["extra_label"] = "Skills Portfolio"
@@ -62,7 +70,9 @@ async def get_user_profile(clerk_id: str):
         "address": profile.get("address", ""),
         "bio": profile.get("bio", ""),
         "metadata": metadata,
-        "metrics": metrics
+        "metrics": metrics,
+        "is_safety_enabled": profile.get("is_safety_enabled", False),
+        "emergency_whatsapp_number": profile.get("emergency_whatsapp_number", "")
     }
 
 @router.put("/{clerk_id}", status_code=status.HTTP_200_OK)
@@ -73,7 +83,9 @@ async def update_user_profile(clerk_id: str, payload: ProfileUpdateRequest):
             "email": payload.email,
             "phone_number": payload.phone_number,
             "address": payload.address,
-            "bio": payload.bio
+            "bio": payload.bio,
+            "is_safety_enabled": payload.is_safety_enabled,
+            "emergency_whatsapp_number": payload.emergency_whatsapp_number
         }
         
         # Include fields safely dynamically
@@ -91,3 +103,23 @@ async def update_user_profile(clerk_id: str, payload: ProfileUpdateRequest):
         return {"status": "success", "message": "Profile synced correctly"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database modification fault: {str(e)}")
+
+# NEW ENDPOINT: Records location & student check-in when starting a task
+@router.post("/emergency-log", status_code=status.HTTP_201_CREATED)
+async def record_emergency_location(payload: EmergencyLogRequest):
+    try:
+        log_document = {
+            "clerk_id": payload.clerk_id,
+            "user_type": "STUDENT_EARNER",
+            "timestamp": datetime.utcnow().isoformat(),
+            "location": {
+                "latitude": payload.latitude,
+                "longitude": payload.longitude
+            },
+            "task_id": payload.task_id
+        }
+        
+        await mongo_db["students_emergency"].insert_one(log_document)
+        return {"status": "success", "message": "Emergency location check-in logged successfully"}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Emergency log storage error: {str(e)}")

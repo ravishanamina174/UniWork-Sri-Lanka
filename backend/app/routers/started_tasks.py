@@ -113,7 +113,7 @@ async def verify_start_code(payload: VerifyStartCodeRequest):
 @router.post("/verify-location")
 async def verify_location(payload: VerifyLocationRequest):
     """
-    Checks if student's current coordinates are within 50 meters 
+    Checks if student's current coordinates are within  100 meters 
     of the target gig coordinates stored in MongoDB.
     """
     # Find application & associated gig
@@ -144,13 +144,13 @@ async def verify_location(payload: VerifyLocationRequest):
         lon2=gig_lon
     )
 
-    # 50 Meters Threshold Check
-    RADIUS_THRESHOLD = 50.0
+    # 100 Meters Threshold Check
+    RADIUS_THRESHOLD = 100.0
 
     if distance > RADIUS_THRESHOLD:
         raise HTTPException(
             status_code=400,
-            detail=f"Location verification failed. You are currently {round(distance, 1)}m away. You must be within 50 meters of the pinned task location."
+            detail=f"Location verification failed. You are currently {round(distance, 1)}m away. You must be within 100 meters of the pinned task location."
         )
 
     # Update task start status

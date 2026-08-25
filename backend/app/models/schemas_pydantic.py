@@ -71,6 +71,9 @@ class ProfileUpdateRequest(BaseModel):
     bio: Optional[str] = ""
     skill_tags: Optional[List[str]] = []
     business_name: Optional[str] = ""
+    # Emergency safety fields
+    is_safety_enabled: Optional[bool] = False
+    emergency_whatsapp_number: Optional[str] = ""
 
 class ProfileResponse(BaseModel):
     clerk_id: str
@@ -82,6 +85,16 @@ class ProfileResponse(BaseModel):
     bio: str
     metadata: dict
     metrics: dict
+    # Emergency safety fields
+    is_safety_enabled: bool = False
+    emergency_whatsapp_number: str = ""
+
+# Request schema for emergency location check-in logs
+class EmergencyLogRequest(BaseModel):
+    clerk_id: str
+    latitude: float
+    longitude: float
+    task_id: Optional[str] = None
 
 # --- NEW: Application Schemas ---
 
