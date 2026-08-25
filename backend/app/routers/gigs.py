@@ -1,10 +1,14 @@
 # backend/app/routers/gigs.py
 from fastapi import APIRouter, HTTPException, status
 from app.core.database import mongo_db
-from app.models.schemas_pydantic import GigCreateRequest
+from app.models.schemas_pydantic import GigCreateRequest,AIEnhanceRequest, AIEnhanceResponse
 from datetime import datetime
 import pymongo
-from bson import ObjectId  # NEW: Imported ObjectId to parse URL parameters
+from bson import ObjectId  
+import httpx
+from app.core.config import settings # 1. Import your settings
+from google import genai
+
 
 router = APIRouter(prefix="/api/v1/gigs", tags=["Gigs Management"])
 
@@ -110,3 +114,26 @@ async def get_single_gig(gig_id: str):
             status_code=500, 
             detail=f"Internal database read exception triggered: {str(e)}"
         )
+
+
+@router.post("/enhance-text", response_model=AIEnhanceResponse)
+async def enhance_text_with_ai(payload: AIEnhanceRequest):
+    if not settings.GEMINI_API_KEY:
+        raise HTTPException(status_code=500, detail="Gemini API Key missing")
+
+    try:
+        client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
+        if payload.field_type == "title":
+            prompt = "Refine the following task title for a Sri Lankan freelancing platform. Fix grammar and phrasing. Output ONLY the refined title without quotes:\n"
+        else:
+            prompt = "Refine the following task description for a Sri Lankan freelancing platform. Fix grammar, spelling, and phrasing. Keep the exact original intent and keep it strictly under 100 words. Output ONLY the refined text without greetings or formatting:\n"
+
+        response = client.models.generate_content(
+            model='gemini-3.6-flash',
+            contents=prompt + payload.text,
+        )
+
+        return {"enhanced_text": response.text.strip()}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"AI generation failed: {str(e)}")

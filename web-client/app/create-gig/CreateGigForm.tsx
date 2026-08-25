@@ -3,7 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
-import { Send } from "lucide-react";
+import { Send, Sparkles, Copy, Check } from "lucide-react";
 
 const mapContainerStyle = {
   width: "100%",
@@ -36,6 +36,11 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
     deadline: "",
     skills: "",
   });
+
+  // --- NEW AI STATES ---
+  const [aiSuggestions, setAiSuggestions] = useState({ title: "", description: "" });
+  const [loadingAi, setLoadingAi] = useState({ title: false, description: false });
+  const [copied, setCopied] = useState({ title: false, description: false });
 
   const { isLoaded } = useJsApiLoader({
     id: 'google-map-script',
@@ -138,12 +143,43 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
     }
   };
 
+  // --- NEW AI HANDLERS ---
+  const handleEnhance = async (field: "title" | "description") => {
+    const textToEnhance = field === "title" ? formData.title : formData.description;
+    if (!textToEnhance.trim()) return alert(`Please enter a ${field} first.`);
+
+    setLoadingAi((prev) => ({ ...prev, [field]: true }));
+    try {
+      const res = await fetch("http://127.0.0.1:8000/api/v1/gigs/enhance-text", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: textToEnhance, field_type: field }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setAiSuggestions((prev) => ({ ...prev, [field]: data.enhanced_text }));
+      } else {
+        alert("Failed to get AI suggestion.");
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setLoadingAi((prev) => ({ ...prev, [field]: false }));
+    }
+  };
+
+  const handleCopy = (field: "title" | "description", text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied((prev) => ({ ...prev, [field]: true }));
+    setTimeout(() => setCopied((prev) => ({ ...prev, [field]: false })), 2000);
+  };
+
   // Helper to calculate words
   const wordCount = formData.description.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-200 p-8 rounded-2xl">
-      {/* Existing Text Inputs */}
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-200 p-8 rounded-2xl w-full">
+      {/* --- TITLE SECTION --- */}
       <div>
         <label className="block text-sm font-semibold text-slate-700 mb-1">Task Project Title</label>
         <input
@@ -154,8 +190,35 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
+        
+        {/* AI Title UI */}
+        <div className="mt-2 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={() => handleEnhance("title")}
+            disabled={loadingAi.title}
+            className="self-start text-xs font-medium text-[#2d913e] flex items-center gap-1 hover:underline transition-all"
+          >
+            <Sparkles size={14} /> {loadingAi.title ? "Analyzing..." : "Write with AI"}
+          </button>
+          
+          {aiSuggestions.title && (
+            <div className="p-3 bg-[#f3f9f4] border border-[#2d913e]/30 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+              <p className="text-sm text-slate-700 flex-1">{aiSuggestions.title}</p>
+              <button 
+                type="button" 
+                onClick={() => handleCopy("title", aiSuggestions.title)} 
+                className="text-slate-500 hover:text-[#2d913e] bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm transition-all"
+                title="Copy Suggestion"
+              >
+                {copied.title ? <Check size={16} className="text-[#2d913e]" /> : <Copy size={16} />}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
+      {/* --- DESCRIPTION SECTION --- */}
       <div>
         <div className="flex justify-between items-end mb-1">
           <label className="block text-sm font-semibold text-slate-700">Detailed Description</label>
@@ -172,13 +235,37 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           onChange={(e) => {
             const text = e.target.value;
             const words = text.trim().split(/\s+/).filter(Boolean);
-            
-            // Allow typing if under 100 words, OR if the user is deleting characters (backspacing)
             if (words.length <= 200 || text.length < formData.description.length) {
               setFormData({ ...formData, description: text });
             }
           }}
         />
+
+        {/* AI Description UI */}
+        <div className="mt-2 flex flex-col gap-2">
+          <button
+            type="button"
+            onClick={() => handleEnhance("description")}
+            disabled={loadingAi.description}
+            className="self-start text-xs font-medium text-[#2d913e] flex items-center gap-1 hover:underline transition-all"
+          >
+            <Sparkles size={14} /> {loadingAi.description ? "Drafting..." : "Write with AI"}
+          </button>
+          
+          {aiSuggestions.description && (
+            <div className="p-3 bg-[#f3f9f4] border border-[#2d913e]/30 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+              <p className="text-sm text-slate-700 flex-1 whitespace-pre-wrap">{aiSuggestions.description}</p>
+              <button 
+                type="button" 
+                onClick={() => handleCopy("description", aiSuggestions.description)} 
+                className="text-slate-500 hover:text-[#2d913e] bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm transition-all"
+                title="Copy Suggestion"
+              >
+                {copied.description ? <Check size={16} className="text-[#2d913e]" /> : <Copy size={16} />}
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

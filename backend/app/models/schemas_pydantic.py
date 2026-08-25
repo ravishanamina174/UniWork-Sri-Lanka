@@ -63,6 +63,16 @@ class GigResponse(BaseModel):
     task_type: str
     location: Optional[GeoJSONLocation] = None
 
+    
+# --- AI suggestion Gig Schemas ---
+class AIEnhanceRequest(BaseModel):
+    text: str
+    field_type: str  # Expects "title" or "description"
+
+class AIEnhanceResponse(BaseModel):
+    enhanced_text: str
+
+
 class ProfileUpdateRequest(BaseModel):
     display_name: str
     email: EmailStr
