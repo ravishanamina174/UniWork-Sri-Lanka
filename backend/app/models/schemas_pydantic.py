@@ -94,7 +94,7 @@ class EmergencyLogRequest(BaseModel):
     clerk_id: str
     latitude: float
     longitude: float
-    task_id: Optional[str] = None
+    application_id: Optional[str] = None
 
 # --- NEW: Application Schemas ---
 

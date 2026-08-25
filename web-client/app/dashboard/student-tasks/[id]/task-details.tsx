@@ -202,7 +202,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                 clerk_id: userId,
                 latitude: position.coords.latitude,
                 longitude: position.coords.longitude,
-                task_id: gigData?.title || applicationId
+                application_id: applicationId
               })
             }).catch(e => console.error("Emergency logging failed", e)); // Catch silently
 

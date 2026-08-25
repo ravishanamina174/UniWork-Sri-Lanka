@@ -116,7 +116,7 @@ async def record_emergency_location(payload: EmergencyLogRequest):
                 "latitude": payload.latitude,
                 "longitude": payload.longitude
             },
-            "task_id": payload.task_id
+            "application_id": payload.application_id
         }
         
         await mongo_db["students_emergency"].insert_one(log_document)
