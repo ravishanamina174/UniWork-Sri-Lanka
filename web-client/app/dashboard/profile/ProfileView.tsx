@@ -255,14 +255,14 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
         )}
         {/* --- END SECURITY COMPONENT --- */}
 
-        {/* Minimalist Metrics Footer */}
-        {profile?.metrics && (
+        {/* Minimalist Metrics Footer - ONLY VISIBLE TO STUDENTS */}
+        {profile?.metrics && userRole === 'STUDENT_EARNER' && (
           <>
             <div className="w-full h-px bg-[#ededed] mb-6" />
             <div className="flex gap-16">
               <div className="space-y-1">
                 <div className="text-xs font-medium text-[#787774] uppercase tracking-wider">
-                  {profile?.metrics?.primary_label || 'Tasks Completed'}
+                  {profile?.metrics?.primary_label || 'Completed Tasks'}
                 </div>
                 <div className="text-2xl font-semibold text-[#37352f]">
                   {profile?.metrics?.primary_stat || 0}
@@ -270,10 +270,10 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
               </div>
               <div className="space-y-1">
                 <div className="text-xs font-medium text-[#787774] uppercase tracking-wider">
-                  {profile?.metrics?.secondary_label || 'Rating'}
+                  {profile?.metrics?.secondary_label || 'Total Earnings (LKR)'}
                 </div>
                 <div className="text-2xl font-semibold text-[#37352f]">
-                  {profile?.metrics?.secondary_stat || 0}
+                  {profile?.metrics?.secondary_stat?.toLocaleString() || 0}
                 </div>
               </div>
             </div>

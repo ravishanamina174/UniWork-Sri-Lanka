@@ -6,7 +6,8 @@ from app.core.database import mongo_db
 from app.models.schemas_pydantic import (
     ProfileUpdateRequest, 
     ProfileResponse, 
-    EmergencyLogRequest
+    EmergencyLogRequest,
+    TaskCompletionRequest 
 )
 import logging
 
@@ -36,7 +37,9 @@ async def get_user_profile(clerk_id: str):
             "skill_tags": auth_user.get("skill_tags", []) if role == "STUDENT_EARNER" else [],
             "business_name": auth_user.get("business_name", "") if role == "CORPORATE_CLIENT" else "",
             "is_safety_enabled": False,
-            "emergency_whatsapp_number": ""
+            "emergency_whatsapp_number": "",
+            "completed_tasks": 0, # NEW FIELD
+            "total_earnings": 0.0 # NEW FIELD
         }
         await mongo_db["user_profiles"].insert_one(profile)
 
@@ -48,6 +51,10 @@ async def get_user_profile(clerk_id: str):
     if role == "STUDENT_EARNER":
         metrics["primary_label"] = "Completed Tasks"
         metrics["secondary_label"] = "Total Earnings (LKR)"
+        # Map the actual DB fields here (default to 0 if they don't exist yet)
+        metrics["primary_stat"] = profile.get("completed_tasks", 0) 
+        metrics["secondary_stat"] = profile.get("total_earnings", 0.0)
+        
         metadata["extra_label"] = "Skills Portfolio"
         metadata["extra_value"] = ", ".join(profile.get("skill_tags", [])) or "None specified"
     elif role == "TASK_POSTER":
@@ -103,6 +110,62 @@ async def update_user_profile(clerk_id: str, payload: ProfileUpdateRequest):
         return {"status": "success", "message": "Profile synced correctly"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database modification fault: {str(e)}")
+
+
+
+@router.post("/{clerk_id}/complete-task", status_code=status.HTTP_200_OK)
+async def record_task_completion(clerk_id: str, payload: TaskCompletionRequest):
+    """
+    Safely increments completed_tasks and total_earnings even if 
+    the fields were previously stored as strings in MongoDB.
+    """
+    try:
+        profile = await mongo_db["user_profiles"].find_one({"clerk_id": clerk_id})
+        if not profile:
+            raise HTTPException(
+                status_code=404, 
+                detail="User profile not found."
+            )
+
+        # Safely extract and convert existing values
+        try:
+            current_tasks = int(profile.get("completed_tasks", 0))
+        except (ValueError, TypeError):
+            current_tasks = 0
+
+        try:
+            current_earnings = float(profile.get("total_earnings", 0.0))
+        except (ValueError, TypeError):
+            current_earnings = 0.0
+
+        # Calculate updated metrics
+        updated_tasks = current_tasks + 1
+        updated_earnings = current_earnings + payload.earned_amount
+
+        # Write numeric values back to Mongo
+        await mongo_db["user_profiles"].update_one(
+            {"clerk_id": clerk_id},
+            {
+                "$set": {
+                    "completed_tasks": updated_tasks,
+                    "total_earnings": updated_earnings
+                }
+            }
+        )
+
+        return {
+            "status": "success",
+            "message": f"Successfully recorded completion. Earnings increased by LKR {payload.earned_amount}."
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Failed to update task metrics: {str(e)}"
+        )
+
+
 
 # NEW ENDPOINT: Records location & student check-in when starting a task
 @router.post("/emergency-log", status_code=status.HTTP_201_CREATED)

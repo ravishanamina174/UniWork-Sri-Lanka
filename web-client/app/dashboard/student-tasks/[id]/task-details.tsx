@@ -4,7 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from "@clerk/nextjs";
 import { 
   Calendar, MapPin, User, Mail, Phone, Building2, Loader2, AlertCircle, 
-  Play, CheckCircle2, Clock, ShieldCheck, KeyRound, Navigation, MessageCircle
+  Play, CheckCircle2, Clock, ShieldCheck, KeyRound, Navigation, MessageCircle,
+  DollarSign, ArrowLeft
 } from 'lucide-react';
 import TaskMap from "@/components/TaskMap";
 
@@ -36,7 +37,7 @@ const getSkillBadgeColor = (index: number) => {
 };
 
 export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
-  const { userId } = useAuth(); // Needed to fetch the current student's safety settings
+  const { userId } = useAuth(); // Current student ID
   const [appData, setAppData] = useState<any>(null);
   const [gigData, setGigData] = useState<any>(null);
   const [posterData, setPosterData] = useState<any>(null);
@@ -44,7 +45,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
   // Student Profile / Safety States
   const [isSafetyEnabled, setIsSafetyEnabled] = useState(false);
-  const [emergencyNumber, setEmergencyNumber] = useState("0701470882"); // Defaulting to your demo number
+  const [emergencyNumber, setEmergencyNumber] = useState("0701470882"); 
   const [showWhatsAppPrompt, setShowWhatsAppPrompt] = useState(false);
   const [whatsappLink, setWhatsappLink] = useState("");
 
@@ -55,6 +56,10 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
   const [isCodeVerified, setIsCodeVerified] = useState(false);
   const [starterError, setStarterError] = useState<string | null>(null);
   const [starterSuccess, setStarterSuccess] = useState<string | null>(null);
+
+  // Task Completion & Payment Verification States
+  const [showPaymentStep, setShowPaymentStep] = useState(false);
+  const [customEarningsInput, setCustomEarningsInput] = useState('');
 
   // Fetch Task Starter Live State
   const fetchTaskStarterState = useCallback(async () => {
@@ -79,7 +84,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         const appInfo = await appRes.json();
         setAppData(appInfo);
 
-        // 2. Concurrently fetch Gig Details, Poster Profile, AND Current Student Profile (for safety feature)
+        // 2. Concurrently fetch Gig Details, Poster Profile, AND Current Student Profile
         const fetchPromises = [
           fetch(`http://127.0.0.1:8000/api/v1/gigs/${appInfo.gig_id}`),
           fetch(`http://127.0.0.1:8000/api/v1/profiles/${appInfo.poster_clerk_id}`)
@@ -194,7 +199,6 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
           // --- SAFETY FEATURE EXECUTION ---
           if (isSafetyEnabled && userId) {
-            // Log to emergency DB
             await fetch(`http://127.0.0.1:8000/api/v1/profiles/emergency-log`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -204,23 +208,20 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                 longitude: position.coords.longitude,
                 application_id: applicationId
               })
-            }).catch(e => console.error("Emergency logging failed", e)); // Catch silently
+            }).catch(e => console.error("Emergency logging failed", e));
 
-            // Format number for Sri Lanka (e.g., 070... becomes 9470...)
             let formattedNum = emergencyNumber;
             if (formattedNum.startsWith('0')) {
               formattedNum = '94' + formattedNum.substring(1);
             }
             
-            // Build direct WhatsApp link
             const mapLink = `https://maps.google.com/?q=${position.coords.latitude},${position.coords.longitude}`;
             const taskName = gigData?.title || 'a new task';
             const message = encodeURIComponent(`🚨 UNIWORK Alert: Hi! I have officially started my task: "${taskName}". My current live location is: ${mapLink}`);
             
             setWhatsappLink(`https://wa.me/${formattedNum}?text=${message}`);
-            setShowWhatsAppPrompt(true); // Open Popup Notification
+            setShowWhatsAppPrompt(true);
           }
-          // -------------------------------
 
           setStarterSuccess("Location verified! Task has officially started.");
           await fetchTaskStarterState();
@@ -238,19 +239,41 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     );
   };
 
-  const handleStudentEndTask = async () => {
+  // Finalize Task End and Atomic Database Update
+  const handleFinalizeTaskCompletion = async (finalAmount: number) => {
+    if (finalAmount < 0 || isNaN(finalAmount)) {
+      setStarterError("Please enter a valid payment amount.");
+      return;
+    }
+
     setStarterLoading(true);
     setStarterError(null);
     setStarterSuccess(null);
+
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/student-end`, {
+      // 1. Mark task as ended in the started-tasks endpoint
+      const endRes = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/student-end`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ application_id: applicationId }),
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.detail || "Failed to end task.");
-      setStarterSuccess("Task ended successfully.");
+      const endData = await endRes.json();
+      if (!endRes.ok) throw new Error(endData.detail || "Failed to end task.");
+
+      // 2. Increment completed_tasks (+1) and total_earnings (+finalAmount) in profile collection
+      if (userId) {
+        const metricRes = await fetch(`http://127.0.0.1:8000/api/v1/profiles/${userId}/complete-task`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ earned_amount: finalAmount }),
+        });
+        if (!metricRes.ok) {
+          console.error("Failed to sync metrics with student profile.");
+        }
+      }
+
+      setStarterSuccess(`Task completed! Earned LKR ${finalAmount.toLocaleString()} added to your profile.`);
+      setShowPaymentStep(false);
       await fetchTaskStarterState();
     } catch (err: any) {
       setStarterError(err.message);
@@ -259,13 +282,11 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     }
   };
 
-  // Calculate day countdown
   const calculateDaysLeft = (deadlineStr: string) => {
     if (!deadlineStr || deadlineStr === "TBD") return 0;
     const deadlineDate = new Date(deadlineStr);
     const today = new Date();
 
-    // Normalize to midnight
     deadlineDate.setHours(0, 0, 0, 0);
     today.setHours(0, 0, 0, 0);
 
@@ -314,8 +335,8 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                 href={whatsappLink}
                 target="_blank"
                 rel="noopener noreferrer"
-                onClick={() => setShowWhatsAppPrompt(false)} // Close modal when clicked
-                className="w-full bg-[#25D366] hover:bg-[#eff3f1] hover:text-[#3d3f3e] hover:shadow-none text-white font-medium py-3 px-3 rounded-xl shadow-sm  flex items-center justify-center gap-2 transition-all active:scale-95"
+                onClick={() => setShowWhatsAppPrompt(false)}
+                className="w-full bg-[#25D366] hover:bg-[#eff3f1] hover:text-[#3d3f3e] text-white font-medium py-3 px-3 rounded-xl shadow-sm flex items-center justify-center gap-2 transition-all active:scale-95"
               >
                 <MessageCircle size={20} />
                 Notify Guardian on WhatsApp
@@ -334,10 +355,9 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
       <div className="grid grid-cols-12 gap-4 md:gap-6 w-[90%] md:max-w-4xl mx-auto">
 
-        {/* 1. Gig Details Area (Full Width Horizontal Card) */}
+        {/* 1. Gig Details Area */}
         <div className="col-span-12 bg-white rounded-xl border border-gray-200 p-6 hover:shadow-xs transition-shadow">
           <div className="flex flex-col lg:flex-row gap-6">
-            {/* Left Side Info */}
             <div className="flex-1 lg:max-w-[40%] flex flex-col gap-3">
               <div className="flex items-center gap-3 mb-1">
                 <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${category.classes}`}>
@@ -369,7 +389,6 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
               </div>
             </div>
 
-            {/* Right Side Info */}
             <div className="flex-1 border-t lg:border-t-0 lg:border-l border-slate-100 pt-4 lg:pt-0 lg:pl-6 flex flex-col">
               <h4 className="text-sm font-bold text-slate-700 mb-2">Task Description</h4>
               <p className="text-sm text-slate-600 flex-1 whitespace-pre-wrap">
@@ -412,7 +431,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
           </p>
         </div>
 
-        {/* 3. Posters Details */}
+        {/* 3. Poster Details */}
         <div className="col-span-12 md:col-span-8 bg-white rounded-xl border border-gray-200 p-6 min-h-[200px] hover:shadow-xs ">
           <h3 className="font-bold text-lg text-slate-900 mb-5 flex items-center gap-2">
             <User className="text-[#c27f13]" size={18}/> Corporate Client Profile
@@ -485,34 +504,95 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
             ) : taskState?.task_start ? (
               /* ACTIVE STATE */
               <div className="space-y-3">
-                <div className="bg-blue-50 border border-blue-100 rounded-lg p-3.5 flex items-center justify-between">
-                  <div>
-                    <p className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
-                      <Clock size={14} className="text-blue-600" /> Task Currently Active
-                    </p>
-                    <p className="text-[11px] text-blue-700 mt-1">
-                      Started: {taskState?.task_start_time ? new Date(taskState.task_start_time).toLocaleTimeString() : 'N/A'}
-                    </p>
-                  </div>
-                  <span className="text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white px-2 py-0.5 rounded">
-                    In Progress
-                  </span>
-                </div>
+                {showPaymentStep ? (
+                  /* PAYMENT & COMPLETION VERIFICATION VIEW */
+                  <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-4">
+                    <div className="flex items-center justify-between border-b border-slate-200 pb-2">
+                      <p className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+                        <DollarSign size={15} className="text-emerald-600" /> Confirm Task Payment
+                      </p>
+                      <button 
+                        onClick={() => setShowPaymentStep(false)}
+                        className="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1"
+                      >
+                        <ArrowLeft size={12} /> Back
+                      </button>
+                    </div>
 
-                {taskState?.end_code && (
-                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
-                    <p className="text-xs font-semibold text-amber-800 mb-1">Poster Termination Code</p>
-                    <p className="text-2xl font-black text-amber-900 tracking-widest">{taskState.end_code}</p>
+                    <div className="space-y-2">
+                      <p className="text-xs font-semibold text-slate-700">
+                        Has the poster paid the agreed budget?
+                      </p>
+                      
+                      {/* Agreep Budget Fast Confirmation */}
+                      <button
+                        onClick={() => handleFinalizeTaskCompletion(Number(gigData?.budget || 0))}
+                        disabled={starterLoading}
+                        className="w-full py-2 px-3 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-between disabled:opacity-50"
+                      >
+                        <span>Yes, received agreed budget</span>
+                        <span className="bg-emerald-700 px-2 py-0.5 rounded text-[11px]">
+                          LKR {gigData?.budget?.toLocaleString() || 0}
+                        </span>
+                      </button>
+                    </div>
+
+                    {/* Custom Payment Amount Input */}
+                    <div className="pt-2 border-t border-slate-200/80 space-y-2">
+                      <label className="text-[11px] font-medium text-slate-500 block">
+                        Otherwise, how much did the poster pay you?
+                      </label>
+                      <div className="flex gap-2">
+                        <input
+                          type="number"
+                          value={customEarningsInput}
+                          onChange={(e) => setCustomEarningsInput(e.target.value)}
+                          placeholder="e.g. 5000"
+                          className="flex-1 border border-slate-300 rounded-lg px-3 py-1.5 text-xs text-slate-800 focus:outline-none focus:border-emerald-500 bg-white"
+                        />
+                        <button
+                          onClick={() => handleFinalizeTaskCompletion(Number(customEarningsInput))}
+                          disabled={starterLoading || !customEarningsInput}
+                          className="px-3 py-1.5 bg-slate-800 hover:bg-slate-900 text-white font-bold text-xs rounded-lg transition-colors disabled:opacity-50 flex items-center gap-1"
+                        >
+                          {starterLoading ? <Loader2 className="animate-spin" size={12} /> : "Submit"}
+                        </button>
+                      </div>
+                    </div>
                   </div>
+                ) : (
+                  /* IN-PROGRESS ACTIVE CONTROLS */
+                  <>
+                    <div className="bg-blue-50 border border-blue-100 rounded-lg p-3.5 flex items-center justify-between">
+                      <div>
+                        <p className="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+                          <Clock size={14} className="text-blue-600" /> Task Currently Active
+                        </p>
+                        <p className="text-[11px] text-blue-700 mt-1">
+                          Started: {taskState?.task_start_time ? new Date(taskState.task_start_time).toLocaleTimeString() : 'N/A'}
+                        </p>
+                      </div>
+                      <span className="text-[10px] font-black uppercase tracking-wider bg-blue-600 text-white px-2 py-0.5 rounded">
+                        In Progress
+                      </span>
+                    </div>
+
+                    {taskState?.end_code && (
+                      <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-center">
+                        <p className="text-xs font-semibold text-amber-800 mb-1">Poster Termination Code</p>
+                        <p className="text-2xl font-black text-amber-900 tracking-widest">{taskState.end_code}</p>
+                      </div>
+                    )}
+
+                    <button
+                      onClick={() => setShowPaymentStep(true)}
+                      disabled={starterLoading}
+                      className="w-full py-2.5 bg-[#BE1A1A] hover:bg-[#a41717] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                    >
+                      {starterLoading ? <Loader2 className="animate-spin" size={14} /> : "End Task"}
+                    </button>
+                  </>
                 )}
-
-                <button
-                  onClick={handleStudentEndTask}
-                  disabled={starterLoading}
-                  className="w-full py-2.5 bg-[#BE1A1A] hover:bg-[#a41717] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
-                >
-                  {starterLoading ? <Loader2 className="animate-spin" size={14} /> : "End Task"}
-                </button>
               </div>
             ) : (
               /* NOT STARTED STATE */
@@ -590,19 +670,15 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
             </h3>
 
             <div className="flex-1 bg-slate-50/80 border border-slate-200 rounded-lg flex flex-col items-center justify-center p-4 text-center relative overflow-hidden group min-h-[180px] w-full">
-
-              {/* Interactive Pigeon Map Background */}
               <div className="absolute inset-0 opacity-70 group-hover:opacity-100 transition-opacity duration-300">
                 <TaskMap coordinates={gigData.location?.coordinates} />
               </div>
 
-              {/* Map Pin Box - UI overlay on top of the map */}
               <div className="bg-white/95 backdrop-blur-sm px-4 py-3 rounded-[6px] border border-slate-200 shadow-sm flex flex-col items-center z-10 w-[95%] transition-transform duration-300 group-hover:-translate-y-1 mt-auto">
                 <span className="text-sm font-semibold text-slate-700 leading-snug truncate w-full">
                   {gigData.location?.address || "Exact location pinned on map"}
                 </span>
               </div>
-
             </div>
           </div>
         )}

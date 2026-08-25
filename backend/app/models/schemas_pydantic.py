@@ -89,6 +89,9 @@ class ProfileResponse(BaseModel):
     is_safety_enabled: bool = False
     emergency_whatsapp_number: str = ""
 
+class TaskCompletionRequest(BaseModel):
+    earned_amount: float = Field(..., ge=0, description="Amount received by the student for the task (LKR)")
+
 # Request schema for emergency location check-in logs
 class EmergencyLogRequest(BaseModel):
     clerk_id: str
