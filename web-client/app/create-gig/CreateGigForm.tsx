@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { GoogleMap, useJsApiLoader, Marker } from "@react-google-maps/api";
+import { Send } from "lucide-react";
 
 const mapContainerStyle = {
   width: "100%",
@@ -141,7 +142,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
   const wordCount = formData.description.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-300 p-8 rounded-2xl">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-200 p-8 rounded-2xl">
       {/* Existing Text Inputs */}
       <div>
         <label className="block text-sm font-semibold text-slate-700 mb-1">Task Project Title</label>
@@ -291,9 +292,10 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
       <button
         type="submit"
         disabled={loading || (taskType === "on-site" && !selectedLocation)}
-        className="w-full py-3 bg-[#2d913e] hover:bg-[#2b6e36] text-white font-medium rounded-xl transition-all shadow-md shadow-indigo-100 disabled:bg-slate-300 active:scale-[0.99] mt-6"
+        className="w-full py-3 bg-white hover:bg-[#e8e9ec] text-[#28292b] border border-[#afb2b6] md:text-[14px] text-sm font-semibold rounded-xl transition-all shadow-sm active:scale-[0.99] mt-6 flex items-center justify-center gap-2 "
       >
-        {loading ? "Publishing to Ecosystem..." : "Publish Task Card"}
+        {loading ? "Publishing to Ecosystem..." : <>Publish Task Card <Send size={16} color="#189e49" /></>}
+
       </button>
     </form>
   );
