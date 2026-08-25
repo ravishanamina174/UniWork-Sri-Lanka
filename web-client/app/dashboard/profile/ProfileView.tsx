@@ -64,7 +64,7 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-6 mb-12">
           <div className="flex items-center gap-4">
             {/* Minimalist Icon Box */}
-            <div className="w-16 h-16 rounded shadow-sm border border-[#e0e0e0] flex items-center justify-center text-3xl bg-white shrink-0">
+            <div className="w-16 h-16 rounded-[7px] shadow-sm border border-[#e0e0e0] flex items-center justify-center text-3xl bg-white shrink-0">
               {userRole === 'STUDENT_EARNER' ? '🎓' : userRole === 'TASK_POSTER' ? '💡' : '🏢'}
             </div>
 

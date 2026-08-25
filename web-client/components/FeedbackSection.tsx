@@ -14,7 +14,7 @@ const SUGGESTION_CARDS = [
   "Student Verification Badges",
   "Location-based Filters",
   "Poster Ratings & Reviews",
-  "Dispute Resolution Hub"
+  "Student Buddy System"
 ];
 
 // Helper to generate the multi-colored border aesthetic matching your tags

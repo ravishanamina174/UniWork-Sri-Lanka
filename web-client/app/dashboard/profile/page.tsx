@@ -1,6 +1,7 @@
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import ProfileView from "./ProfileView";
+import ProfessionalProfile from './ProfessionalProfile';
 
 export default async function ProfilePage() {
   const { userId } = await auth();
@@ -108,8 +109,14 @@ export default async function ProfilePage() {
           baseEmail={baseEmail} 
           initialProfile={profileData} 
         />
+        <ProfessionalProfile 
+          userId={userId} 
+          userRole={userRole} 
+          // ADD THESE TWO LINES 👇
+          displayName={profileData?.display_name || ""}
+          phoneNumber={profileData?.phone_number || ""}
+        />
       </div>
-
     </div>
   );
 }

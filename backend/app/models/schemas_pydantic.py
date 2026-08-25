@@ -1,6 +1,6 @@
 # backend/app/models/schemas_pydantic.py
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field , field_validator
 from typing import List, Optional, Tuple
 
 class BaseRegisterRequest(BaseModel):
@@ -200,3 +200,50 @@ class FeedbackResponse(BaseModel):
     issue_cards: List[str]
     feedback_description: str
     created_at: datetime
+
+class ProfessionalWorkerProfileCreateUpdate(BaseModel):
+    student_clerk_id: str
+    display_name: str
+    phone_number: str
+    bio: str = Field(..., max_length=2000, description="Professional summary (max 300 words)")
+    skills: List[str] = Field(..., max_items=10, description="Up to 10 skills")
+    primary_location: str
+    secondary_location: Optional[str] = None
+    working_hours: str  # e.g., "Weekends only", "After 5 PM", "Full-time during holidays", "Everyday", "Every weekday"
+    languages: List[str]  # e.g., ["Sinhala", "English"]
+    transportation: str  # e.g., "Motorbike", "Public Transit Only"
+
+    @field_validator("bio")
+    @classmethod
+    def validate_bio_word_count(cls, v: str) -> str: 
+        words = v.strip().split()
+        if len(words) > 300:
+            raise ValueError("Bio must not exceed 300 words.")
+        return v
+
+class ProfessionalWorkerProfileResponse(ProfessionalWorkerProfileCreateUpdate):
+    updated_at: str
+
+class StudentLookupRequest(BaseModel):
+    poster_query: str = Field(..., description="Natural language description of desired candidate")
+    limit: Optional[int] = 5
+
+class MatchedStudentDetail(BaseModel):
+    student_clerk_id: str
+    display_name: str
+    fit_score: int  # 1-100 score
+    match_reason: str
+    primary_location: str
+    secondary_location: Optional[str] = None
+    skills: List[str]
+    working_hours: str
+    transportation: str
+    completed_tasks: int
+    total_earnings: float
+
+class StudentLookupResponse(BaseModel):
+    status: str = "success"
+    query: str
+    total_candidates_analyzed: int
+    filtered_student_clerk_ids: List[str]
+    matched_students: List[MatchedStudentDetail]

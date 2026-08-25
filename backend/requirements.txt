@@ -9,5 +9,7 @@ motor==3.6.0
 PyJWT[crypto]==2.10.1
 requests==2.32.3
 langgraph==0.0.65
+langchain==0.3.18
+langchain-google-genai==2.0.10
 pinecone-client==5.0.1
 websockets==14.1
