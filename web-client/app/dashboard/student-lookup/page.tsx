@@ -121,15 +121,15 @@ export default function StudentLookupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 p-6 md:p-10">
+    <div className="min-h-screen  p-6 md:py-10 md:px-25">
       <div className="max-w-6xl mx-auto space-y-8">
         {/* Header */}
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Sparkles className="w-6 h-6 text-[#EC5B38]" />
+            <Sparkles className="w-6 h-6 text-[#BD4444]" />
             AI Student Talent Matcher
           </h1>
-          <p className="text-gray-500 text-sm mt-1">
+          <p className="text-[#7f8185]  text-sm mt-1">
             Describe the kind of student earner you need for your task. Our AI multi-agent graph will evaluate candidates across skills, availability, and location.
           </p>
         </div>
@@ -145,7 +145,7 @@ export default function StudentLookupPage() {
               onChange={(e) => setQuery(e.target.value)}
               placeholder="e.g. Need a reliable photographer in Meepe or Colombo with a motorbike available on weekends for product photography..."
               rows={3}
-              className="w-full p-4 text-sm bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-600 transition resize-none"
+              className="w-full p-4 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:bg-white focus:outline-none focus:ring-1 focus:ring-[#e2b8b8] focus:border-[#e5acac] transition resize-none"
             />
           </div>
           <div className="flex items-center justify-between pt-2">
@@ -155,7 +155,7 @@ export default function StudentLookupPage() {
             <button
               type="submit"
               disabled={isLoading || !query.trim()}
-              className="inline-flex items-center gap-2 px-6 py-2.5 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium text-sm rounded-xl shadow-sm transition"
+              className="inline-flex items-center gap-2 px-6 py-2.5 border bg-[#ffffff] border-[#BD4444] hover:border-[#afb2b6] hover:bg-[#e8e9ec] disabled:bg-blue-300 text-[#BD4444] hover:text-[#323232] text-sm md:text-[14px] font-semibold rounded-lg shadow-sm transition"
             >
               {isLoading ? (
                 <>
@@ -210,12 +210,12 @@ export default function StudentLookupPage() {
             {students.map((student) => (
               <div 
                 key={student.clerk_id}
-                className="bg-white rounded-lg border border-gray-200 p-6 hover:border-blue-200 transition space-y-5"
+                className="bg-white rounded-lg border border-gray-200 p-6 hover:border-[#b7cbae] transition space-y-5"
               >
                 {/* Profile Header & Fit Score */}
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-lg">
+                    <div className="w-12 h-12 rounded-full bg-[#f9fdf6] text-[#607456] border border-[#8bac7b] font-bold flex items-center justify-center text-lg">
                       {student.display_name.charAt(0)}
                     </div>
                     <div>
@@ -234,16 +234,16 @@ export default function StudentLookupPage() {
                   </div>
 
                   {/* AI Fit Badge */}
-                  <div className="flex items-center gap-2 bg-blue-50 border border-blue-100 px-3 py-1.5 rounded-xl self-start sm:self-center">
-                    <Sparkles className="w-4 h-4 text-blue-600" />
-                    <span className="text-sm font-semibold text-blue-900">
+                  <div className="flex items-center gap-2 bg-white border border-[#607456] px-3 py-1.5 rounded-lg self-start sm:self-center">
+                    <Sparkles className="w-4 h-4 text-[#607456]" />
+                    <span className="text-sm font-semibold text-[#607456]">
                       {student.fit_score}% Match
                     </span>
                   </div>
                 </div>
 
                 {/* AI Match Reason Box */}
-                <div className="p-3 bg-slate-50 border border-slate-200/60 rounded-xl text-xs text-slate-700">
+                <div className="p-3 bg-slate-50 border border-slate-200/60 rounded-lg text-xs text-slate-700">
                   <span className="font-semibold text-slate-900">AI Recommendation: </span>
                   {student.match_reason}
                 </div>
