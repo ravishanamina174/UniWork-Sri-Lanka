@@ -109,7 +109,7 @@ export default function HeroSection() {
       `}</style>
 
       <section className="relative w-full min-h-screen flex flex-col items-center pt-10 pb-15 overflow-hidden bg-white font-sans text-[#37352f]">
-        <div className="absolute top-0 inset-x-0 h-[700px] bg-gradient-to-b from-[#f8f9ff]/80 via-[#f4f0ff]/40 to-transparent pointer-events-none z-0" />
+        <div className="absolute top-0 inset-x-0 h-[768px] bg-gradient-to-b from-[#f8f7f6] to-[#fafaf9] pointer-events-none z-0 rounded-b-[3rem] border-b border-b-[#eae9e7] " />
 
         {/* Red Doodle */}
         <div className="absolute top-32 left-[4%] opacity-50 text-red-500 pointer-events-none select-none z-0 animate-pulse">
