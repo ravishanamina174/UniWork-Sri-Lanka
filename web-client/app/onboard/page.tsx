@@ -3,6 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { Send } from "lucide-react";
 
 export default function OnboardingPage() {
   const { user, isLoaded } = useUser();
@@ -125,12 +126,12 @@ export default function OnboardingPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-taupe-100 via-white to-taupe-100 p-4 md:p-8">
-      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl shadow-slate-100/70 border border-slate-200/60 overflow-hidden flex flex-col md:flex-row">
+      <div className="max-w-4xl w-full bg-white rounded-2xl shadow-xl shadow-slate-100/70 border border-slate-200 overflow-hidden flex flex-col md:flex-row">
         
         {/* Left Side: Illustration Container */}
         <div className="md:w-1/2 bg-slate-50 relative overflow-hidden border-b md:border-b-0 md:border-r border-slate-100 flex items-center justify-center min-h-[300px] md:min-h-full">
           <img 
-            src="/assets/login-illustration.jpg" 
+            src="/assets/grass.jpg" 
             alt="Login Illustration" 
             className="absolute inset-0 w-full h-full object-cover"
           />
@@ -139,8 +140,8 @@ export default function OnboardingPage() {
         {/* Right Side: Interactive Profile Onboarding Form */}
         <div className="md:w-1/2 p-8 md:p-10 flex flex-col justify-center">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight text-center">Complete Your Profile</h1>
-            <p className="text-sm text-slate-500 mt-1 text-center">Please select your primary role profile configuration.</p>
+            <h1 className="text-2xl font-semibold text-slate-900 tracking-tight text-center">Complete Your Profile</h1>
+            <p className="text-[14px] text-[#7f8185] font-light mt-1 text-center">Please select your primary role profile configuration.</p>
           </div>
           
           {/* Role Selector */}
@@ -152,7 +153,7 @@ export default function OnboardingPage() {
                 onClick={() => setRole(r as any)}
                 className={`flex-1 py-2 text-xs font-semibold rounded-lg transition-all duration-200 ${
                   role === r 
-                    ? "bg-white text-orange-600 shadow-sm border border-slate-200/50" 
+                    ? "bg-white text-[#337d28]  border border-slate-200" 
                     : "text-black hover:text-slate-600 hover:bg-white/50"
                 }`}
               >
@@ -168,7 +169,7 @@ export default function OnboardingPage() {
                 required 
                 name="phone_number" 
                 onChange={handleInputChange} 
-                className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white   focus:border-gray-400 transition-all" 
                 placeholder="0771234567" 
               />
             </div>
@@ -180,7 +181,7 @@ export default function OnboardingPage() {
                   required 
                   name="nic" 
                   onChange={handleInputChange} 
-                  className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                  className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white   focus:border-gray-400 transition-all" 
                   placeholder="200012345678" 
                 />
               </div>
@@ -195,7 +196,7 @@ export default function OnboardingPage() {
                     required 
                     name="university_campus" 
                     onChange={handleInputChange} 
-                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:border-gray-400 transition-all" 
                     placeholder="University of Moratuwa" 
                   />
                 </div>
@@ -205,7 +206,7 @@ export default function OnboardingPage() {
                     required 
                     name="encrypted_uni_id" 
                     onChange={handleInputChange} 
-                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:border-gray-400 transition-all" 
                     placeholder="200123A" 
                   />
                 </div>
@@ -215,7 +216,7 @@ export default function OnboardingPage() {
                     required 
                     name="faculty" 
                     onChange={handleInputChange} 
-                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white   focus:border-gray-400 transition-all" 
                     placeholder="Engineering" 
                   />
                 </div>
@@ -225,7 +226,7 @@ export default function OnboardingPage() {
                     required 
                     name="academic_department" 
                     onChange={handleInputChange} 
-                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white   focus:border-gray-400 transition-all" 
                     placeholder="Computer Science" 
                   />
                 </div>
@@ -240,7 +241,7 @@ export default function OnboardingPage() {
                     required 
                     name="business_name" 
                     onChange={handleInputChange} 
-                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:border-gray-400 transition-all" 
                     placeholder="Acme Corp" 
                   />
                 </div>
@@ -250,7 +251,7 @@ export default function OnboardingPage() {
                     required 
                     name="registration_number" 
                     onChange={handleInputChange} 
-                    className="w-full border-slate-200 bg-slate-50/50 rounded-xl p-3 text-sm border focus:outline-none focus:bg-white  focus:ring-blue-500/20 focus:border-orange-500 transition-all" 
+                    className="w-full border-slate-200 bg-white text-[#262626] placeholder-[#c6c6c6] rounded-xl p-3 text-sm border focus:outline-none focus:bg-white   focus:border-gray-400 transition-all" 
                     placeholder="PV123456" 
                   />
                 </div>
@@ -258,12 +259,13 @@ export default function OnboardingPage() {
             )}
 
             <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full bg-black hover:bg-[#70a736] text-white py-3 px-4 rounded-xl font-medium transition-all  active:scale-[0.99] mt-6 disabled:opacity-50 disabled:pointer-events-none text-sm"
-            >
-              {isLoading ? "Saving Profile..." : "Complete Registration"}
-            </button>
+               type="submit"
+               disabled={isLoading}
+               className="w-full bg-white hover:bg-[#e8e9ec] text-[#28292b] border border-[#afb2b6] py-3 px-4 rounded-xl font-semibold shadow-sm transition-all active:scale-[0.99] mt-6 disabled:opacity-50 disabled:pointer-events-none text-sm flex items-center justify-center gap-2"
+            > 
+            {isLoading ? ("Saving Profile...") : (<> Complete Registration <Send size={16} /></>)}
+             </button>
+
           </form>
         </div>
 

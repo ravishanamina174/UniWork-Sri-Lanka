@@ -112,9 +112,6 @@ export default async function ProfilePage() {
         <ProfessionalProfile 
           userId={userId} 
           userRole={userRole} 
-          // ADD THESE TWO LINES 👇
-          displayName={profileData?.display_name || ""}
-          phoneNumber={profileData?.phone_number || ""}
         />
       </div>
     </div>

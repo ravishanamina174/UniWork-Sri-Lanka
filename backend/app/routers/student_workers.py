@@ -19,8 +19,6 @@ async def upsert_professional_profile(payload: ProfessionalWorkerProfileCreateUp
         
         doc = {
             "student_clerk_id": payload.student_clerk_id,
-            "display_name": payload.display_name,
-            "phone_number": payload.phone_number,
             "bio": payload.bio,
             "skills": payload.skills,
             "primary_location": payload.primary_location,

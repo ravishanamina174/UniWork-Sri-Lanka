@@ -14,14 +14,18 @@ class AgentState(TypedDict):
 
 # 2. Candidate Retrieval Node
 async def fetch_candidates_node(state: AgentState) -> Dict[str, Any]:
-    """Fetch all registered professional worker profiles from MongoDB."""
-    cursor = mongo_db["professional_student_workers"].find({})
+    """Fetch professional profiles and join track record metrics (completed_tasks, total_earnings) from user_profiles."""
+    prof_cursor = mongo_db["professional_student_workers"].find({})
     candidates = []
     
-    async for doc in cursor:
+    async for doc in prof_cursor:
+        clerk_id = doc.get("student_clerk_id")
+        
+        # Join track record metrics directly from base user_profiles collection
+        base_user = await mongo_db["user_profiles"].find_one({"clerk_id": clerk_id}) or {}
+        
         candidates.append({
-            "student_clerk_id": doc.get("student_clerk_id"),
-            "display_name": doc.get("display_name"),
+            "student_clerk_id": clerk_id,
             "bio": doc.get("bio", ""),
             "skills": doc.get("skills", []),
             "primary_location": doc.get("primary_location", ""),
@@ -29,8 +33,8 @@ async def fetch_candidates_node(state: AgentState) -> Dict[str, Any]:
             "working_hours": doc.get("working_hours", ""),
             "languages": doc.get("languages", []),
             "transportation": doc.get("transportation", ""),
-            "completed_tasks": doc.get("completed_tasks", 0),
-            "total_earnings": doc.get("total_earnings", 0.0),
+            "completed_tasks": base_user.get("completed_tasks", 0),
+            "total_earnings": base_user.get("total_earnings", 0.0),
         })
         
     return {"candidates": candidates}
@@ -38,42 +42,39 @@ async def fetch_candidates_node(state: AgentState) -> Dict[str, Any]:
 # 3. LLM Candidate Evaluation Node
 async def rank_candidates_node(state: AgentState) -> Dict[str, Any]:
     """Evaluate candidates using Gemini based on poster query requirements."""
+    # Removed temperature parameter to fix the Gemini 3.6 Flash UserWarning
     llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
-        google_api_key=settings.GEMINI_API_KEY,
-        temperature=0.2
+        model="gemini-3.6-flash",
+        google_api_key=settings.GEMINI_API_KEY
     )
 
-    system_prompt = """You are an expert recruitment and student matching AI for UniWorkSL freelancing platform in Sri Lanka.
+    system_prompt = """You are an expert recruitment and student matching AI for the UniWorkSL platform.
 Your job is to analyze task poster requirements and evaluate candidate profiles stored in our database.
 
 CRITERIA TO MATCH:
 1. Skills & Bio alignment with the requested task.
-2. Location proximity (Primary/Secondary locations matching requested areas like Colombo, Moratuwa, etc.).
-3. Availability (Working Hours: Weekends, After 5 PM, etc.).
-4. Transportation capability (Motorbike vs Public Transit).
-5. Track record (Completed tasks and earnings indicate reliability).
+2. Location proximity (Primary/Secondary locations matching requested areas like Colombo, Moratuwa, Meepe, Pelmadulla, etc.).
+3. Availability (Working Hours: Weekends, Everyday, Every weekday, etc.).
+4. Transportation capability (Motorbike, Car / Van, Public Transit).
+5. Track record (Completed tasks and total earnings indicate reliability).
+
+RULES:
+- ALWAYS return candidates ranked from highest to lowest fit.
+- Even if no candidate is a 100% exact match, you MUST return the closest matching candidates available (at least 1 candidate if database is non-empty).
+- Provide an integer `fit_score` between 1 and 100.
+- Provide a concise 1-2 sentence `match_reason` explaining why they fit the query.
 
 Return ONLY a valid JSON object matching this exact format:
 {
   "matched_students": [
     {
       "student_clerk_id": "string",
-      "display_name": "string",
-      "fit_score": 95,
-      "match_reason": "Clear 1-2 sentence explanation of why this student is a great fit.",
-      "primary_location": "string",
-      "secondary_location": "string or null",
-      "skills": ["skill1", "skill2"],
-      "working_hours": "string",
-      "transportation": "string",
-      "completed_tasks": 5,
-      "total_earnings": 15000.0
+      "fit_score": 90,
+      "match_reason": "Clear 1-2 sentence explanation of fit..."
     }
   ]
 }
-Do not wrap the JSON in markdown code fences (```json). Output raw JSON only.
-"""
+Do not wrap the JSON in markdown code blocks. Output raw JSON only."""
 
     user_prompt = f"""
 POSTER REQUIREMENT QUERY:
@@ -90,9 +91,15 @@ CANDIDATES DATA:
         {"role": "user", "content": user_prompt}
     ])
 
-    raw_text = response.content.strip()
+    # Safely extract text from the LangChain response, handling both lists and strings
+    raw_content = response.content
+    if isinstance(raw_content, list):
+        raw_text = "".join(block.get("text", "") if isinstance(block, dict) else str(block) for block in raw_content)
+    else:
+        raw_text = str(raw_content)
+
+    raw_text = raw_text.strip()
     
-    # Strip markdown quotes if LLM added them
     if raw_text.startswith("```"):
         raw_text = raw_text.split("```")[1]
         if raw_text.startswith("json"):

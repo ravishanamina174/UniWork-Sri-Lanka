@@ -6,11 +6,9 @@ import { Save, X, Edit3, Briefcase, MapPin, Clock, Globe, Bike, Check, XCircle }
 interface ProfessionalProfileProps {
   userId: string;
   userRole: string; 
-  displayName?: string; // Add this
-  phoneNumber?: string; // Add this
 }
 
-export default function ProfessionalProfile({ userId, userRole, displayName = '', phoneNumber = '' }: ProfessionalProfileProps) {
+export default function ProfessionalProfile({ userId, userRole}: ProfessionalProfileProps) {
   // Only render for students
   if (userRole !== 'STUDENT_EARNER') return null;
 
@@ -58,8 +56,6 @@ export default function ProfessionalProfile({ userId, userRole, displayName = ''
     try {
       const payload = {
         student_clerk_id: userId,
-        display_name: displayName, // Add this
-        phone_number: phoneNumber, // Add this
         ...formData
       };
 
