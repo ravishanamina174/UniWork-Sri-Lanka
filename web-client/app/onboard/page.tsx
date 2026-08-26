@@ -117,10 +117,22 @@ export default function OnboardingPage() {
   if (!isLoaded || isCheckingUser) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-taupe-100 via-white to-taupe-100">
-        <div className="p-8 text-center font-medium text-slate-500 animate-pulse bg-white border border-slate-100 rounded-2xl shadow-sm">
+      <div className="flex flex-col items-center translate-y-10">
+        
+        {/* Loading State */}
+        <div className="px-8 py-5 text-center font-medium text-[#1b1b1b] animate-pulse bg-white border border-slate-200 rounded-lg z-10">
           Verifying security profile initialization...
         </div>
+    
+        {/* UNIWORK Watermark */}
+        <div className="mt-2 flex justify-center pointer-events-none select-none opacity-[0.03]">
+          <h1 className="text-[20vw] md:text-[16vw] font-black tracking-tighter text-slate-900 whitespace-nowrap">
+            UNIWORK
+          </h1>
+        </div>
+    
       </div>
+    </div>
     );
   }
 

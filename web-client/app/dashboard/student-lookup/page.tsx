@@ -61,7 +61,7 @@ export default function StudentLookupPage() {
       const agentRes = await fetch(`${API_BASE_URL}/api/v1/student-workers/lookup-agent`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ poster_query: query, limit: 1 }),
+        body: JSON.stringify({ poster_query: query, limit: 2 }),
       });
 
       if (!agentRes.ok) {
@@ -155,7 +155,7 @@ export default function StudentLookupPage() {
             <button
               type="submit"
               disabled={isLoading || !query.trim()}
-              className="inline-flex items-center gap-2 px-6 py-2.5 border bg-[#ffffff] border-[#BD4444] hover:border-[#afb2b6] hover:bg-[#e8e9ec] disabled:bg-blue-300 text-[#BD4444] hover:text-[#323232] text-sm md:text-[14px] font-semibold rounded-lg shadow-sm transition"
+              className="inline-flex items-center gap-2 px-6 py-2.5 border bg-[#ffffff] border-[#BD4444] hover:border-[#afb2b6] hover:bg-[#e8e9ec] disabled:bg-white text-[#BD4444] hover:text-[#323232] text-sm md:text-[14px] font-semibold rounded-lg shadow-sm transition"
             >
               {isLoading ? (
                 <>
