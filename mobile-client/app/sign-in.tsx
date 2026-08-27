@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   signInButton: {
-    backgroundColor: '#f97316',
+    backgroundColor: '#BC4F4F',
     width: '100%',
     paddingVertical: 14,
     borderRadius: 12,

@@ -2,7 +2,7 @@
 import type { TaskGig } from '@/components/TaskMarketplace';
 
 export const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_BASE_URL ?? 'http://192.168.1.4:8000/api/v1';
+  process.env.EXPO_PUBLIC_API_BASE_URL ?? 'http://192.168.1.3:8000/api/v1';
 
 export type AuthUser = {
   id: string;

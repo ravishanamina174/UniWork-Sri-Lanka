@@ -1,43 +1,57 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@clerk/clerk-expo';
+import { router, useRouter } from 'expo-router';
 import {
   ActivityIndicator,
-  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   Dimensions,
   Image,
+  Animated,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Link } from 'expo-router';
-import { ArrowRight, Sparkles, Award } from 'lucide-react-native';
+import { Sparkles, Search } from 'lucide-react-native';
+import Svg, { Path, Polygon, Circle } from 'react-native-svg';
 
 import TaskMarketplace, { TaskGig } from '@/components/TaskMarketplace';
 import { API_BASE_URL, fetchAllGigs } from '@/constants/api';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const WORDS = [
-  { text: 'Earn', color: '#10B981' }, 
-  { text: 'Post', color: '#F59E0B' }, 
-  { text: 'Scale', color: '#007FFF' }, 
-];
-
 export default function HomeScreen() {
   const { userId } = useAuth();
   
   const [tasks, setTasks] = useState<TaskGig[]>([]);
   const [loading, setLoading] = useState(true);
-  const [wordIndex, setWordIndex] = useState(0);
   const [userRole, setUserRole] = useState<string>("");
+
+  // Animations
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  const scrollY = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     fetchAllGigs()
       .then(setTasks)
       .finally(() => setLoading(false));
-  }, []);
+
+    // Start Pulse Animation for the Red Doodle
+    Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, {
+          toValue: 0.5,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+        Animated.timing(pulseAnim, {
+          toValue: 1,
+          duration: 1500,
+          useNativeDriver: true,
+        }),
+      ])
+    ).start();
+  }, [pulseAnim]);
 
   useEffect(() => {
     if (!userId) return;
@@ -58,151 +72,145 @@ export default function HomeScreen() {
     fetchUserRole();
   }, [userId]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setWordIndex((prev) => (prev + 1) % WORDS.length);
-    }, 2500);
-    return () => clearInterval(interval);
-  }, []);
+  // Interpolate scroll position for watermark opacity and position
+  const watermarkOpacity = scrollY.interpolate({
+    inputRange: [0, 300, 600],
+    outputRange: [0.03, 0.08, 0.15],
+    extrapolate: 'clamp',
+  });
+
+  const watermarkTranslateY = scrollY.interpolate({
+    inputRange: [0, 500],
+    outputRange: [0, -35],
+    extrapolate: 'clamp',
+  });
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.scrollContent}
+      <Animated.ScrollView 
+        contentContainerStyle={styles.scrollContainer} 
         showsVerticalScrollIndicator={false}
-      >
-        {/* ================= HERO & INTERACTIVE BACKGROUND REVEAL ENGINE ================= */}
-        <View style={styles.heroContainer}>
-          <View style={styles.dotGridContainer} pointerEvents="none">
-            {Array.from({ length: 120 }).map((_, i) => (
-              <View key={`dot-${i}`} style={styles.gridDot} />
-            ))}
-          </View>
-
-          <View style={styles.pill}>
-            <View style={styles.pillDot} />
-            <Text style={styles.pillText}>
-              The First Dedicated Student Task Network in Sri Lanka
-            </Text>
-          </View>
-
-          <View style={styles.typographyWrapper}>
-            <View style={[styles.doodleContainer, { top: -12, left: -4, transform: [{ rotate: '-15deg' }] }]}>
-              <Sparkles size={20} color="#10B981" strokeWidth={2.2} />
-            </View>
-
-            <View style={[styles.doodleContainer, { top: -28, left: '46%' }]}>
-              <Award size={24} color="#F59E0B" strokeWidth={2} />
-            </View>
-
-            <View style={styles.nativeLoopDoodle} pointerEvents="none">
-              <View style={styles.loopArrowHead} />
-            </View>
-
-            <Text style={styles.mainHeadline}>
-              Where independent talents and ecosystems{' '}
-              <Text style={{ color: WORDS[wordIndex].color }}>
-                {WORDS[wordIndex].text}
-              </Text>{' '}
-              together.
-            </Text>
-          </View>
-
-          <Text style={styles.tagline}>
-            Empowering student earners with flexible pathways, helping task posters find
-            immediate execution, and enabling corporate clients to scale velocity seamlessly.
-          </Text>
-
-          <View style={styles.ctaButtonWrapper}>
-            <Link href="/tasks" asChild>
-              <TouchableOpacity style={styles.ctaButton} activeOpacity={0.85}>
-                <Text style={styles.ctaButtonText}>Browse All Tasks</Text>
-                <ArrowRight size={15} color="#FFFFFF" strokeWidth={2.5} />
-              </TouchableOpacity>
-            </Link>
-
-            <Link href="/about" asChild>
-              <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.7}>
-                <Text style={styles.secondaryButtonText}>Our Vision</Text>
-              </TouchableOpacity>
-            </Link>
-          </View>
-        </View>
-
-        {/* ================= PREMIUM LANYARD CARD DECK ================= */}
-        <View style={styles.deckSection}>
-          <View style={styles.deckCanvas}>
-            <View style={[styles.deckCard, styles.cardLeft, styles.shadowCommon]}>
-              <View style={styles.cardHeaderGraphic}>
-                <Image 
-                  source={require('@/assets/images/Move.jpg')} 
-                  style={styles.cardCoverImage} 
-                  resizeMode="cover"
-                />
-              </View>
-              <View style={styles.cardContent}>
-                <Text style={styles.cardLabelTitle}>UniWork Verified</Text>
-                <Text style={styles.cardLabelSubtitle}>Student Earner Deck</Text>
-                <View style={styles.cardFooterDivider}>
-                  <Text style={styles.cardMetaId}>ID 2026</Text>
-                  <Text style={[styles.cardStatusBadge, { color: '#10B981' }]}>Active</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={[styles.deckCard, styles.cardCenter, styles.shadowCenterPremium]}>
-              <View style={styles.cardHeaderGraphic}>
-                <Image 
-                  source={require('@/assets/images/wall.jpg')} 
-                  style={styles.cardCoverImage} 
-                  resizeMode="cover"
-                />
-              </View>
-              <View style={styles.cardContent}>
-                <Text style={[styles.cardLabelTitle, { fontSize: 14 }]}>UniWork Verified</Text>
-                <Text style={styles.cardLabelSubtitle}>Micro-Gig Network</Text>
-                <View style={styles.cardFooterDivider}>
-                  <Text style={styles.cardMetaId}>ID 0032</Text>
-                  <Text style={[styles.cardStatusBadge, { color: '#10B981' }]}>Active</Text>
-                </View>
-              </View>
-            </View>
-
-            <View style={[styles.deckCard, styles.cardRight, styles.shadowCommon]}>
-              <View style={styles.cardHeaderGraphic}>
-                <Image 
-                  source={require('@/assets/images/COP.jpg')} 
-                  style={styles.cardCoverImage} 
-                  resizeMode="cover"
-                />
-              </View>
-              <View style={styles.cardContent}>
-                <Text style={styles.cardLabelTitle}>UniWork Verified</Text>
-                <Text style={styles.cardLabelSubtitle}>Corporate Pool</Text>
-                <View style={styles.cardFooterDivider}>
-                  <Text style={styles.cardMetaId}>ID 7099</Text>
-                  <Text style={[styles.cardStatusBadge, { color: '#007FFF' }]}>Enterprise</Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={styles.deckBaseLineIndicator} />
-        </View>
-
-        {/* ================= GIG DISPLAY SECTION ================= */}
-        <View style={styles.marketplaceSectionHeader}>
-          <Text style={styles.marketplaceTitleSection}>Available Opportunities</Text>
-        </View>
-
-        {loading ? (
-          <View style={styles.loadingContainer}>
-            <ActivityIndicator size="large" color="#007FFF" />
-          </View>
-        ) : (
-          <TaskMarketplace tasks={tasks} embedded userRole={userRole} />
+        onScroll={Animated.event(
+          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          { useNativeDriver: true }
         )}
-      </ScrollView>
+        scrollEventThrottle={16}
+      >
+        {/* HERO SECTION */}
+        <View style={styles.heroWrapper}>
+          
+          {/* Background Doodles */}
+          <Animated.View style={[styles.doodle, { top: 60, left: 20, opacity: pulseAnim }]}>
+            <Svg width="40" height="40" viewBox="0 0 100 100" fill="none" stroke="#ef4444" strokeWidth="6" strokeLinecap="round">
+              <Path d="M10 50 Q 30 10, 50 50 T 90 50" />
+            </Svg>
+          </Animated.View>
+
+          <View style={[styles.doodle, { top: 120, right: 30, opacity: 0.5 }]}>
+            <Svg width="45" height="45" viewBox="0 0 100 100" fill="none" stroke="#f97316" strokeWidth="5" strokeLinecap="round">
+              <Path d="M20 20 L 80 80 M 80 20 L 20 80" />
+              <Circle cx="50" cy="50" r="40" strokeDasharray="15 15" />
+            </Svg>
+          </View>
+
+          <View style={[styles.doodle, { bottom: 350, left: 20, opacity: 0.5 }]}>
+            <Svg width="50" height="50" viewBox="0 0 100 100" fill="none" stroke="#22c55e" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round">
+              <Polygon points="50,10 61,39 92,39 67,58 76,89 50,70 24,89 33,58 8,39 39,39" fill="#22c55e" fillOpacity="0.2" />
+            </Svg>
+          </View>
+
+          <View style={[styles.doodle, { bottom: 250, right: 40, opacity: 0.4 }]}>
+             <Svg width="55" height="55" viewBox="0 0 100 100" fill="none" stroke="#92400e" strokeWidth="5" strokeLinecap="round">
+              <Path d="M10 90 C 30 70, 70 30, 90 10" />
+              <Path d="M30 90 C 50 70, 90 30, 90 30" />
+              <Circle cx="20" cy="80" r="6" fill="#92400e" />
+              <Circle cx="80" cy="20" r="6" fill="#92400e" />
+            </Svg>
+          </View>
+
+          {/* Hero Content */}
+          <View style={styles.heroContent}>
+            <View style={styles.pillContainer}>
+              <Text style={styles.pillText}>The First Dedicated Student Task Network</Text>
+            </View>
+
+            <Text style={styles.mainTitle}>
+              Empowering Sri Lankan Undergraduates,
+            </Text>
+            
+            <View style={styles.subtitleWrapper}>
+              <Text style={styles.mainTitleHighlight}>One Micro-Gig at a Time.</Text>
+              <Svg 
+                style={styles.underlineSvg}
+                viewBox="0 0 300 10" 
+                fill="none" 
+                preserveAspectRatio="none"
+              >
+                <Path d="M5 5 C 50 2, 150 8, 295 4 C 200 6, 80 3, 15 7" stroke="#ff6a00" strokeWidth="3" strokeLinecap="round" opacity="0.4" />
+              </Svg>
+            </View>
+
+            <Text style={styles.description}>
+              Grab a task, deliver the work, get paid directly, and level up your profile. The central hub to post tasks and discover on-campus opportunities.
+            </Text>
+
+            {/* Buttons */}
+            <View style={styles.buttonGroup}>
+              <TouchableOpacity style={styles.primaryBtn} activeOpacity={0.8}>
+                <Sparkles size={18} color="#b27f40" />
+                <Text style={styles.primaryBtnText}>Student Portal</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity 
+      style={styles.secondaryBtn} 
+      activeOpacity={0.8}
+      onPress={() => router.push('/about')}
+    >
+      <Search size={18} color="#787774" />
+      <Text style={styles.secondaryBtnText}>About Us</Text>
+    </TouchableOpacity>
+            </View>
+          </View>
+
+          {/* Hero Images */}
+          <View style={styles.imageContainer}>
+            <Image 
+              source={{ uri: 'https://images.unsplash.com/photo-1746436576978-21632bf9790d?w=900&auto=format&fit=crop&q=60' }} 
+              style={[styles.heroImage, styles.cloudShape1]} 
+            />
+            <Image 
+              source={{ uri: 'https://plus.unsplash.com/premium_photo-1661547843345-e1ca800df0e0?q=80&w=988&auto=format&fit=crop' }} 
+              style={[styles.heroImage, styles.cloudShape2]} 
+            />
+          </View>
+
+          {/* Animated Watermark Base */}
+          <Animated.View 
+            style={[
+              styles.watermarkContainer, 
+              { 
+                opacity: watermarkOpacity,
+                transform: [{ translateY: watermarkTranslateY }]
+              }
+            ]}
+          >
+            <Text style={styles.watermarkText}>UNIWORK</Text>
+          </Animated.View>
+        </View>
+
+        {/* TASK MARKETPLACE SECTION */}
+        <View style={styles.marketplaceSection}>
+        {loading ? (
+  <ActivityIndicator size="large" color="#007FFF" style={{ marginTop: 40 }} />
+) : (
+  <>
+    {/* Added embedded={true} to fix the FlatList nesting error */}
+    <TaskMarketplace tasks={tasks} userRole={userRole} embedded={true} />
+  </>
+)}
+        </View>
+
+      </Animated.ScrollView>
     </SafeAreaView>
   );
 }
@@ -210,285 +218,183 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#f8f7f6',
   },
-  scrollView: {
-    flex: 1,
+  scrollContainer: {
+    paddingBottom: 60,
   },
-  scrollContent: {
-    paddingBottom: 115, 
-  },
-  heroContainer: {
-    paddingHorizontal: 20,
-    paddingTop: 28,
-    paddingBottom: 36,
-    alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+  heroWrapper: {
     position: 'relative',
+    width: '100%',
+    paddingTop: 40,
+    paddingBottom: 80,
+    backgroundColor: '#f8f7f6',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eae9e7',
+    borderBottomLeftRadius: 40,
+    borderBottomRightRadius: 40,
     overflow: 'hidden',
   },
-  dotGridContainer: {
+  doodle: {
     position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    opacity: 0.18,
-    paddingTop: 10,
+    zIndex: 0,
   },
-  gridDot: {
-    width: 2,
-    height: 2,
-    borderRadius: 1,
-    backgroundColor: '#94A3B8',
-    marginHorizontal: 11,
-    marginVertical: 11,
+  heroContent: {
+    paddingHorizontal: 24,
+    zIndex: 10,
+    alignItems: 'flex-start',
   },
-  pill: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    paddingHorizontal: 14,
-    paddingVertical: 6,
-    borderRadius: 999,
-    backgroundColor: '#F8FAFC',
+  pillContainer: {
     borderWidth: 1,
-    borderColor: 'rgba(226, 232, 240, 0.9)',
-    marginBottom: 28,
-    zIndex: 20,
-  },
-  pillDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#007FFF',
+    borderColor: '#d1d5db',
+    borderRadius: 99,
+    paddingHorizontal: 16,
+    paddingVertical: 6,
+    backgroundColor: '#ffffff',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.02,
+    shadowRadius: 8,
+    elevation: 1,
+    marginBottom: 24,
   },
   pillText: {
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: '600',
-    color: '#838991',
-    letterSpacing: 0.2,
+    color: '#4b5563',
   },
-  typographyWrapper: {
-    position: 'relative',
-    width: '100%',
-    paddingHorizontal: 12,
-    marginBottom: 16,
-    zIndex: 20,
-  },
-  mainHeadline: {
-    fontSize: 28,
+  mainTitle: {
+    fontSize: 34,
     fontWeight: '900',
-    color: '#0F172A',
-    textAlign: 'center',
-    lineHeight: 38,
-    letterSpacing: -0.6,
+    color: '#111827',
+    lineHeight: 40,
+    letterSpacing: -1,
   },
-  tagline: {
-    fontSize: 14,
-    fontWeight: '500',
-    color: '#989A9C',
-    textAlign: 'center',
-    lineHeight: 22,
-    maxWidth: 325,
-    marginBottom: 28,
-    zIndex: 20,
+  subtitleWrapper: {
+    position: 'relative',
+    marginTop: 4,
+    marginBottom: 24,
   },
-  doodleContainer: {
-    position: 'absolute',
-    pointerEvents: 'none',
+  mainTitleHighlight: {
+    fontSize: 34,
+    fontWeight: '900',
+    color: '#111827',
+    lineHeight: 40,
+    letterSpacing: -1,
   },
-  nativeLoopDoodle: {
+  underlineSvg: {
     position: 'absolute',
     bottom: -8,
-    right: 12,
-    width: 32,
-    height: 24,
-    borderBottomWidth: 2.5,
-    borderRightWidth: 2.5,
-    borderColor: '#007FFF',
-    borderBottomRightRadius: 14,
-    opacity: 0.75,
+    left: 0,
+    width: '100%',
+    height: 12,
   },
-  loopArrowHead: {
-    position: 'absolute',
-    top: -2,
-    right: -4,
-    width: 0,
-    height: 0,
-    borderLeftWidth: 4,
-    borderRightWidth: 4,
-    borderBottomWidth: 7,
-    borderLeftColor: 'transparent',
-    borderRightColor: 'transparent',
-    borderBottomColor: '#007FFF',
-    transform: [{ rotate: '45deg' }],
+  description: {
+    fontSize: 15,
+    color: '#787774',
+    lineHeight: 22,
+    fontWeight: '500',
+    marginBottom: 32,
   },
-  ctaButtonWrapper: {
+  buttonGroup: {
+    width: '70%',
+    gap: 13,
+    alignSelf: 'center', // Centers the component within its parent
+  },
+  primaryBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
-    zIndex: 20,
-  },
-  ctaButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    backgroundColor: '#007FFF',
-    paddingHorizontal: 20,
-    paddingVertical: 12,
-    borderRadius: 12,
-  },
-  ctaButtonText: {
-    fontSize: 13,
-    fontWeight: '700',
-    color: '#FFFFFF',
-  },
-  secondaryButton: {
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 12,
-    backgroundColor: '#F8FAFC',
-    borderWidth: 1,
-    borderColor: '#E2E8F0',
-  },
-  secondaryButtonText: {
-    fontSize: 13,
-    fontWeight: '600',
-    color: '#475569',
-  },
-  deckSection: {
-    width: '100%',
-    paddingHorizontal: 16,
-    marginVertical: 32,
-    alignItems: 'center',
-  },
-  deckCanvas: {
-    width: '100%',
-    height: 240,
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  deckCard: {
-    position: 'absolute',
-    width: (SCREEN_WIDTH - 32) * 0.33,
-    height: 210,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#ffffff',
+    paddingVertical: 14,
+    paddingHorizontal: 10,
     borderRadius: 14,
     borderWidth: 1,
-    borderColor: '#E2E8F0',
-    overflow: 'hidden',
+    borderColor: '#e5e7eb',
+    gap: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.05,
+    shadowRadius: 12,
+    elevation: 2,
   },
-  cardHeaderGraphic: {
-    height: '42%',
-    width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'relative',
-    backgroundColor: '#F8FAFC',
-  },
-  cardCoverImage: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    width: '100%',
-    height: '100%',
-  },
-  cardContent: {
-    padding: 10,
-    flex: 1,
-    justifyContent: 'space-between',
-  },
-  cardLabelTitle: {
-    fontSize: 11,
+  primaryBtnText: {
+    fontSize: 15,
     fontWeight: '800',
-    color: '#0F172A',
-    lineHeight: 14,
+    color: '#111827',
   },
-  cardLabelSubtitle: {
-    fontSize: 9,
-    fontWeight: '600',
-    color: '#94A3B8',
-    marginTop: 2,
-  },
-  cardFooterDivider: {
-    borderTopWidth: 1,
-    borderTopColor: '#F1F5F9',
-    paddingTop: 6,
+  secondaryBtn: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
+    justifyContent: 'center', // Fixed typo here
+    backgroundColor: '#fcfcfc',
+    borderWidth: 1,
+    borderColor: '#e5e7eb',
+    paddingVertical: 14,
+    paddingHorizontal: 20,
+    borderRadius: 14,
+    gap: 8,
   },
-  cardMetaId: {
-    fontSize: 8,
+  secondaryBtnText: {
+    fontSize: 15,
     fontWeight: '700',
-    color: '#94A3B8',
+    color: '#787774',
   },
-  cardStatusBadge: {
-    fontSize: 8,
-    fontWeight: '800',
-    textTransform: 'uppercase',
-  },
-  cardLeft: {
-    left: 4,
-    top: 15,
-    transform: [{ rotate: '-6deg' }, { scale: 0.96 }],
+  imageContainer: {
+    marginTop: 50,
+    height: 320,
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
     zIndex: 10,
   },
-  cardCenter: {
-    alignSelf: 'center',
-    top: 0,
-    transform: [{ rotate: '2deg' }, { scale: 1.05 }],
-    zIndex: 30,
-    borderColor: '#CBD5E1',
+  heroImage: {
+    position: 'absolute',
+    borderWidth: 4,
+    borderColor: '#ffffff',
+    backgroundColor: '#f1f5f9',
   },
-  cardRight: {
-    right: 4,
-    top: 20,
-    transform: [{ rotate: '6deg' }, { scale: 0.96 }],
+  cloudShape1: {
+    width: 170,
+    height: 170,
+    top: 0,
+    right: 20,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 60,
+    borderBottomRightRadius: 80,
+    borderBottomLeftRadius: 120,
     zIndex: 20,
   },
-  shadowCommon: {
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 6 },
-    shadowOpacity: 0.05,
-    shadowRadius: 10,
-    elevation: 3,
+  cloudShape2: {
+    width: 190,
+    height: 190,
+    bottom: 20,
+    left: 20,
+    borderTopLeftRadius: 80,
+    borderTopRightRadius: 120,
+    borderBottomRightRadius: 100,
+    borderBottomLeftRadius: 60,
+    zIndex: 10,
   },
-  shadowCenterPremium: {
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 16 },
-    shadowOpacity: 0.12,
-    shadowRadius: 24,
-    elevation: 8,
-  },
-  deckBaseLineIndicator: {
-    width: 140,
-    height: 3,
-    backgroundColor: '#E2E8F0',
-    borderRadius: 99,
-    marginTop: 16,
-    opacity: 0.6,
-  },
-  marketplaceSectionHeader: {
-    paddingHorizontal: 24,
-    marginTop: 16,
-    marginBottom: 8,
-  },
-  marketplaceTitleSection: {
-    fontSize: 18,
-    fontWeight: '800',
-    color: '#0F172A',
-    letterSpacing: -0.2,
-  },
-  loadingContainer: {
-    paddingVertical: 48,
+  watermarkContainer: {
+    position: 'absolute',
+    bottom: -20,
+    left: 0,
+    width: '100%',
     alignItems: 'center',
+    justifyContent: 'center',
+    zIndex: 1,
+  },
+  watermarkText: {
+    fontSize: SCREEN_WIDTH * 0.17,
+    fontWeight: '900',
+    color: '#0f172a',
+    letterSpacing: 4,
+  },
+  marketplaceSection: {
+    flex: 1,
+    backgroundColor: '#ffffff',
+    paddingTop: 24,
   },
 });

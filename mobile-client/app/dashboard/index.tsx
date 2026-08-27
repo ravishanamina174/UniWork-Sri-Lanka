@@ -2,16 +2,31 @@ import React from 'react';
 import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Search, MessageSquare, CheckCircle, ArrowRight, Zap, User, Briefcase, PlusSquare } from 'lucide-react-native';
+import { useAuth } from '@clerk/clerk-expo';
+import { Search, MessageSquare, CheckCircle, ArrowRight, Zap, User, Briefcase, PlusSquare, LogOut, LogIn } from 'lucide-react-native';
 
 export default function DashboardHome() {
   const router = useRouter();
+  const { signOut } = useAuth();
   
   // Extract the role passed down from the _layout.tsx initialParams
   const { userRole } = useLocalSearchParams<{ userRole: string }>();
 
   // Determine if the user has poster privileges
   const canCreateTask = userRole === 'TASK_POSTER' || userRole === 'CORPORATE_CLIENT';
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      router.replace('/sign-in');
+    } catch (err) {
+      console.error('Error signing out:', err);
+    }
+  };
+
+  const handleSignInAgain = () => {
+    router.push('/sign-in');
+  };
 
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
@@ -48,6 +63,25 @@ export default function DashboardHome() {
               <Text style={[styles.navCardText, { color: '#2d913e' }]}>Create Task</Text>
             </TouchableOpacity>
           )}
+
+          {/* Authentication Controls Row */}
+          <TouchableOpacity 
+            style={[styles.navCard, styles.signOutCard]} 
+            onPress={handleSignOut} 
+            activeOpacity={0.7}
+          >
+            <LogOut size={24} color="#e11d48" />
+            <Text style={[styles.navCardText, { color: '#e11d48' }]}>Sign Out</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity 
+            style={[styles.navCard, styles.signInAgainCard]} 
+            onPress={handleSignInAgain} 
+            activeOpacity={0.7}
+          >
+            <LogIn size={24} color="#2563eb" />
+            <Text style={[styles.navCardText, { color: '#2563eb' }]}>Sign In Again</Text>
+          </TouchableOpacity>
         </View>
 
         {/* Promo Banner */}
@@ -107,6 +141,8 @@ const styles = StyleSheet.create({
   navGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
   navCard: { flex: 1, minWidth: '45%', backgroundColor: '#FFFFFF', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: '#ededed', alignItems: 'center', gap: 8 },
   createTaskCard: { borderColor: '#cce8d1', backgroundColor: '#f4faf5' },
+  signOutCard: { borderColor: '#fecdd3', backgroundColor: '#fcf5f5' },
+  signInAgainCard: { borderColor: '#bfdbfe', backgroundColor: '#f7fbff' },
   navCardText: { fontSize: 14, fontWeight: '600', color: '#37352f' },
   promoBanner: { backgroundColor: '#f8f9ff', padding: 20, borderRadius: 16, borderWidth: 1, borderColor: '#e4e4e9', marginBottom: 32 },
   promoBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ebe9fe', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 99, alignSelf: 'flex-start', gap: 4, marginBottom: 12 },
