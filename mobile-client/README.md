@@ -48,3 +48,11 @@ Join our community of developers creating universal apps.
 
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+
+
+
+-------------
+
+Running this is completely safe. The next time you eventually need to plug in your USB cable and run a full compilation via npx expo run:android, Gradle will simply recreate these build artifacts automatically
+
+

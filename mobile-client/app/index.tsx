@@ -15,7 +15,7 @@ import { Link } from 'expo-router';
 import { ArrowRight, Sparkles, Award } from 'lucide-react-native';
 
 import TaskMarketplace, { TaskGig } from '@/components/TaskMarketplace';
-import { fetchAllGigs } from '@/constants/api';
+import { API_BASE_URL, fetchAllGigs } from '@/constants/api';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -44,7 +44,7 @@ export default function HomeScreen() {
 
     const fetchUserRole = async () => {
       try {
-        const res = await fetch(`http://192.168.1.5:8000/api/v1/auth/user/clerk/${userId}`);
+        const res = await fetch(`${API_BASE_URL}/auth/user/clerk/${userId}`);
         
         if (res.ok) {
           const userData = await res.json();

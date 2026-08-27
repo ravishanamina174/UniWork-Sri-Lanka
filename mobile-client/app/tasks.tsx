@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useAuth } from '@clerk/clerk-expo'; // Imported useAuth
 
 import TaskMarketplace, { TaskGig } from '@/components/TaskMarketplace';
-import { fetchAllGigs } from '@/constants/api';
+import { API_BASE_URL, fetchAllGigs } from '@/constants/api';
 
 export default function TasksScreen() {
   const { userId } = useAuth(); // Extract userId from Clerk
@@ -26,7 +26,7 @@ export default function TasksScreen() {
 
     const fetchUserRole = async () => {
       try {
-        const res = await fetch(`http://192.168.1.10:8000/api/v1/auth/user/clerk/${userId}`);
+        const res = await fetch(`${API_BASE_URL}/auth/user/clerk/${userId}`);
         
         if (res.ok) {
           const userData = await res.json();

@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Stack, useRouter } from 'expo-router';
 import { useAuth } from '@clerk/clerk-expo';
-import { ActivityIndicator, View, Platform } from 'react-native';
+import { ActivityIndicator, View } from 'react-native';
 
-// Helper for local backend access on Android Emulators
-export const API_BASE = Platform.OS === 'android' ? 'http://192.168.1.5:8000' : 'http://127.0.0.1:8000';
+import { API_BASE_URL } from '@/constants/api';
+
+export const API_BASE = API_BASE_URL.replace(/\/api\/v1\/?$/, '');
 
 export default function DashboardLayout() {
   const { isLoaded, userId } = useAuth();
@@ -22,7 +23,7 @@ export default function DashboardLayout() {
 
     const fetchUserRole = async () => {
       try {
-        const res = await fetch(`${API_BASE}/api/v1/auth/user/clerk/${userId}`);
+        const res = await fetch(`${API_BASE_URL}/auth/user/clerk/${userId}`);
         if (res.status === 404) {
           router.replace('/onboard');
         } else if (res.ok) {
