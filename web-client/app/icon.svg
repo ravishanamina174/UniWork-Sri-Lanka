@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- 3D Box Outer Shell (Expanded coordinates to increase size ~15%) -->
+  <path d="M50 3L90 23V77L50 97L10 77V23L50 3Z" stroke="#37352f" stroke-width="7" stroke-linejoin="round"/>
+  <!-- 3D Box Inner Y-Lines -->
+  <path d="M10 23L50 46L90 23" stroke="#37352f" stroke-width="7" stroke-linejoin="round"/>
+  <path d="M50 46V97" stroke="#37352f" stroke-width="7" stroke-linejoin="round"/>
+  <!-- Stylized 'U' embedded on the right face -->
+  <path d="M64 40V61C64 66.5 76 66.5 76 61V35" stroke="#37352f" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,7 +1,9 @@
-// ...existing code...
 import { clerkMiddleware } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
+// Next.js 16 named proxy export configuration
+export function proxy(request: any, event: any) {
+  return clerkMiddleware()(request, event);
+}
 
 export const config = {
   matcher: [
@@ -9,4 +11,3 @@ export const config = {
     "/((?!api|_next|.*\\..*).*)",
   ],
 };
-// ...existing code...
