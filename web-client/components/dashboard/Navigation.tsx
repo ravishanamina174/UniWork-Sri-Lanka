@@ -17,34 +17,23 @@ export default function Navigation({ userRole }: { userRole: UserRole }) {
 >
   {/* Top Logo Container */}
   <div className="pt-6 pb-4 flex items-center px-4 mb-2 shrink-0">
-    <Link
-      href="/"
-      className="flex items-center gap-3 w-full hover:bg-[#efefef] p-1.5 rounded-md transition-colors cursor-pointer focus:outline-none"
-      aria-label="Go to homepage"
-    >
-      <div className="w-8 h-8 bg-white rounded shadow-sm border border-[#e0e0e0] flex items-center justify-center shrink-0">
-        <svg
-          viewBox="0 0 100 100"
-          className="w-5 h-5 text-[#37352f]"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="4"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M22 25 C 45 22, 65 24, 82 23 C 85 45, 83 65, 80 81 C 60 85, 40 82, 25 84 C 21 65, 23 45, 22 25 Z" />
-          <path
-            d="M44 42 C 43 57, 45 66, 54 66 C 63 66, 64 57, 64 42"
-            strokeWidth="6.5"
-          />
-          <circle cx="73" cy="35" r="3.5" fill="currentColor" stroke="none" />
-        </svg>
-      </div>
+  <Link
+  href="/"
+  className="flex items-center gap-1 w-full hover:bg-[#efefef] p-1.5 rounded-md transition-colors cursor-pointer focus:outline-none border border-[#eceaea]"
+  aria-label="Go to homepage"
+>
+  <div className="w-8 h-8 rounded flex items-center justify-center shrink-0">
+    <img 
+      src="/assets/dashboard.png" 
+      alt="Dashboard icon"
+      className="w-5 h-5 object-contain"
+    />
+  </div>
 
-      <span className="font-semibold text-[14px] truncate">
-        Dashboard
-      </span>
-    </Link>
+  <span className="font-semibold text-[15px] truncate">
+    Dashboard
+  </span>
+</Link>
   </div>
 
   {/* Navigation */}
