@@ -35,6 +35,7 @@ same URL to `ws://` or `wss://` for WebSockets.
    `render.yaml` configures the service, or create a Web Service manually with:
    - Root Directory: `backend`
    - Runtime: Python
+   - Python Version: `3.13.4` (already pinned in `backend/runtime.txt`)
    - Build Command: `pip install -r requirements.txt`
    - Start Command: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
 4. Add these environment variables in the Render service:
