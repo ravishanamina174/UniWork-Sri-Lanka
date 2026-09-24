@@ -1,6 +1,6 @@
 # backend/app/models/schemas_pydantic.py
 from datetime import datetime
-from pydantic import BaseModel, EmailStr, Field , field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
 from typing import List, Optional, Tuple
 
 class BaseRegisterRequest(BaseModel):
@@ -31,8 +31,7 @@ class UserResponse(BaseModel):
     role: str
     is_verified: bool
 
-    class Config:
-        orm_mode = True
+    model_config = ConfigDict(from_attributes=True)
 
 # --- NEW: Location Sub-Model ---
 class GeoJSONLocation(BaseModel):

@@ -2,6 +2,7 @@ fastapi==0.115.6
 uvicorn==0.34.0
 pydantic==2.12.5
 pydantic-settings==2.7.0
+email-validator==2.2.0
 SQLAlchemy==2.0.31
 psycopg2-binary==2.9.12
 geoalchemy2==0.15.0
