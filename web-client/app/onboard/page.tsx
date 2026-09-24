@@ -1,5 +1,6 @@
 // web-client/app/onboard/page.tsx
 "use client";
+import { API_BASE_URL } from "@/lib/api";
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -30,7 +31,7 @@ export default function OnboardingPage() {
       if (!isLoaded || !user) return;
 
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${user.id}`, {
+        const res = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${user.id}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
         });
@@ -94,7 +95,7 @@ export default function OnboardingPage() {
     }
 
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/auth${endpoint}`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/auth${endpoint}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(finalPayload),

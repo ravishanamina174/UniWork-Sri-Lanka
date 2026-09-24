@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import CreateGigForm from "./CreateGigForm";
@@ -10,7 +11,7 @@ export default async function CreateGigPage() {
 
   // Fetch verified status validation from PostgreSQL
   try {
-    const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`);
+    const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`);
     if (backendRes.ok) {
       const data = await backendRes.json();
       userRole = data.role;

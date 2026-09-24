@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE_URL, websocketUrl } from "@/lib/api";
 
 import { useState, useEffect, useRef } from 'react';
 import { useUser } from '@clerk/nextjs';
@@ -47,7 +48,7 @@ export default function ChatInterface({ applicationId }: ChatInterfaceProps) {
     const loadData = async () => {
       if (!applicationId) return;
       try {
-        const appRes = await fetch(`http://127.0.0.1:8000/api/v1/applications/${applicationId}`);
+        const appRes = await fetch(`${API_BASE_URL}/api/v1/applications/${applicationId}`);
         if (appRes.ok) {
           const appData = await appRes.json();
           setApplication(appData);
@@ -58,7 +59,7 @@ export default function ChatInterface({ applicationId }: ChatInterfaceProps) {
           }
         }
 
-        const msgRes = await fetch(`http://127.0.0.1:8000/api/v1/messages/${applicationId}`);
+        const msgRes = await fetch(`${API_BASE_URL}/api/v1/messages/${applicationId}`);
         if (msgRes.ok) {
           const msgData = await msgRes.json();
           setMessages(msgData);
@@ -76,7 +77,7 @@ export default function ChatInterface({ applicationId }: ChatInterfaceProps) {
   useEffect(() => {
     if (!user?.id) return;
 
-    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/${user.id}`);
+    const ws = new WebSocket(websocketUrl(`/ws/${user.id}`));
 
     ws.onmessage = (event) => {
       try {
@@ -109,7 +110,7 @@ export default function ChatInterface({ applicationId }: ChatInterfaceProps) {
     setInputText('');
 
     try {
-      const res = await fetch('http://127.0.0.1:8000/api/v1/messages/', {
+      const res = await fetch(API_BASE_URL + '/api/v1/messages/', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import TaskMarketplace, { TaskGig } from "@/components/TaskMarketplace";
@@ -12,7 +13,7 @@ export default async function TasksPage() {
 
   try {
     // 1. Fetch Auth Profile to verify onboarding status
-    const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+    const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
       next: { revalidate: 0 }
     });
 
@@ -24,7 +25,7 @@ export default async function TasksPage() {
     }
 
     // 2. Fetch Tasks data array
-    const tasksRes = await fetch("http://127.0.0.1:8000/api/v1/gigs/all", { cache: "no-store" });
+    const tasksRes = await fetch(API_BASE_URL + "/api/v1/gigs/all", { cache: "no-store" });
     if (tasksRes.ok) {
       tasks = await tasksRes.json();
     }

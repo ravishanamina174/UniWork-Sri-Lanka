@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -30,7 +31,7 @@ export default async function ApplicationsDashboardPage() {
   // 1. Fetch User Role & Validate
   let userRole: "STUDENT_EARNER" | "TASK_POSTER" | "CORPORATE_CLIENT" | null = null;
   try {
-    const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+    const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
       cache: "no-store"
     });
     if (backendRes.ok) {
@@ -68,7 +69,7 @@ export default async function ApplicationsDashboardPage() {
   // 2. Fetch Incoming Applications for this Poster/Corporate
   let applications: Application[] = [];
   try {
-    const appsRes = await fetch(`http://127.0.0.1:8000/api/v1/applications/poster/${userId}`, {
+    const appsRes = await fetch(`${API_BASE_URL}/api/v1/applications/poster/${userId}`, {
       cache: "no-store"
     });
     if (appsRes.ok) {

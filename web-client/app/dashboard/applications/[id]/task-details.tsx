@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE_URL } from "@/lib/api";
 
 import { useState, useEffect, useCallback } from 'react';
 import { 
@@ -51,7 +52,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
   const fetchTaskStarterState = useCallback(async () => {
     if (!applicationId) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/application/${applicationId}`);
+      const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/application/${applicationId}`);
       if (res.ok) {
         const data = await res.json();
         setTaskState(data);
@@ -65,15 +66,15 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     const fetchData = async () => {
       try {
         // 1. Fetch Application to get references
-        const appRes = await fetch(`http://127.0.0.1:8000/api/v1/applications/${applicationId}`);
+        const appRes = await fetch(`${API_BASE_URL}/api/v1/applications/${applicationId}`);
         if (!appRes.ok) throw new Error("Failed to load application");
         const appInfo = await appRes.json();
         setAppData(appInfo);
 
         // 2. Concurrently fetch Gig Details and STUDENT Profile
         const [gigRes, studentRes] = await Promise.all([
-          fetch(`http://127.0.0.1:8000/api/v1/gigs/${appInfo.gig_id}`),
-          fetch(`http://127.0.0.1:8000/api/v1/profiles/${appInfo.student_clerk_id}`) 
+          fetch(`${API_BASE_URL}/api/v1/gigs/${appInfo.gig_id}`),
+          fetch(`${API_BASE_URL}/api/v1/profiles/${appInfo.student_clerk_id}`)
         ]);
 
         if (gigRes.ok) setGigData(await gigRes.json());
@@ -103,7 +104,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     setStarterError(null);
     setStarterSuccess(null);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/initiate-end`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/initiate-end`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ application_id: applicationId }),
@@ -128,7 +129,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     setStarterError(null);
     setStarterSuccess(null);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/verify-end-code`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/verify-end-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ application_id: applicationId, code: endCodeInput }),

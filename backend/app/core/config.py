@@ -20,6 +20,8 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: Optional[str] = None
 
     CLERK_JWKS_URL: str = "https://clerk.uniwork.lk/.well-known/jwks.json"
+    FRONTEND_URL: str = "http://localhost:3000"
+    PORT: int = 8000
 
     # Pydantic V2 Configuration
     model_config = SettingsConfigDict(

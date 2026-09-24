@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import ProfileView from "./ProfileView";
@@ -12,7 +13,7 @@ export default async function ProfilePage() {
   let profileData = null;
 
   try {
-    const authRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+    const authRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
       next: { revalidate: 0 }
     });
 
@@ -24,7 +25,7 @@ export default async function ProfilePage() {
       if (authData.email) baseEmail = authData.email;
     }
 
-    const profileRes = await fetch(`http://127.0.0.1:8000/api/v1/profiles/${userId}`, {
+    const profileRes = await fetch(`${API_BASE_URL}/api/v1/profiles/${userId}`, {
       cache: "no-store"
     });
 

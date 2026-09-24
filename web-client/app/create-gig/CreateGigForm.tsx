@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL } from "@/lib/api";
 
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
@@ -123,7 +124,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
     }
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/gigs/create", {
+      const res = await fetch(API_BASE_URL + "/api/v1/gigs/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(structuredPayload),
@@ -150,7 +151,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
 
     setLoadingAi((prev) => ({ ...prev, [field]: true }));
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/gigs/enhance-text", {
+      const res = await fetch(API_BASE_URL + "/api/v1/gigs/enhance-text", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: textToEnhance, field_type: field }),

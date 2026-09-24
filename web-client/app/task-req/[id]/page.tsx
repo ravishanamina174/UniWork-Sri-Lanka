@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 // web-client/app/task-req/[id]/page.tsx
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
@@ -68,7 +69,7 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
   // 1. Authenticate and strictly check if user is a STUDENT_EARNER
   let userRole = null;
   try {
-    const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+    const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
       cache: "no-store"
     });
     if (backendRes.ok) {
@@ -109,7 +110,7 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
   let task = null;
 
   try {
-    const res = await fetch(`http://127.0.0.1:8000/api/v1/gigs/${resolvedParams.id}`, {
+    const res = await fetch(`${API_BASE_URL}/api/v1/gigs/${resolvedParams.id}`, {
       cache: "no-store"
     });
 

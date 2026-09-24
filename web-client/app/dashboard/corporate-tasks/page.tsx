@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 // app/dashboard/poster-tasks/page.tsx
 import { auth } from "@clerk/nextjs/server";
 import Link from "next/dist/client/link";
@@ -55,7 +56,7 @@ export default async function PosterTasksPage() {
 
   try {
     // 1. Fetch Auth Profile to check user type
-    const userRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+    const userRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
       next: { revalidate: 0 },
     });
 
@@ -74,7 +75,7 @@ export default async function PosterTasksPage() {
 
     // 2. If authorized, fetch gigs and filter by poster_clerk_id
     if (isAuthorized) {
-      const tasksRes = await fetch("http://127.0.0.1:8000/api/v1/gigs/all", { cache: "no-store" });
+      const tasksRes = await fetch(API_BASE_URL + "/api/v1/gigs/all", { cache: "no-store" });
       
       if (tasksRes.ok) {
         const allTasks: TaskGig[] = await tasksRes.json();

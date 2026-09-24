@@ -22,7 +22,7 @@ export default function ConfirmCandidateButton({
     setLoading(true);
     try {
       const res = await fetch(
-        `http://127.0.0.1:8000/api/v1/applications/${applicationId}/confirm`,
+        `/api/v1/applications/${applicationId}/confirm`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

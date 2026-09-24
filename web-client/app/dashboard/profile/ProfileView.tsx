@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE_URL } from "@/lib/api";
 
 import { useState } from 'react';
 import { Save, X, Mail, Phone, MapPin, Edit3, ShieldAlert, MessageCircle } from 'lucide-react';
@@ -27,7 +28,7 @@ export default function ProfileView({ userId, userRole, baseEmail, initialProfil
 
   const handleSave = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/v1/profiles/${userId}`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/profiles/${userId}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -191,7 +191,7 @@ export default function Page() {
 
         {/* 19. Lightning Bolt */}
         <div className="absolute bottom-[20%] right-[4%] opacity-55 rotate-[-10deg]">
-          <svg width="35" height="50" viewBox="0 0 40 55" fill="none" stroke="#64748B" strokeWidth="1.5" fill="#FEF08A" fillOpacity="0.3" strokeLinejoin="round">
+          <svg width="35" height="50" viewBox="0 0 40 55" stroke="#64748B" strokeWidth="1.5" fill="#FEF08A" fillOpacity="0.3" strokeLinejoin="round">
             <polygon points="22,2 6,28 20,28 14,52 34,20 20,20" />
           </svg>
         </div>

@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import TopHeader from '@/components/dashboard/TopHeader';
@@ -18,7 +19,7 @@ export default async function DashboardLayout({
 
   try {
     // 2. Fetch the real user role from your backend
-    const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+    const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
       next: { revalidate: 0 }
     });
 

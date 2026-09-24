@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE_URL } from "@/lib/api";
 
 import { useState, useEffect, KeyboardEvent } from 'react';
 import { Save, X, Edit3, Briefcase, MapPin, Clock, Globe, Bike, Check, XCircle } from 'lucide-react';
@@ -30,7 +31,7 @@ export default function ProfessionalProfile({ userId, userRole}: ProfessionalPro
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/api/v1/student-workers/profile/${userId}`);
+        const response = await fetch(`${API_BASE_URL}/api/v1/student-workers/profile/${userId}`);
         if (response.ok) {
           const data = await response.json();
           setFormData({
@@ -59,7 +60,7 @@ export default function ProfessionalProfile({ userId, userRole}: ProfessionalPro
         ...formData
       };
 
-      const response = await fetch(`http://127.0.0.1:8000/api/v1/student-workers/profile`, {
+      const response = await fetch(`${API_BASE_URL}/api/v1/student-workers/profile`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),

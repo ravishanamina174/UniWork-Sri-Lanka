@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
@@ -37,7 +38,7 @@ export default async function StudentTasksPage() {
 
   try {
     // 1. Fetch all applications for this student
-    const appsRes = await fetch(`http://127.0.0.1:8000/api/v1/applications/student/${userId}`, {
+    const appsRes = await fetch(`${API_BASE_URL}/api/v1/applications/student/${userId}`, {
       cache: "no-store"
     });
 
@@ -47,11 +48,11 @@ export default async function StudentTasksPage() {
       // 2. Fetch the Gig Details and Poster Profile for each application concurrently
       const enrichedTasksPromises = applications.map(async (app: any) => {
         // Fetch specific gig data
-        const gigRes = await fetch(`http://127.0.0.1:8000/api/v1/gigs/${app.gig_id}`, { cache: "no-store" });
+        const gigRes = await fetch(`${API_BASE_URL}/api/v1/gigs/${app.gig_id}`, { cache: "no-store" });
         const gigData = gigRes.ok ? await gigRes.json() : null;
 
         // Fetch poster profile data
-        const profileRes = await fetch(`http://127.0.0.1:8000/api/v1/profiles/${app.poster_clerk_id}`, { cache: "no-store" });
+        const profileRes = await fetch(`${API_BASE_URL}/api/v1/profiles/${app.poster_clerk_id}`, { cache: "no-store" });
         const profileData = profileRes.ok ? await profileRes.json() : null;
 
         return {

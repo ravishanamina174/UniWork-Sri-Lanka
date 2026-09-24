@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE_URL } from "@/lib/api";
 
 import React, { useState } from 'react';
 import { 
@@ -15,7 +16,6 @@ import {
   Award
 } from 'lucide-react';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface AgentMatch {
   student_clerk_id: string;

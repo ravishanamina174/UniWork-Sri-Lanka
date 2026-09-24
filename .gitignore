@@ -1,4 +1,6 @@
 /backend/.env
+/backend/.env.*
+!/backend/.env.example
 /backend/node_modules
 /backend/venv
 /backend/pycache__
@@ -6,4 +8,7 @@
 /backend/.vscode
 .vscode
 /node_modules
+/web-client/.env.local
+/web-client/.env.*.local
+!/web-client/.env.example
 __pycache__/

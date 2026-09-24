@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL } from "@/lib/api";
 
 import { useState, useEffect } from "react";
 
@@ -15,7 +16,7 @@ export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButt
     // Fetch specifically the student's applications on mount/refresh
     const checkApplicationStatus = async () => {
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/v1/applications/student/${studentClerkId}`, {
+        const res = await fetch(`${API_BASE_URL}/api/v1/applications/student/${studentClerkId}`, {
           cache: "no-store" // Ensure fresh data on every page reload
         });
 
@@ -46,7 +47,7 @@ export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButt
     setErrorMessage("");
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/applications/apply", {
+      const res = await fetch(API_BASE_URL + "/api/v1/applications/apply", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

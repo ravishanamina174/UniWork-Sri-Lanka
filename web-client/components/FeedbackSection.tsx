@@ -1,5 +1,6 @@
 // web-client/components/FeedbackSection.tsx
 "use client";
+import { API_BASE_URL } from "@/lib/api";
 
 import React, { useState } from "react";
 import { Send, CheckCircle2, AlertCircle, MessageSquarePlus } from "lucide-react";
@@ -69,7 +70,7 @@ export default function FeedbackSection({ userClerkId, userRole }: FeedbackSecti
     setIsSubmitting(true);
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/v1/feedback/", {
+      const res = await fetch(API_BASE_URL + "/api/v1/feedback/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

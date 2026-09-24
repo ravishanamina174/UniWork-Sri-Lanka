@@ -1,4 +1,5 @@
 'use client';
+import { API_BASE_URL } from "@/lib/api";
 
 import { useState, useEffect, useCallback } from 'react';
 import { useAuth } from "@clerk/nextjs";
@@ -65,7 +66,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
   const fetchTaskStarterState = useCallback(async () => {
     if (!applicationId) return;
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/application/${applicationId}`);
+      const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/application/${applicationId}`);
       if (res.ok) {
         const data = await res.json();
         setTaskState(data);
@@ -79,19 +80,19 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     const fetchData = async () => {
       try {
         // 1. Fetch Application to get references
-        const appRes = await fetch(`http://127.0.0.1:8000/api/v1/applications/${applicationId}`);
+        const appRes = await fetch(`${API_BASE_URL}/api/v1/applications/${applicationId}`);
         if (!appRes.ok) throw new Error("Failed to load application");
         const appInfo = await appRes.json();
         setAppData(appInfo);
 
         // 2. Concurrently fetch Gig Details, Poster Profile, AND Current Student Profile
         const fetchPromises = [
-          fetch(`http://127.0.0.1:8000/api/v1/gigs/${appInfo.gig_id}`),
-          fetch(`http://127.0.0.1:8000/api/v1/profiles/${appInfo.poster_clerk_id}`)
+          fetch(`${API_BASE_URL}/api/v1/gigs/${appInfo.gig_id}`),
+          fetch(`${API_BASE_URL}/api/v1/profiles/${appInfo.poster_clerk_id}`)
         ];
         
         if (userId) {
-          fetchPromises.push(fetch(`http://127.0.0.1:8000/api/v1/profiles/${userId}`));
+          fetchPromises.push(fetch(`${API_BASE_URL}/api/v1/profiles/${userId}`));
         }
 
         const [gigRes, posterRes, studentRes] = await Promise.all(fetchPromises);
@@ -129,7 +130,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     setStarterError(null);
     setStarterSuccess(null);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/initiate-start`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/initiate-start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ application_id: applicationId }),
@@ -154,7 +155,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     setStarterError(null);
     setStarterSuccess(null);
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/verify-start-code`, {
+      const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/verify-start-code`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ application_id: applicationId, code: startCodeInput }),
@@ -185,7 +186,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
       async (position) => {
         try {
           // 1. Verify location logically for the task
-          const res = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/verify-location`, {
+          const res = await fetch(`${API_BASE_URL}/api/v1/started-tasks/verify-location`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -199,7 +200,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
           // --- SAFETY FEATURE EXECUTION ---
           if (isSafetyEnabled && userId) {
-            await fetch(`http://127.0.0.1:8000/api/v1/profiles/emergency-log`, {
+            await fetch(`${API_BASE_URL}/api/v1/profiles/emergency-log`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({
@@ -252,7 +253,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
     try {
       // 1. Mark task as ended in the started-tasks endpoint
-      const endRes = await fetch(`http://127.0.0.1:8000/api/v1/started-tasks/student-end`, {
+      const endRes = await fetch(`${API_BASE_URL}/api/v1/started-tasks/student-end`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ application_id: applicationId }),
@@ -262,7 +263,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
       // 2. Increment completed_tasks (+1) and total_earnings (+finalAmount) in profile collection
       if (userId) {
-        const metricRes = await fetch(`http://127.0.0.1:8000/api/v1/profiles/${userId}/complete-task`, {
+        const metricRes = await fetch(`${API_BASE_URL}/api/v1/profiles/${userId}/complete-task`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ earned_amount: finalAmount }),

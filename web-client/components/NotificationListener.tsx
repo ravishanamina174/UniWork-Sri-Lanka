@@ -1,4 +1,5 @@
 "use client";
+import { API_BASE_URL, websocketUrl } from "@/lib/api";
 
 import { useUser } from "@clerk/nextjs";
 import { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ export default function NotificationListener() {
     if (!isLoaded || !user) return;
 
     // Connect to FastAPI WebSocket
-    const ws = new WebSocket(`ws://127.0.0.1:8000/ws/${user.id}`);
+    const ws = new WebSocket(websocketUrl(`/ws/${user.id}`));
 
     // ADD THESE TWO LINES FOR DEBUGGING:
     ws.onopen = () => console.log(`🟢 WebSocket Connected for User: ${user.id}`);

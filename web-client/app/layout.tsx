@@ -1,3 +1,4 @@
+import { API_BASE_URL } from "@/lib/api";
 // web-client/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
@@ -33,7 +34,7 @@ export default async function RootLayout({
 
   if (userId) {
     try {
-      const backendRes = await fetch(`http://127.0.0.1:8000/api/v1/auth/user/clerk/${userId}`, {
+      const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
         next: { revalidate: 0 }
       });
       if (backendRes.ok) {
