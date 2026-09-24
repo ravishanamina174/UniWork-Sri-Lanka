@@ -1,6 +1,6 @@
 fastapi==0.115.6
 uvicorn==0.34.0
-pydantic==2.10.4
+pydantic==2.12.5
 pydantic-settings==2.7.0
 SQLAlchemy==2.0.31
 psycopg2-binary==2.9.12
@@ -8,7 +8,7 @@ geoalchemy2==0.15.0
 motor==3.6.0
 PyJWT[crypto]==2.10.1
 requests==2.32.3
-langgraph==0.0.65
+langgraph==0.2.53
 langchain==0.3.18
 langchain-google-genai==2.0.10
 google-genai==2.19.0
