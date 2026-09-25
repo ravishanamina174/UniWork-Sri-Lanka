@@ -24,7 +24,7 @@ export default function HeroSection() {
         .btn-gradient-wrapper {
           position: relative;
           display: inline-block;
-          border-radius: 14px;
+          border-radius: 7px;
           padding: 1px;
           background: #ededed;
           transition: background 0.3s ease;
@@ -35,7 +35,7 @@ export default function HeroSection() {
           content: "";
           position: absolute;
           inset: 0;
-          border-radius: 14px;
+          border-radius: 7px;
           background: linear-gradient(
             90deg,
             #007fff,
@@ -61,7 +61,7 @@ export default function HeroSection() {
           justify-content: center;
           gap: 0.5rem;
           background: #ffffff;
-          border-radius: 13px;
+          border-radius: 7px;
           transition: all 0.2s ease;
         }
 
@@ -268,7 +268,7 @@ export default function HeroSection() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full mt-12 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
           {/* LEFT SIDE */}
           <div className="flex flex-col items-start text-left w-full z-10">
-            <div className="inline-block border border-[#d1d5db] rounded-full px-4 py-1.5 text-[0.85rem] font-medium text-[#4b5563] mb-6 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
+            <div className="inline-block border border-[#d1d5db] rounded-lg px-4 py-1.5 text-[0.85rem] font-medium text-[#4b5563] mb-6 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.02)]">
               The First Dedicated Student Task Network in Sri Lanka
             </div>
 

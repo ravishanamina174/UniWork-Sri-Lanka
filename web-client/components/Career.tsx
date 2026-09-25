@@ -8,7 +8,7 @@ export default function Career() {
           .career-wrapper {
             font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background-color: #ffffff;
-            border-radius: 24px;
+            border-radius: 20px;
             display: flex;
             max-width: 1100px;
             margin: 0 auto;
@@ -38,7 +38,7 @@ export default function Career() {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 24px 0 0 24px; /* Left side matches the parent wrapper shape exactly */
+            border-radius: 20px 0 0 20px; /* Left side matches the parent wrapper shape exactly */
           }
 
           /* --- Right Content Column --- */

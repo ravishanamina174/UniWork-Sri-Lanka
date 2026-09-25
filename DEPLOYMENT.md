@@ -8,7 +8,8 @@ The repository contains three applications. Deploy only `backend` to Render and
 1. Copy `backend/.env.example` to `backend/.env` and fill in the database and
    Gemini values.
 2. Copy `web-client/.env.example` to `web-client/.env.local` and add the Clerk
-   and Google Maps values. Keep `NEXT_PUBLIC_API_URL=http://localhost:8000`.
+   and Google Maps values. For local development, use
+   `NEXT_PUBLIC_API_URL=http://localhost:8000`.
 3. Start the API from the repository root:
 
    ```bash
@@ -27,6 +28,20 @@ The repository contains three applications. Deploy only `backend` to Render and
 The web client uses `NEXT_PUBLIC_API_URL` for HTTP requests and converts that
 same URL to `ws://` or `wss://` for WebSockets.
 
+To switch environments, change only `NEXT_PUBLIC_API_URL` and restart Next.js:
+
+```text
+# Local web + local API
+NEXT_PUBLIC_API_URL=http://localhost:8000
+
+# Deployed web + Render API
+NEXT_PUBLIC_API_URL=https://<render-service>.onrender.com
+```
+
+Do not append `/api/v1` to the web value; web request paths add that prefix.
+For the mobile app, set `EXPO_PUBLIC_API_BASE_URL` to the API URL including
+`/api/v1` (for example, `http://192.168.1.3:8000/api/v1` locally).
+
 ## Render backend
 
 1. Create a PostgreSQL database with PostGIS support and a MongoDB database.
@@ -42,7 +57,9 @@ same URL to `ws://` or `wss://` for WebSockets.
    - `POSTGRES_URL`: the Render PostgreSQL **internal** connection URL
    - `MONGO_URL`: the MongoDB connection string
    - `GEMINI_API_KEY`: the Gemini API key, if AI enhancement and lookup are enabled
-   - `FRONTEND_URL`: the final Vercel URL, for example `https://uniwork-web.vercel.app`
+   - `FRONTEND_URL`: comma-separated browser origins, such as
+     `http://localhost:3000,https://uniwork-web.vercel.app`, when both local
+     development and the deployed web app need to call this backend
 5. Deploy and verify `https://<render-service>.onrender.com/` returns
    `{"status":"Engine is running"}`.
 

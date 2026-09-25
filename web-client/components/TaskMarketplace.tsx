@@ -87,7 +87,7 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
               return (
                 <div
                   key={task.id}
-                  className="bg-white border border-slate-300 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b0b1f7] transition-all flex flex-col overflow-hidden"
+                  className="bg-white border border-slate-300 rounded-sm shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b0b1f7] transition-all flex flex-col overflow-hidden"
                 >
                   <div className="p-5 sm:p-6 pb-4 flex-1 flex flex-col">
                     
@@ -165,7 +165,7 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
                     <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
                       {/* NEW: Wrap the button in a Link to the dynamic route */}
                       <Link href={`/task-req/${task.id}`}>
-                        <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
+                        <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-sm transition-all shadow-sm tracking-wide">
                            Request Task
                         </button>
                       </Link>
@@ -182,7 +182,7 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
             <div className="mt-8 flex justify-center">
               <button 
                 onClick={() => setVisibleCount((prev) => prev + 3)}
-                className="bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-sm font-medium py-2 px-6 rounded-xl transition-all shadow-sm tracking-wide"
+                className="bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-sm font-medium py-2 px-6 rounded-sm transition-all shadow-sm tracking-wide"
               >
                 Load More Tasks
               </button>

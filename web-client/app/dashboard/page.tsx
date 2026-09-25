@@ -47,7 +47,7 @@ export default async function DashboardHome() {
       </div>
 
       {/* Dummy Advertisement Area - Notion Feature Callout Style */}
-      <div className="w-full rounded-2xl bg-gradient-to-br from-[#f8f9ff] to-[#f4f0ff] border border-[#e4e4e9] p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 relative overflow-hidden group">
+      <div className="w-full rounded-md bg-gradient-to-br from-[#f8f9ff] to-[#f4f0ff] border border-[#e4e4e9] p-6 md:p-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8 relative overflow-hidden group">
         
         {/* Subtle background doodle shapes (inspired by Notion's decorative elements) */}
         <div className="absolute -right-10 -top-10 text-[#e0e2fb] opacity-50 group-hover:rotate-12 transition-transform duration-700">
@@ -66,7 +66,7 @@ export default async function DashboardHome() {
           </p>
         </div>
         
-        <button className="relative z-10 shrink-0 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-[#ededed] shadow-[0_2px_8px_rgba(0,0,0,0.04)] rounded-xl text-[#37352f] text-sm font-semibold hover:bg-[#fbfbfa] hover:shadow-md transition-all active:scale-95">
+        <button className="relative z-10 shrink-0 inline-flex items-center justify-center gap-2 px-5 py-2.5 bg-white border border-[#ededed] shadow-[0_2px_8px_rgba(0,0,0,0.04)] rounded-lg text-[#37352f] text-sm font-semibold hover:bg-[#fbfbfa] hover:shadow-md transition-all active:scale-95">
           Upgrade Workspace <ArrowRight size={16} />
         </button>
       </div>
@@ -80,7 +80,7 @@ export default async function DashboardHome() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           
           {/* Step 1 Card */}
-          <div className="border border-[#ededed] rounded-2xl p-6 md:p-8 hover:bg-[#fbfbfa] hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all cursor-default bg-white group flex flex-col w-full">
+          <div className="border border-[#ededed] rounded-md p-6 md:p-8 hover:bg-[#fbfbfa] hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all cursor-default bg-white group flex flex-col w-full">
             {/* Colorful Icon Badge matching the reference image */}
             <div className="w-12 h-12 rounded-full bg-[#ffe2dd] text-[#d44c47] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm relative">
               <Search size={22} strokeWidth={2.5} />
@@ -96,7 +96,7 @@ export default async function DashboardHome() {
           </div>
 
           {/* Step 2 Card */}
-          <div className="border border-[#ededed] rounded-2xl p-6 md:p-8 hover:bg-[#fbfbfa] hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all cursor-default bg-white group flex flex-col w-full">
+          <div className="border border-[#ededed] rounded-md p-6 md:p-8 hover:bg-[#fbfbfa] hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all cursor-default bg-white group flex flex-col w-full">
             <div className="w-12 h-12 rounded-full bg-[#e8f3eb] text-[#448361] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300 shadow-sm relative">
               <MessageSquare size={22} strokeWidth={2.5} />
             </div>
@@ -107,7 +107,7 @@ export default async function DashboardHome() {
           </div>
 
           {/* Step 3 Card */}
-          <div className="border border-[#ededed] rounded-2xl p-6 md:p-8 hover:bg-[#fbfbfa] hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all cursor-default bg-white group flex flex-col w-full">
+          <div className="border border-[#ededed] rounded-md p-6 md:p-8 hover:bg-[#fbfbfa] hover:shadow-[0_4px_12px_rgba(0,0,0,0.02)] transition-all cursor-default bg-white group flex flex-col w-full">
             <div className="w-12 h-12 rounded-full bg-[#f3eaf8] text-[#9a6dd7] flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-3 transition-transform duration-300 shadow-sm relative">
               <CheckCircle size={22} strokeWidth={2.5} />
             </div>

@@ -3,6 +3,7 @@ import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import HeroSection from "@/components/HeroSection";
 import TaskMarketplace, { TaskGig } from "@/components/TaskMarketplace";
+import Footer from "@/components/Footer";
 export const dynamic = "force-dynamic";
 
 export default async function Home() {
@@ -48,7 +49,7 @@ export default async function Home() {
         
         {/* Clean, Modularized Shared Marketplace Component with userRole provided */}
         <TaskMarketplace tasks={tasks} userRole={userRole} />
-        
+        <Footer />
       </div>
     </div>
   );

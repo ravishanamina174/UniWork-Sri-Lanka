@@ -10,7 +10,6 @@ import {
   Image,
   TextInput,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Link, useRouter } from 'expo-router';
@@ -18,6 +17,7 @@ import { X, MessageSquarePlus, Send, CheckCircle2, AlertCircle } from 'lucide-re
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path, Circle } from 'react-native-svg';
 import { useAuth } from '@clerk/clerk-expo'; // <-- Added critical import
+import { API_BASE_URL } from '../constants/api';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
@@ -78,10 +78,7 @@ function FeedbackSection({ userClerkId, userRole }: { userClerkId: string; userR
     setIsSubmitting(true);
 
     try {
-      // Automatically switches endpoints based on iOS Simulator vs Android Emulator
-      const API_URL = Platform.OS === 'android' ? 'http://192.168.1.3:8000' : 'http://192.168.1.3:8000';
-      
-      const res = await fetch(`${API_URL}/api/v1/feedback/`, {
+      const res = await fetch(`${API_BASE_URL}/feedback/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -118,11 +118,11 @@ export default async function StudentTasksPage() {
 
               return (
                 <Link href={targetUrl} key={task.id} className="group flex w-full">
-                  <div className="w-full bg-white border border-slate-200 rounded-xl shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-6 flex flex-col cursor-pointer">
+                  <div className="w-full bg-white border border-slate-200 rounded-sm shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-6 flex flex-col cursor-pointer">
                     
                     {/* Header: Category & Deadline */}
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                      <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${category.classes}`}>
+                      <span className={`text-[11px] font-bold px-2.5 py-1 rounded-sm ${category.classes}`}>
                         {category.label}
                       </span>
                       <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
@@ -181,11 +181,11 @@ export default async function StudentTasksPage() {
                     {/* Application Approval Status Button / Pill */}
                     <div className="mb-1 mt-5">
                       {isApproved ? (
-                        <div className="w-full py-2 px-3 rounded-lg bg-[#d1fae591] border border-emerald-200 text-emerald-600 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#bbf7d0] transition-colors">
+                        <div className="w-full py-2 px-3 rounded-sm bg-[#d1fae591] border border-emerald-200 text-emerald-600 text-xs font-bold flex items-center justify-center gap-1.5 hover:bg-[#bbf7d0] transition-colors">
                           <span>✓</span> Task Approved - Open Workspace
                         </div>
                       ) : (
-                        <div className="w-full py-2 px-3 rounded-lg bg-white border border-[#9fa1a4] text-[#646668] text-xs font-bold flex items-center justify-center gap-1.5 ">
+                        <div className="w-full py-2 px-3 rounded-sm bg-white border border-[#9fa1a4] text-[#646668] text-xs font-bold flex items-center justify-center gap-1.5 ">
                           <span>⏳</span> Task Pending...
                         </div>
                       )}
