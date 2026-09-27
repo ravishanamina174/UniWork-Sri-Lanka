@@ -141,25 +141,34 @@ export default function Footer() {
               href="/"
               className="transition-colors hover:text-[#B18B42]"
             >
+              Privacy Policy
+            </Link>
+
+            <span aria-hidden="true">·</span>
+
+            <Link
+              href="/"
+              className="transition-colors hover:text-[#B18B42]"
+            >
+              Terms of Service
+            </Link>
+
+            <span aria-hidden="true">·</span>
+
+            <Link
+              href="/"
+              className="transition-colors hover:text-[#B18B42]"
+            >
+              Student Guidelines
+            </Link>
+
+            <span aria-hidden="true">·</span>
+
+            <Link
+              href="/"
+              className="transition-colors hover:text-[#B18B42]"
+            >
               Disclaimer
-            </Link>
-
-            <span aria-hidden="true">·</span>
-
-            <Link
-              href="/"
-              className="transition-colors hover:text-[#B18B42]"
-            >
-              Privacy
-            </Link>
-
-            <span aria-hidden="true">·</span>
-
-            <Link
-              href="/"
-              className="transition-colors hover:text-[#B18B42]"
-            >
-              Terms
             </Link>
           </nav>
         </div>
