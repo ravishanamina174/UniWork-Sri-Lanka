@@ -2,14 +2,15 @@
 import Link from "next/link";
 
 const companyLinks = [
-  { label: "Liquidity", href: "/" },
-  { label: "Strategies", href: "/" },
-  { label: "OTC", href: "/" },
-  { label: "Ventures", href: "/" },
-  { label: "Insights", href: "/" },
+  { label: "Find Tasks", href: "/" },
+  { label: "Post a Job", href: "/" },
+  { label: "How It Works", href: "/" },
+  { label: "Safety & Verification", href: "/" },
+  { label: "Enterprise / SMBs", href: "/" },
 ];
 
 const socialLinks = [
+  { label: "LinkedIn", href: "https://linkedin.com" },
   { label: "Facebook", href: "https://facebook.com" },
   { label: "Instagram", href: "https://instagram.com" },
   { label: "X", href: "https://x.com" },
