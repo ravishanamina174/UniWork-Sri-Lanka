@@ -69,7 +69,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
         {/* Left Side: Brand Logo & Links */}
         <div className="flex items-center gap-6">
           
-          <Link href="/" onClick={handleNavigation} className="flex items-center gap-2.5 group transition-opacity hover:opacity-80">
+          <Link href="/" className="flex items-center gap-2.5 group transition-opacity hover:opacity-80">
             {/* Notion-style 3D Cube SVG Logo for UniWorkSL */}
             <div className="flex items-center justify-center text-[#37352f]">
               <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
