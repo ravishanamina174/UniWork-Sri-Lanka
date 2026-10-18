@@ -8,23 +8,24 @@ export const dynamic = "force-dynamic";
 
 export default async function Home() {
   const { userId } = await auth();
-  if (!userId) redirect("/sign-in");
 
   let shouldRedirectToOnboard = false;
   let tasks: TaskGig[] = [];
-  let userRole = ""; // Declare variable to hold the user's role
+  let userRole = "TASK_POSTER";
 
   try {
-    // 1. Fetch Auth Profile to verify onboarding status
-    const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
-      next: { revalidate: 0 }
-    });
+    if (userId) {
+      // 1. Fetch Auth Profile to verify onboarding status
+      const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
+        next: { revalidate: 0 }
+      });
 
-    if (backendRes.status === 404) {
-      shouldRedirectToOnboard = true;
-    } else if (backendRes.ok) {
-      const userData = await backendRes.json();
-      userRole = userData.role || ""; // Extract role securely from server response
+      if (backendRes.status === 404) {
+        shouldRedirectToOnboard = true;
+      } else if (backendRes.ok) {
+        const userData = await backendRes.json();
+        userRole = userData.role || "TASK_POSTER";
+      }
     }
 
     // 2. Fetch Shared Task Cards (Visible to all users)

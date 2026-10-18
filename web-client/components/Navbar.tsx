@@ -1,8 +1,9 @@
 "use client";
 
 import { UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface NavbarProps {
   userRole?: "STUDENT_EARNER" | "TASK_POSTER" | "CORPORATE_CLIENT";
@@ -10,6 +11,20 @@ interface NavbarProps {
 
 export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
   const pathname = usePathname();
+  const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth();
+
+  const handleNavigation = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isLoaded) {
+      event.preventDefault();
+      return;
+    }
+
+    if (!isSignedIn) {
+      event.preventDefault();
+      router.push("/sign-in");
+    }
+  };
 
   // Navigation configurations grouped directly by PostgreSQL PlatformRoleEnum options
   const navigationTabs = {
@@ -54,7 +69,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
         {/* Left Side: Brand Logo & Links */}
         <div className="flex items-center gap-6">
           
-          <Link href="/" className="flex items-center gap-2.5 group transition-opacity hover:opacity-80">
+          <Link href="/" onClick={handleNavigation} className="flex items-center gap-2.5 group transition-opacity hover:opacity-80">
             {/* Notion-style 3D Cube SVG Logo for UniWorkSL */}
             <div className="flex items-center justify-center text-[#37352f]">
               <svg width="28" height="28" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,6 +127,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
                 <Link
                   key={tab.name}
                   href={tab.href}
+                  onClick={handleNavigation}
                   className={`px-3 py-1.5 rounded-md text-[14px] font-medium transition-colors ${
                     isActive 
                       ? "bg-[#efefef] text-[#37352f]" 
@@ -131,6 +147,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
           {showPostGigButton && (
              <Link 
                  href="/create-gig" 
+                 onClick={handleNavigation}
                  className="hidden sm:inline-flex items-center justify-center px-3 py-1.5 rounded-md text-[14px] font-medium text-[#505050] hover:text-[#37352f] hover:bg-[#efefef] transition-colors"
               >
                 Post a Task
@@ -140,6 +157,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
           {/* Primary Action Button - Notion's vivid blue */}
           <Link
             href={currentPortal.href}
+            onClick={handleNavigation}
             className="inline-flex items-center justify-center px-3.5 py-1.5 ml-1 text-[14px] font-medium rounded-md bg-[#007FFF] text-white hover:bg-[#0066CC] transition-colors"
           > 
             {currentPortal.text}

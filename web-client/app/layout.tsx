@@ -30,7 +30,7 @@ export default async function RootLayout({
 }>) {
   // 1. Authenticate user and fetch role securely on the server
   const { userId } = await auth();
-  let userRole: "STUDENT_EARNER" | "TASK_POSTER" | "CORPORATE_CLIENT" = "STUDENT_EARNER";
+  let userRole: "STUDENT_EARNER" | "TASK_POSTER" | "CORPORATE_CLIENT" = "TASK_POSTER";
 
   if (userId) {
     try {
