@@ -94,3 +94,6 @@ The platform cleanly splits incoming operational workflows into two distinct pip
 *   **Financial (CBSL):** Partnering directly with a licensed commercial bank in Sri Lanka (via secure banking APIs like LankaQR) to legally manage and distribute escrow wallet systems without violating Central Bank regulations.
 *   **Labor Laws:** Clearly defines students as independent freelancers/contractors in the Terms of Service to insulate the platform and posters from minimum wage, EPF, or ETF statutory liabilities.
 *   **Data Privacy (PDPA):** Strictly aligned with the Sri Lankan Personal Data Protection Act. Student IDs are heavily encrypted at rest, and live telemetry locations remain completely hidden until a gig is formally accepted by both parties.
+
+------------
+Branch Test -> recruiter demo makes with just showing home page without clerk Auth
