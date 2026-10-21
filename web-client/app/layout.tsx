@@ -1,11 +1,9 @@
-import { API_BASE_URL } from "@/lib/api";
 // web-client/app/layout.tsx
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import { auth } from "@clerk/nextjs/server";
-import Navbar from "@/components/Navbar"; // Adjust import path if necessary
+import Navbar from "@/components/Navbar";
 import NotificationListener from "@/components/NotificationListener";
 import LoadingGate from "@/components/LoadingGate";
 
@@ -24,31 +22,11 @@ export const metadata: Metadata = {
   description: "Student Gig Platform",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // 1. Authenticate user and fetch role securely on the server
-  const { userId } = await auth();
-  let userRole: "STUDENT_EARNER" | "TASK_POSTER" | "CORPORATE_CLIENT" = "TASK_POSTER";
-
-  if (userId) {
-    try {
-      const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
-        next: { revalidate: 0 }
-      });
-      if (backendRes.ok) {
-        const data = await backendRes.json();
-        if (data.role) {
-          userRole = data.role;
-        }
-      }
-    } catch (err) {
-      console.error("Layout ecosystem communication error:", err);
-    }
-  }
-
   return (
     <ClerkProvider>
       <html
@@ -58,7 +36,7 @@ export default async function RootLayout({
         <body className="min-h-full flex flex-col">
           <LoadingGate>
             {/* Global Navbar injection */}
-            <Navbar userRole={userRole} />
+            <Navbar />
 
             {/* Page Content */}
             <main className="flex-1 flex flex-col">

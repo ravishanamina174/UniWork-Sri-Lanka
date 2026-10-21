@@ -1,7 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link"; // NEW: Import Link
+import { useAuth } from "@clerk/nextjs";
+import { useRouter } from "next/navigation";
+import { API_BASE_URL } from "@/lib/api";
 
 export interface TaskGig {
   id: string;
@@ -19,11 +22,15 @@ export interface TaskGig {
 }
 
 interface TaskMarketplaceProps {
-  tasks: TaskGig[];
+  tasks?: TaskGig[];
   userRole?: string; // Added userRole prop
 }
 
 export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProps) {
+  const router = useRouter();
+  const { isLoaded, isSignedIn } = useAuth();
+  const [loadedTasks, setLoadedTasks] = useState<TaskGig[]>([]);
+  const [isLoadingTasks, setIsLoadingTasks] = useState(tasks === undefined);
   // State to track visible gigs, starting at 3
   const [visibleCount, setVisibleCount] = useState(3);
   
@@ -36,6 +43,55 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
       [taskId]: !prev[taskId]
     }));
   };
+
+  const handleRequestTask = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!isLoaded) {
+      event.preventDefault();
+      return;
+    }
+
+    if (!isSignedIn) {
+      event.preventDefault();
+      router.push("/sign-in");
+    }
+  };
+
+  useEffect(() => {
+    if (tasks !== undefined) {
+      setIsLoadingTasks(false);
+      return;
+    }
+
+    let cancelled = false;
+
+    async function loadTasks() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/v1/gigs/all`);
+        if (!response.ok) {
+          throw new Error(`Task request failed with status ${response.status}`);
+        }
+
+        const data: TaskGig[] = await response.json();
+        if (!cancelled) {
+          setLoadedTasks(data);
+        }
+      } catch (error) {
+        console.error("Homepage task loading error:", error);
+      } finally {
+        if (!cancelled) {
+          setIsLoadingTasks(false);
+        }
+      }
+    }
+
+    void loadTasks();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [tasks]);
+
+  const displayedTasks = tasks ?? loadedTasks;
   
   const getCategoryBadge = (title: string, skills: string[]) => {
     const text = title.toLowerCase() + skills.join(" ").toLowerCase();
@@ -70,7 +126,11 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
         </p>
       </div>
 
-      {(!tasks || tasks.length === 0) ? (
+      {isLoadingTasks ? (
+        <div className="text-center py-16 bg-white border border-dashed border-slate-200 rounded-xl">
+          <p className="text-slate-400 text-sm">Loading available tasks...</p>
+        </div>
+      ) : displayedTasks.length === 0 ? (
         <div className="text-center py-16 bg-white border border-dashed border-slate-200 rounded-xl">
           <p className="text-slate-400 text-sm">
             No task entries active. Tasks posted will sync automatically here.
@@ -79,7 +139,7 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
       ) : (
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tasks.slice(0, visibleCount).map((task) => {
+            {displayedTasks.slice(0, visibleCount).map((task) => {
               const category = getCategoryBadge(task.title, task.skills_required || []);
               const isRemote = task.task_type === "remote";
               const isExpanded = !!expandedTasks[task.id];
@@ -164,7 +224,10 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
                   {userRole === "STUDENT_EARNER" && (
                     <div className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
                       {/* NEW: Wrap the button in a Link to the dynamic route */}
-                      <Link href={`/task-req/${task.id}`}>
+                      <Link
+                        href={`/task-req/${task.id}`}
+                        onClick={handleRequestTask}
+                      >
                         <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-sm transition-all shadow-sm tracking-wide">
                            Request Task
                         </button>
@@ -178,7 +241,7 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
           </div>
 
           {/* Load More Button */}
-          {visibleCount < tasks.length && (
+          {visibleCount < displayedTasks.length && (
             <div className="mt-8 flex justify-center">
               <button 
                 onClick={() => setVisibleCount((prev) => prev + 3)}

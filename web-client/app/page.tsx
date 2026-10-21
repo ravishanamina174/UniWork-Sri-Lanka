@@ -1,44 +1,8 @@
-import { API_BASE_URL } from "@/lib/api";
-import { auth } from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
 import HeroSection from "@/components/HeroSection";
-import TaskMarketplace, { TaskGig } from "@/components/TaskMarketplace";
+import TaskMarketplace from "@/components/TaskMarketplace";
 import Footer from "@/components/Footer";
-export const dynamic = "force-dynamic";
 
-export default async function Home() {
-  const { userId } = await auth();
-
-  let shouldRedirectToOnboard = false;
-  let tasks: TaskGig[] = [];
-  let userRole = "TASK_POSTER";
-
-  try {
-    if (userId) {
-      // 1. Fetch Auth Profile to verify onboarding status
-      const backendRes = await fetch(`${API_BASE_URL}/api/v1/auth/user/clerk/${userId}`, {
-        next: { revalidate: 0 }
-      });
-
-      if (backendRes.status === 404) {
-        shouldRedirectToOnboard = true;
-      } else if (backendRes.ok) {
-        const userData = await backendRes.json();
-        userRole = userData.role || "TASK_POSTER";
-      }
-    }
-
-    // 2. Fetch Shared Task Cards (Visible to all users)
-    const tasksRes = await fetch(API_BASE_URL + "/api/v1/gigs/all", { cache: "no-store" });
-    if (tasksRes.ok) {
-      tasks = await tasksRes.json();
-    }
-  } catch (err) {
-    console.error("Gateway ecosystem communication error context sync:", err);
-  }
-
-  if (shouldRedirectToOnboard) redirect("/onboard");
-
+export default function Home() {
   return (
     <div className="relative min-h-screen bg-[#ffffff] text-[#191919] overflow-x-hidden font-sans flex flex-col selection:bg-slate-200/60">
       <div className="relative z-10 flex flex-col min-h-screen w-full">
@@ -48,8 +12,8 @@ export default async function Home() {
           <HeroSection />
         </div>
         
-        {/* Clean, Modularized Shared Marketplace Component with userRole provided */}
-        <TaskMarketplace tasks={tasks} userRole={userRole} />
+        {/* The public homepage fetches task cards after its shell is visible. */}
+        <TaskMarketplace userRole="STUDENT_EARNER" />
         <Footer />
       </div>
     </div>

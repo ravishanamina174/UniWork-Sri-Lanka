@@ -1,7 +1,7 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 import type { NextFetchEvent, NextRequest } from "next/server";
 
-const isPublicRoute = createRouteMatcher(["/", "/sign-in(.*)"]);
+const isPublicRoute = createRouteMatcher(["/", "/about", "/sign-in(.*)"]);
 
 // Next.js 16 named proxy export configuration
 export function proxy(request: NextRequest, event: NextFetchEvent) {

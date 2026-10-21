@@ -15,6 +15,11 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
   const { isLoaded, isSignedIn } = useAuth();
 
   const handleNavigation = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    const targetPath = event.currentTarget.getAttribute("href");
+    if (targetPath === "/" || targetPath === "/about") {
+      return;
+    }
+
     if (!isLoaded) {
       event.preventDefault();
       return;
