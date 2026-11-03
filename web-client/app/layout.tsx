@@ -7,6 +7,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import Navbar from "@/components/Navbar"; // Adjust import path if necessary
 import NotificationListener from "@/components/NotificationListener";
+import LoadingGate from "@/components/LoadingGate";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -55,6 +56,7 @@ export default async function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       >
         <body className="min-h-full flex flex-col">
+          <LoadingGate>
           {/* Global Navbar injection */}
           <Navbar userRole={userRole} />
           
@@ -63,6 +65,7 @@ export default async function RootLayout({
             <NotificationListener />
             {children}
           </main>
+          </LoadingGate>
         </body>
       </html>
     </ClerkProvider>
