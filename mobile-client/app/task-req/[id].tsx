@@ -6,11 +6,12 @@ import {
   ScrollView, 
   ActivityIndicator, 
   TouchableOpacity,
-  SafeAreaView
+  SafeAreaView,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { fetchAllGigs } from '@/constants/api';
 import { TaskGig } from '@/components/TaskMarketplace'; // Adjust path if needed
+import MapView, { Marker } from 'react-native-maps';
 
 export default function TaskRequestScreen() {
   const { id } = useLocalSearchParams();
@@ -50,6 +51,9 @@ export default function TaskRequestScreen() {
   }
 
   const isRemote = task.task_type === "remote";
+  const [longitude, latitude] = task.location?.coordinates?.length === 2
+    ? task.location.coordinates
+    : [80.5234, 6.6191];
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -85,14 +89,27 @@ export default function TaskRequestScreen() {
           </TouchableOpacity>
         </View>
 
-        {/* Dummy Map Component (Only for Physical Tasks) */}
+        {/* Interactive task map, matching the web task details page. */}
         {!isRemote && (
           <View style={styles.mapSection}>
             <Text style={styles.mapTitle}>TASK LOCATION</Text>
-            <View style={styles.dummyMapContainer}>
+            <View style={styles.mapContainer}>
+              <MapView
+                style={styles.map}
+                initialRegion={{
+                  latitude,
+                  longitude,
+                  latitudeDelta: 0.02,
+                  longitudeDelta: 0.02,
+                }}
+                scrollEnabled={false}
+                zoomEnabled={false}
+              >
+                <Marker coordinate={{ latitude, longitude }} />
+              </MapView>
               <View style={styles.mapInnerCard}>
                 <Text style={styles.pinIcon}>📍</Text>
-                <Text style={styles.mapInnerText}>Exact location pinned on map</Text>
+                <Text style={styles.mapInnerText}>{task.location?.address || 'Exact location pinned on map'}</Text>
               </View>
             </View>
           </View>
@@ -134,7 +151,7 @@ const styles = StyleSheet.create({
   requestButtonText: { color: '#191919', fontSize: 14, fontWeight: '600' },
   mapSection: { backgroundColor: '#FFF', borderRadius: 16, padding: 20, borderWidth: 1, borderColor: '#E2E8F0' },
   mapTitle: { fontSize: 12, fontWeight: 'bold', color: '#64748B', marginBottom: 16, letterSpacing: 0.5 },
-  dummyMapContainer: {
+  mapContainer: {
     backgroundColor: '#FAFAFA',
     borderWidth: 1.5,
     borderColor: '#E2E8F0',
@@ -143,7 +160,9 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: 'center',
     alignItems: 'center',
+    overflow: 'hidden',
   },
+  map: { ...StyleSheet.absoluteFillObject },
   mapInnerCard: {
     backgroundColor: '#FFF',
     padding: 16,

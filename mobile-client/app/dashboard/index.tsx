@@ -3,7 +3,7 @@ import { ScrollView, View, Text, TouchableOpacity, StyleSheet } from 'react-nati
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { useAuth } from '@clerk/clerk-expo';
-import { Search, MessageSquare, CheckCircle, ArrowRight, Zap, User, Briefcase, PlusSquare, LogOut, LogIn } from 'lucide-react-native';
+import { Search, MessageSquare, CheckCircle, ArrowRight, Zap, User, Briefcase, PlusSquare, LogOut, Settings } from 'lucide-react-native';
 
 export default function DashboardHome() {
   const router = useRouter();
@@ -24,10 +24,6 @@ export default function DashboardHome() {
     }
   };
 
-  const handleSignInAgain = () => {
-    router.push('/sign-in');
-  };
-
   return (
     <SafeAreaView style={styles.safeArea} edges={['top']}>
       <ScrollView contentContainerStyle={styles.container} showsVerticalScrollIndicator={false}>
@@ -40,47 +36,18 @@ export default function DashboardHome() {
           </Text>
         </View>
 
-        {/* Quick Navigation Panel */}
-        <View style={styles.navGrid}>
-          <TouchableOpacity style={styles.navCard} onPress={() => router.push('/dashboard/profile')} activeOpacity={0.7}>
-            <User size={24} color="#37352f" />
-            <Text style={styles.navCardText}>My Profile</Text>
-          </TouchableOpacity>
-          
-          <TouchableOpacity style={styles.navCard} onPress={() => router.push('/dashboard/manage-tasks')} activeOpacity={0.7}>
-            <Briefcase size={24} color="#37352f" />
-            <Text style={styles.navCardText}>Manage Tasks</Text>
-          </TouchableOpacity>
-
-          {/* Dynamic Create Task Button */}
-          {canCreateTask && (
-            <TouchableOpacity 
-              style={[styles.navCard, styles.createTaskCard]} 
-              onPress={() => router.push('/dashboard/create-task')} 
-              activeOpacity={0.7}
-            >
-              <PlusSquare size={24} color="#2d913e" />
-              <Text style={[styles.navCardText, { color: '#2d913e' }]}>Create Task</Text>
-            </TouchableOpacity>
-          )}
-
-          {/* Authentication Controls Row */}
-          <TouchableOpacity 
-            style={[styles.navCard, styles.signOutCard]} 
-            onPress={handleSignOut} 
-            activeOpacity={0.7}
-          >
-            <LogOut size={24} color="#e11d48" />
-            <Text style={[styles.navCardText, { color: '#e11d48' }]}>Sign Out</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity 
-            style={[styles.navCard, styles.signInAgainCard]} 
-            onPress={handleSignInAgain} 
-            activeOpacity={0.7}
-          >
-            <LogIn size={24} color="#2563eb" />
-            <Text style={[styles.navCardText, { color: '#2563eb' }]}>Sign In Again</Text>
+        {/* Compact action list keeps the web dashboard settings accessible without wasting space. */}
+        <View style={styles.actionPanel}>
+          <Text style={styles.actionPanelTitle}>Workspace</Text>
+          <View style={styles.actionGrid}>
+            <ActionButton icon={<Briefcase size={20} color="#37352f" />} label="Manage Tasks" onPress={() => router.push('/dashboard/manage-tasks')} />
+            <ActionButton icon={<User size={20} color="#37352f" />} label="My Profile" onPress={() => router.push('/dashboard/profile')} />
+            <ActionButton icon={<Settings size={20} color="#37352f" />} label="Settings" onPress={() => router.push('/dashboard/profile')} />
+            {canCreateTask && <ActionButton icon={<PlusSquare size={20} color="#2d913e" />} label="Create Task" onPress={() => router.push('/dashboard/create-task')} tone="green" />}
+          </View>
+          <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut} activeOpacity={0.7}>
+            <LogOut size={18} color="#e11d48" />
+            <Text style={styles.signOutText}>Sign Out</Text>
           </TouchableOpacity>
         </View>
 
@@ -138,12 +105,14 @@ const styles = StyleSheet.create({
   header: { marginBottom: 24 },
   title: { fontSize: 28, fontWeight: '800', color: '#37352f', marginBottom: 8, letterSpacing: -0.5 },
   subtitle: { fontSize: 16, color: '#787774', lineHeight: 24 },
-  navGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 12, marginBottom: 24 },
-  navCard: { flex: 1, minWidth: '45%', backgroundColor: '#FFFFFF', padding: 16, borderRadius: 12, borderWidth: 1, borderColor: '#ededed', alignItems: 'center', gap: 8 },
-  createTaskCard: { borderColor: '#cce8d1', backgroundColor: '#f4faf5' },
-  signOutCard: { borderColor: '#fecdd3', backgroundColor: '#fcf5f5' },
-  signInAgainCard: { borderColor: '#bfdbfe', backgroundColor: '#f7fbff' },
-  navCardText: { fontSize: 14, fontWeight: '600', color: '#37352f' },
+  actionPanel: { backgroundColor: '#FFFFFF', padding: 16, borderRadius: 16, borderWidth: 1, borderColor: '#ededed', marginBottom: 24 },
+  actionPanelTitle: { fontSize: 15, fontWeight: '800', color: '#37352f', marginBottom: 12 },
+  actionGrid: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
+  actionButton: { width: '48%', minHeight: 64, backgroundColor: '#FFFFFF', padding: 12, borderRadius: 10, borderWidth: 1, borderColor: '#ededed', flexDirection: 'row', alignItems: 'center', gap: 8 },
+  actionButtonGreen: { borderColor: '#cce8d1', backgroundColor: '#f4faf5' },
+  actionButtonText: { fontSize: 13, fontWeight: '700', color: '#37352f', flexShrink: 1 },
+  signOutButton: { marginTop: 10, borderTopWidth: 1, borderTopColor: '#ededed', paddingTop: 12, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6 },
+  signOutText: { fontSize: 13, fontWeight: '700', color: '#e11d48' },
   promoBanner: { backgroundColor: '#f8f9ff', padding: 20, borderRadius: 16, borderWidth: 1, borderColor: '#e4e4e9', marginBottom: 32 },
   promoBadge: { flexDirection: 'row', alignItems: 'center', backgroundColor: '#ebe9fe', paddingHorizontal: 10, paddingVertical: 4, borderRadius: 99, alignSelf: 'flex-start', gap: 4, marginBottom: 12 },
   promoBadgeText: { fontSize: 10, fontWeight: '800', color: '#5b21b6', letterSpacing: 1 },
@@ -157,3 +126,12 @@ const styles = StyleSheet.create({
   stepTitle: { fontSize: 16, fontWeight: '700', color: '#37352f', marginBottom: 6 },
   stepDesc: { fontSize: 14, color: '#787774', lineHeight: 22 }
 });
+
+function ActionButton({ icon, label, onPress, tone }: { icon: React.ReactNode; label: string; onPress: () => void; tone?: 'green' }) {
+  return (
+    <TouchableOpacity style={[styles.actionButton, tone === 'green' && styles.actionButtonGreen]} onPress={onPress} activeOpacity={0.7}>
+      {icon}
+      <Text style={[styles.actionButtonText, tone === 'green' && { color: '#2d913e' }]}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
