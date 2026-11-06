@@ -22,7 +22,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
     TASK_POSTER: [
       { name: "Tasks", href: "/tasks" },
       { name: "Applications", href: "/dashboard/applications" },
-      { name: "Escrow Balance", href: "/" },
+      { name: "Talent Pool", href: "/" },
       { name: "About", href: "/about" },
     ],
     CORPORATE_CLIENT: [

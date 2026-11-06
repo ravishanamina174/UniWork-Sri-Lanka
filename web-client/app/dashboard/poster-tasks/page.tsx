@@ -106,7 +106,7 @@ export default async function PosterTasksPage() {
       </div>
 
       {(!userTasks || userTasks.length === 0) ? (
-        <div className="text-center py-16 bg-white border border-dashed border-slate-200 rounded-xl">
+        <div className="text-center py-16 bg-white border border-dashed border-slate-200 rounded-md">
           <p className="text-slate-400 text-sm">
             You haven't posted any tasks yet. Click "Post a Task" to get started.
           </p>
@@ -122,7 +122,7 @@ export default async function PosterTasksPage() {
             return (
               <div
                 key={taskId}
-                className="bg-white border border-slate-300 rounded-2xl shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b0b1f7] transition-all flex flex-col overflow-hidden"
+                className="bg-white border border-slate-300 rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b0b1f7] transition-all flex flex-col overflow-hidden"
               >
                 <div className="p-5 sm:p-6 pb-4 flex-1 flex flex-col">
                   {/* Category Pill & Deadline */}
@@ -186,7 +186,7 @@ export default async function PosterTasksPage() {
 
                 {/* Optional: Modify the button behavior for the dashboard view */}
                 <Link href={`/dashboard/applications`} className="px-5 sm:px-6 pb-5 sm:pb-6 pt-2">
-                    <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-xl transition-all shadow-sm tracking-wide">
+                    <button className="w-full bg-white hover:bg-[#6366F1] border-[0.7px] border-[#6366F1] text-black hover:text-white active:bg-[#4338CA] active:border-[#4338CA] text-xs font-medium py-2.5 px-4 rounded-md transition-all shadow-sm tracking-wide">
                       See Applicants
                     </button>
                 </Link>

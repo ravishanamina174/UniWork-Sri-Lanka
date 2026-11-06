@@ -106,7 +106,7 @@ export default async function ApplicationsDashboardPage() {
 
       {/* Content Area */}
       {applications.length === 0 ? (
-        <div className="w-full min-h-[300px] border border-dashed border-slate-300 rounded-lg flex items-center justify-center bg-slate-50/50 p-8">
+        <div className="w-full min-h-[300px] border border-dashed border-slate-300 rounded-md flex items-center justify-center bg-slate-50/50 p-8">
           <div className="text-center max-w-sm">
             <div className="text-3xl mb-3">📬</div>
             <p className="text-sm font-semibold text-slate-600 mb-1">
@@ -122,7 +122,7 @@ export default async function ApplicationsDashboardPage() {
           {Object.entries(groupedApplications).map(([gigId, group]) => (
             <div 
               key={gigId} 
-              className="bg-white border border-slate-200 rounded-[10px] p-6 sm:p-8 flex flex-col w-full"
+              className="bg-white border border-slate-200 rounded-md p-6 sm:p-8 flex flex-col w-full"
             >
               {/* Group Wrapper Header */}
               <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6 pb-4 border-b border-slate-100">
@@ -144,7 +144,7 @@ export default async function ApplicationsDashboardPage() {
                 {group.applicants.map((app) => (
                   <div 
                     key={app.id} 
-                    className="bg-[#fdfdfe] border border-slate-300 rounded-[12px] p-5 sm:p-6 flex flex-col hover:border-[#6a77cb] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 group"
+                    className="bg-[#fdfdfe] border border-slate-300 rounded-md p-5 sm:p-6 flex flex-col hover:border-[#6a77cb] hover:shadow-[0_8px_20px_rgba(0,0,0,0.04)] transition-all duration-300 group"
                   >
                     {/* Date Applied Badge */}
                     <div className="flex justify-end mb-4">

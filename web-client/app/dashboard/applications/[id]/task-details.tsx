@@ -183,7 +183,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     <div className="grid grid-cols-12 gap-4 md:gap-6 w-[90%] md:max-w-4xl mx-auto">
       
       {/* 1. Gig Details Area */}
-      <div className="col-span-12 bg-white rounded-xl border border-gray-200 p-6 hover:shadow-xs transition-shadow">
+      <div className="col-span-12 bg-white rounded-md border border-gray-200 p-6 hover:shadow-xs transition-shadow">
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side Info */}
           <div className="flex-1 lg:max-w-[40%] flex flex-col gap-3">
@@ -246,7 +246,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
       </div>
 
       {/* 2. Day Count Down */}
-      <div className="col-span-12 md:col-span-4 bg-white rounded-xl border border-gray-200 p-6 flex flex-col items-center justify-center min-h-[200px] hover:shadow-xs ">
+      <div className="col-span-12 md:col-span-4 bg-white rounded-md border border-gray-200 p-6 flex flex-col items-center justify-center min-h-[200px] hover:shadow-xs ">
         <div className="w-12 h-12 bg-[#f4f6fc] text-[#566b7b] rounded-full flex items-center justify-center mb-3">
           <Calendar size={24} />
         </div>
@@ -261,7 +261,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
       </div>
 
       {/* 3. Student Details */}
-      <div className="col-span-12 md:col-span-8 bg-white rounded-xl border border-gray-200 p-6 min-h-[200px] hover:shadow-xs ">
+      <div className="col-span-12 md:col-span-8 bg-white rounded-md border border-gray-200 p-6 min-h-[200px] hover:shadow-xs ">
         <h3 className="font-bold text-lg text-slate-900 mb-5 flex items-center gap-2">
           <User className="text-[#c27f13]" size={18}/> Student Profile
         </h3>
@@ -298,7 +298,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
       </div>
 
       {/* 4. Task Starter Component (Poster View) */}
-      <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-xl p-6 flex flex-col justify-between hover:shadow-xs min-h-[220px]">
+      <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-md p-6 flex flex-col justify-between hover:shadow-xs min-h-[220px]">
         <div>
           <div className="flex items-center justify-between mb-3">
             <h3 className="font-bold text-slate-900 text-base flex items-center gap-2">
@@ -351,7 +351,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
                 <button
                   onClick={handleInitiateEnd}
                   disabled={starterLoading}
-                  className="w-full py-2.5 bg-[#e66d22] hover:bg-[#d76f2f] text-white font-bold text-xs rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="w-full py-2.5 bg-[#e66d22] hover:bg-[#d76f2f] text-white font-bold text-xs rounded-md transition-colors flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   {starterLoading ? <Loader2 className="animate-spin" size={14} /> : <KeyRound size={14} />}
                   Task End With Code
@@ -410,7 +410,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
 
      {/* 5. Map Component */}
       {gigData.task_type === 'remote' ? (
-        <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center min-h-[500px]">
+        <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-md p-8 flex flex-col items-center justify-center min-h-[500px]">
           <div className="w-12 h-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mb-3">
             <MapPin size={24} />
           </div>
@@ -418,7 +418,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
           <p className="text-xs text-slate-400 mt-1">No physical location required</p>
         </div>
       ) : (
-        <div className="col-span-12 md:col-span-6 bg-white rounded-xl border border-gray-200 p-6 min-h-[500px] hover:shadow-xs flex flex-col group/card">
+        <div className="col-span-12 md:col-span-6 bg-white rounded-md border border-gray-200 p-6 min-h-[500px] hover:shadow-xs flex flex-col group/card">
           <h3 className="font-bold text-[16px] text-slate-900 mb-4 flex items-center gap-2">
             <MapPin className="text-[#1d9c45]" size={18}/> Task Location
           </h3>

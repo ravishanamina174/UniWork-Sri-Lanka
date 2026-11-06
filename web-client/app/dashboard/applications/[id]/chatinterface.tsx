@@ -141,7 +141,7 @@ export default function ChatInterface({ applicationId }: ChatInterfaceProps) {
   }
 
   return (
-    <div className="flex flex-col h-[calc(100dvh-5rem)] my-14 md:h-[calc(80dvh-6rem)] lg:h-[calc(95dvh-8rem)] bg-white rounded-[0.5rem] border border-gray-200 overflow-hidden mx-auto  md:max-w-4xl max-w-5xl w-full">
+    <div className="flex flex-col h-[calc(100dvh-5rem)] my-14 md:h-[calc(80dvh-6rem)] lg:h-[calc(95dvh-8rem)] bg-white rounded-[0.4rem] border border-gray-200 overflow-hidden mx-auto  md:max-w-4xl max-w-5xl w-full">
       
       {/* Header - Matches the UI of task cards */}
       <div className="flex items-center justify-between gap-3 p-4 md:px-6 border-b border-gray-100 bg-white shrink-0">

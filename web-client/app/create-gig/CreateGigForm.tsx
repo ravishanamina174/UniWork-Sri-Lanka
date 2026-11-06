@@ -179,7 +179,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
   const wordCount = formData.description.trim().split(/\s+/).filter(Boolean).length;
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-200 p-8 rounded-2xl w-full">
+    <form onSubmit={handleSubmit} className="space-y-6 bg-white border border-slate-200 p-8 rounded-md w-full">
       {/* --- TITLE SECTION --- */}
       <div>
         <label className="block text-sm font-semibold text-slate-700 mb-1">Task Project Title</label>
@@ -187,7 +187,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           required
           type="text"
           placeholder="e.g., Develop landing page using Tailwind CSS"
-          className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
+          className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
         />
@@ -204,12 +204,12 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           </button>
           
           {aiSuggestions.title && (
-            <div className="p-3 bg-[#f3f9f4] border border-[#2d913e]/30 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+            <div className="p-3 bg-[#f3f9f4] border border-[#2d913e]/30 rounded-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
               <p className="text-sm text-slate-700 flex-1">{aiSuggestions.title}</p>
               <button 
                 type="button" 
                 onClick={() => handleCopy("title", aiSuggestions.title)} 
-                className="text-slate-500 hover:text-[#2d913e] bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm transition-all"
+                className="text-slate-500 hover:text-[#2d913e] bg-white p-1.5 rounded-md border border-slate-200 shadow-sm transition-all"
                 title="Copy Suggestion"
               >
                 {copied.title ? <Check size={16} className="text-[#2d913e]" /> : <Copy size={16} />}
@@ -231,7 +231,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           required
           rows={4}
           placeholder="Break down details, expectations, constraints, or guidelines... (Max 100 words)"
-          className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
+          className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.description}
           onChange={(e) => {
             const text = e.target.value;
@@ -254,12 +254,12 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           </button>
           
           {aiSuggestions.description && (
-            <div className="p-3 bg-[#f3f9f4] border border-[#2d913e]/30 rounded-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+            <div className="p-3 bg-[#f3f9f4] border border-[#2d913e]/30 rounded-md flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
               <p className="text-sm text-slate-700 flex-1 whitespace-pre-wrap">{aiSuggestions.description}</p>
               <button 
                 type="button" 
                 onClick={() => handleCopy("description", aiSuggestions.description)} 
-                className="text-slate-500 hover:text-[#2d913e] bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm transition-all"
+                className="text-slate-500 hover:text-[#2d913e] bg-white p-1.5 rounded-md border border-slate-200 shadow-sm transition-all"
                 title="Copy Suggestion"
               >
                 {copied.description ? <Check size={16} className="text-[#2d913e]" /> : <Copy size={16} />}
@@ -276,7 +276,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
             required
             type="number"
             placeholder="15000"
-            className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors font-medium text-[#2d913e]"
+            className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#2d913e] transition-colors font-medium text-[#2d913e]"
             value={formData.budget}
             onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
           />
@@ -286,7 +286,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
           <input
             required
             type="date"
-            className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
+            className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#2d913e] transition-colors"
             value={formData.deadline}
             onChange={(e) => setFormData({ ...formData, deadline: e.target.value })}
           />
@@ -298,7 +298,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
         <input
           type="text"
           placeholder="React, TypeScript, UI Design, Content Writing"
-          className="w-full px-3 py-2 border border-slate-200 rounded-xl focus:outline-none focus:border-[#2d913e] transition-colors"
+          className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.skills}
           onChange={(e) => setFormData({ ...formData, skills: e.target.value })}
         />
@@ -340,7 +340,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
                 type="button"
                 onClick={handleLocateMe}
                 disabled={isLocating}
-                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-xl transition-colors flex-shrink-0"
+                className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-medium rounded-md transition-colors flex-shrink-0"
               >
                 {isLocating ? "Locating..." : "📍 Locate Me"}
               </button>
@@ -349,7 +349,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
                 readOnly
                 placeholder="Click on the map or locate yourself..."
                 value={address}
-                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm text-slate-600 focus:outline-none"
+                className="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-md text-sm text-slate-600 focus:outline-none"
               />
             </div>
             
@@ -380,7 +380,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
       <button
         type="submit"
         disabled={loading || (taskType === "on-site" && !selectedLocation)}
-        className="w-full py-3 bg-white hover:bg-[#e8e9ec] text-[#28292b] border border-[#afb2b6] md:text-[14px] text-sm font-semibold rounded-xl transition-all shadow-sm active:scale-[0.99] mt-6 flex items-center justify-center gap-2 "
+        className="w-full py-3 bg-white hover:bg-[#e8e9ec] text-[#28292b] border border-[#afb2b6] md:text-[14px] text-sm font-semibold rounded-md transition-all shadow-sm active:scale-[0.99] mt-6 flex items-center justify-center gap-2 "
       >
         {loading ? "Publishing to Ecosystem..." : <>Publish Task Card <Send size={16} color="#189e49" /></>}
 
