@@ -29,12 +29,6 @@ interface TaskMarketplaceProps {
   userRole?: string;
 }
 
-interface CategoryBadge {
-  label: string;
-  backgroundColor: string;
-  textColor: string;
-}
-
 interface SkillBadgeColor {
   backgroundColor: string;
   textColor: string;
@@ -47,30 +41,6 @@ const SKILL_COLORS: SkillBadgeColor[] = [
   { backgroundColor: '#EA4335', textColor: '#FFFFFF' },
   { backgroundColor: '#673AB7', textColor: '#FFFFFF' },
 ];
-
-function getCategoryBadge(title: string, skills: string[]): CategoryBadge {
-  const text = (title + skills.join(' ')).toLowerCase();
-
-  if (
-    text.includes('design') ||
-    text.includes('ui') ||
-    text.includes('ux') ||
-    text.includes('figma')
-  ) {
-    return { label: 'UI/UX Design', backgroundColor: '#EAFAEA', textColor: '#2E7D32' };
-  }
-
-  if (
-    text.includes('move') ||
-    text.includes('delivery') ||
-    text.includes('flyer') ||
-    text.includes('physical')
-  ) {
-    return { label: 'On-Campus Task', backgroundColor: '#FFF3E0', textColor: '#E65100' };
-  }
-
-  return { label: 'Software & Tech', backgroundColor: '#E8F0FE', textColor: '#1A73E8' };
-}
 
 function getSkillBadgeColor(index: number): SkillBadgeColor {
   return SKILL_COLORS[index % SKILL_COLORS.length];
@@ -93,18 +63,12 @@ function MarketplaceHeader() {
 
 function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const category = getCategoryBadge(task.title, task.skills_required);
   const isRemote = task.task_type === 'remote';
 
   return (
     <View style={styles.card}>
       <View style={styles.cardBody}>
-        <View style={styles.cardTopRow}>
-          <View style={[styles.categoryBadge, { backgroundColor: category.backgroundColor }]}>
-            <Text style={[styles.categoryBadgeText, { color: category.textColor }]}>
-              {category.label}
-            </Text>
-          </View>
+        <View style={[styles.cardTopRow, styles.deadlineOnlyRow]}>
           <Text style={styles.deadline}>📅 {task.deadline}</Text>
         </View>
 
@@ -323,15 +287,7 @@ const styles = StyleSheet.create({
     gap: 8,
     marginBottom: 16,
   },
-  categoryBadge: {
-    paddingHorizontal: 12,
-    paddingVertical: 4,
-    borderRadius: 999,
-  },
-  categoryBadgeText: {
-    fontSize: 12,
-    fontWeight: '700',
-  },
+  deadlineOnlyRow: { justifyContent: 'flex-end' },
   deadline: {
     fontSize: 12,
     color: '#94A3B8',

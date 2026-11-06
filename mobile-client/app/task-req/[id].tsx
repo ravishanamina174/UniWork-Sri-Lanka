@@ -57,10 +57,7 @@ export default function TaskRequestScreen() {
         
         {/* Main Task Detail Card */}
         <View style={styles.card}>
-          <View style={styles.headerRow}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>Software & Tech</Text>
-            </View>
+          <View style={[styles.headerRow, styles.deadlineOnlyRow]}>
             <Text style={styles.dateText}>📅 {task.deadline}</Text>
           </View>
 
@@ -123,8 +120,7 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16 },
-  badge: { backgroundColor: '#E8F0FE', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 },
-  badgeText: { color: '#1A73E8', fontSize: 12, fontWeight: '700' },
+  deadlineOnlyRow: { justifyContent: 'flex-end' },
   dateText: { color: '#94A3B8', fontSize: 12, fontWeight: '600' },
   title: { fontSize: 24, fontWeight: 'bold', color: '#1E293B', marginBottom: 8 },
   budget: { fontSize: 28, fontWeight: '900', color: '#007FFF', marginBottom: 16 },

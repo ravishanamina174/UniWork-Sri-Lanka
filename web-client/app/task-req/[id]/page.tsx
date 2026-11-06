@@ -9,18 +9,6 @@ import TaskMap from "@/components/TaskMap"; // NEW: Imported the Map component
 // Force Next.js to never cache this dynamic page
 export const dynamic = "force-dynamic";
 
-// --- Helper Functions Styled to Exactly Match TaskMarketplace.tsx ---
-const getCategoryBadge = (title: string, skills: string[]) => {
-  const text = (title || "").toLowerCase() + (skills || []).join(" ").toLowerCase();
-  if (text.includes("design") || text.includes("ui") || text.includes("ux") || text.includes("figma")) {
-    return { label: "UI/UX Design", classes: "bg-[#EAFAEA] text-[#2E7D32]" };
-  }
-  if (text.includes("map") || text.includes("field") || text.includes("hardware") || text.includes("physical")) {
-    return { label: "On-Campus Task", classes: "bg-[#FFF3E0] text-[#E65100]" };
-  }
-  return { label: "Software & Tech", classes: "bg-[#E8F0FE] text-[#1A73E8]" };
-};
-
 const getSkillBadgeColor = (index: number) => {
   const colors = [
     "bg-[#4285F4] text-white", 
@@ -148,8 +136,6 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
 
   // Derive Display Logic
   const isRemote = task.task_type === "remote";
-  const category = getCategoryBadge(task.title, task.skills_required || []);
-
   return (
     <div className="min-h-screen bg-[#F7F7F5] py-15 px-4 sm:px-6 flex flex-col items-center font-sans z-20 overflow-hidden">
 
@@ -226,11 +212,8 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
           {/* LEFT CARD: Main Task Information */}
           <div className="flex-1 bg-white border border-slate-300 rounded-[6px] shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-8 sm:p-10 flex flex-col relative bg-clip-padding">
             
-            {/* Header Row: Category & Deadline */}
-            <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
-              <span className={`text-xs font-bold px-3.5 py-1.5 rounded-full ${category.classes}`}>
-                {category.label}
-              </span>
+            {/* Deadline */}
+            <div className="flex flex-wrap items-center justify-end gap-4 mb-6">
               <span className="text-[0.9rem] text-slate-400 font-semibold flex items-center gap-1.5">
                 📅 {task.deadline}
               </span>

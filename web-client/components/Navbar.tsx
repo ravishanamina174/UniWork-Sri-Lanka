@@ -16,7 +16,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
     STUDENT_EARNER: [
       { name: "Find Tasks", href: "/tasks" },
       { name: "Physical", href: "/" },
-      { name: "Digital", href: "/" },
+      // { name: "Digital", href: "/" },
       { name: "About", href: "/about" },
     ],
     TASK_POSTER: [

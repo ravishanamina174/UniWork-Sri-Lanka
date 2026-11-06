@@ -7,17 +7,6 @@ import Link from "next/link";
 export const dynamic = "force-dynamic";
 
 // --- Helper Functions Styled to Exactly Match TaskMarketplace ---
-const getCategoryBadge = (title: string, skills: string[]) => {
-  const text = (title || "").toLowerCase() + (skills || []).join(" ").toLowerCase();
-  if (text.includes("design") || text.includes("ui") || text.includes("ux") || text.includes("figma")) {
-    return { label: "UI/UX Design", classes: "bg-[#EAFAEA] text-[#2E7D32]" };
-  }
-  if (text.includes("map") || text.includes("field") || text.includes("hardware") || text.includes("physical") || text.includes("cctv")) {
-    return { label: "On-Site Task", classes: "bg-[#FFF3E0] text-[#E65100]" };
-  }
-  return { label: "Software & Tech", classes: "bg-[#E8F0FE] text-[#1A73E8]" };
-};
-
 const getSkillBadgeColor = (index: number) => {
   const colors = [
     "bg-[#4285F4] text-white", 
@@ -108,7 +97,6 @@ export default async function StudentTasksPage() {
           /* Responsive Task Grid */
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {appliedTasks.map((task) => {
-              const category = getCategoryBadge(task.gig_title, task.skills_required);
               const isApproved = task.application_confirm === "approve";
               
               // Dynamic Routing Logic: Go to chat if approved, otherwise show gig details
@@ -120,11 +108,8 @@ export default async function StudentTasksPage() {
                 <Link href={targetUrl} key={task.id} className="group flex w-full">
                   <div className="w-full bg-white border border-slate-200 rounded-sm shadow-[0_2px_8px_rgba(0,0,0,0.02)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.06)] hover:border-[#b4b4bb] transition-all p-6 flex flex-col cursor-pointer">
                     
-                    {/* Header: Category & Deadline */}
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
-                      <span className={`text-[11px] font-bold px-2.5 py-1 rounded-sm ${category.classes}`}>
-                        {category.label}
-                      </span>
+                    {/* Deadline */}
+                    <div className="flex flex-wrap items-center justify-end gap-2 mb-4">
                       <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
                         📅 {task.deadline}
                       </span>

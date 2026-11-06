@@ -21,18 +21,6 @@ export interface TaskGig {
   };
 }
 
-// Helper functions for card styling
-const getCategoryBadge = (title: string, skills: string[]) => {
-  const text = (title || "").toLowerCase() + (skills || []).join(" ").toLowerCase();
-  if (text.includes("design") || text.includes("ui") || text.includes("ux") || text.includes("figma")) {
-    return { label: "UI/UX Design", classes: "bg-[#EAFAEA] text-[#2E7D32]" };
-  }
-  if (text.includes("map") || text.includes("field") || text.includes("hardware") || text.includes("physical")) {
-    return { label: "On-Campus Task", classes: "bg-[#FFF3E0] text-[#E65100]" };
-  }
-  return { label: "Software & Tech", classes: "bg-[#E8F0FE] text-[#1A73E8]" };
-};
-
 const getSkillBadgeColor = (index: number) => {
   const colors = [
     "bg-[#4285F4] text-white",
@@ -116,7 +104,6 @@ export default async function PosterTasksPage() {
           {userTasks.map((task) => {
             // MongoDB uses _id, while your previous mock might have used id
             const taskId = task._id || task.id; 
-            const category = getCategoryBadge(task.title, task.skills_required || []);
             const isRemote = task.task_type === "remote";
 
             return (
@@ -125,11 +112,8 @@ export default async function PosterTasksPage() {
                 className="bg-white border border-slate-300 rounded-md shadow-[0_4px_12px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.06)] hover:border-[#b0b1f7] transition-all flex flex-col overflow-hidden"
               >
                 <div className="p-5 sm:p-6 pb-4 flex-1 flex flex-col">
-                  {/* Category Pill & Deadline */}
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className={`text-[10px] sm:text-xs font-bold px-3 py-1 rounded-full ${category.classes}`}>
-                      {category.label}
-                    </span>
+                  {/* Deadline */}
+                  <div className="flex items-center justify-end gap-2 mb-4">
                     <span className="text-[10px] sm:text-xs text-slate-400 font-semibold flex items-center gap-1">
                       📅 {task.deadline}
                     </span>

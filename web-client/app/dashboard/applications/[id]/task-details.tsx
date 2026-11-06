@@ -12,18 +12,6 @@ interface TaskDetailsProps {
   applicationId: string;
 }
 
-// --- Helper Functions ---
-const getCategoryBadge = (title: string, skills: string[]) => {
-  const text = (title || "").toLowerCase() + (skills || []).join(" ").toLowerCase();
-  if (text.includes("design") || text.includes("ui") || text.includes("ux") || text.includes("figma")) {
-    return { label: "UI/UX Design", classes: "bg-[#EAFAEA] text-[#2E7D32]" };
-  }
-  if (text.includes("map") || text.includes("field") || text.includes("hardware") || text.includes("physical") || text.includes("cctv")) {
-    return { label: "On-Site Task", classes: "bg-[#FFF3E0] text-[#E65100]" };
-  }
-  return { label: "Software & Tech", classes: "bg-[#E8F0FE] text-[#1A73E8]" };
-};
-
 const getSkillBadgeColor = (index: number) => {
   const colors = [
     "bg-[#4285F4] text-white", 
@@ -176,7 +164,6 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
     );
   }
 
-  const category = getCategoryBadge(gigData.title, gigData.skills_required);
   const daysLeft = calculateDaysLeft(appData.task_deadline);
 
   return (
@@ -187,10 +174,7 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         <div className="flex flex-col lg:flex-row gap-6">
           {/* Left Side Info */}
           <div className="flex-1 lg:max-w-[40%] flex flex-col gap-3">
-            <div className="flex items-center gap-3 mb-1">
-              <span className={`text-[11px] font-bold px-2.5 py-1 rounded-full ${category.classes}`}>
-                {category.label}
-              </span>
+            <div className="flex items-center justify-end gap-3 mb-1">
               <span className="text-xs text-slate-400 font-semibold flex items-center gap-1">
                 <Calendar size={12} /> {appData.task_deadline || "TBD"}
               </span>
