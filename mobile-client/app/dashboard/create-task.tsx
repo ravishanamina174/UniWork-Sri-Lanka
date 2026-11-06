@@ -13,6 +13,7 @@ import {
 import { useAuth } from '@clerk/clerk-expo';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { WebView } from 'react-native-webview';
+import { Copy, Check, Sparkles } from 'lucide-react-native';
 import { API_BASE } from './_layout';
 
 export default function CreateTaskScreen() {
@@ -37,6 +38,9 @@ export default function CreateTaskScreen() {
 
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [currentMonth, setCurrentMonth] = useState(new Date());
+  const [aiSuggestions, setAiSuggestions] = useState({ title: '', description: '' });
+  const [loadingAi, setLoadingAi] = useState({ title: false, description: false });
+  const [copied, setCopied] = useState({ title: false, description: false });
 
   if (userRole === 'STUDENT_EARNER') {
     return (
@@ -146,6 +150,39 @@ export default function CreateTaskScreen() {
     setShowDatePicker(false);
   };
 
+  const handleEnhance = async (field: 'title' | 'description') => {
+      const text = formData[field];
+      if (!text.trim()) {
+        Alert.alert('Missing text', `Please enter a ${field} first.`);
+        return;
+      }
+      setLoadingAi((previous) => ({ ...previous, [field]: true }));
+      try {
+        const response = await fetch(`${API_BASE}/api/v1/gigs/enhance-text`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text, field_type: field }),
+        });
+        const data = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(data.detail || 'Failed to get AI suggestion.');
+        setAiSuggestions((previous) => ({ ...previous, [field]: data.enhanced_text }));
+      } catch (error) {
+        console.error('AI enhancement error:', error);
+        Alert.alert('AI error', 'Could not generate a suggestion.');
+      } finally {
+        setLoadingAi((previous) => ({ ...previous, [field]: false }));
+      }
+    };
+
+  const copySuggestion = async (field: 'title' | 'description') => {
+      const suggestion = aiSuggestions[field];
+      if (!suggestion) return;
+      const Clipboard = await import('expo-clipboard');
+      await Clipboard.setStringAsync(suggestion);
+      setCopied((previous) => ({ ...previous, [field]: true }));
+      setTimeout(() => setCopied((previous) => ({ ...previous, [field]: false })), 2000);
+    };
+
   const handleSubmit = async () => {
     if (!formData.title || !formData.description || !formData.budget || !formData.deadline) {
       Alert.alert("Validation Missing", "Please complete all mandatory fields.");
@@ -202,6 +239,10 @@ export default function CreateTaskScreen() {
         <View style={styles.fieldGroup}>
           <Text style={styles.label}>Task Project Title *</Text>
           <TextInput style={styles.input} value={formData.title} onChangeText={(t) => setFormData({ ...formData, title: t })} />
+          <TouchableOpacity style={styles.aiButton} onPress={() => handleEnhance('title')} disabled={loadingAi.title}>
+            <Sparkles size={14} color="#2d913e" /><Text style={styles.aiButtonText}>{loadingAi.title ? 'Analyzing...' : 'Write with AI'}</Text>
+          </TouchableOpacity>
+          {aiSuggestions.title ? <Suggestion text={aiSuggestions.title} copied={copied.title} onCopy={() => copySuggestion('title')} /> : null}
         </View>
 
         <View style={styles.fieldGroup}>
@@ -217,6 +258,10 @@ export default function CreateTaskScreen() {
               if (text.trim().split(/\s+/).filter(Boolean).length <= 200) setFormData({ ...formData, description: text });
             }}
           />
+          <TouchableOpacity style={styles.aiButton} onPress={() => handleEnhance('description')} disabled={loadingAi.description}>
+            <Sparkles size={14} color="#2d913e" /><Text style={styles.aiButtonText}>{loadingAi.description ? 'Drafting...' : 'Write with AI'}</Text>
+          </TouchableOpacity>
+          {aiSuggestions.description ? <Suggestion text={aiSuggestions.description} copied={copied.description} onCopy={() => copySuggestion('description')} /> : null}
         </View>
 
         <View style={styles.formRow}>
@@ -305,6 +350,11 @@ const styles = StyleSheet.create({
   titleText: { fontSize: 20, fontWeight: '800', color: '#0f172a' },
   fieldGroup: { marginBottom: 16 },
   label: { fontSize: 13, fontWeight: '600', color: '#334155', marginBottom: 6 },
+  aiButton: { flexDirection: 'row', alignItems: 'center', gap: 5, alignSelf: 'flex-start', marginTop: 7 },
+  aiButtonText: { fontSize: 12, fontWeight: '600', color: '#2d913e' },
+  suggestion: { flexDirection: 'row', alignItems: 'center', gap: 8, backgroundColor: '#f3f9f4', borderWidth: 1, borderColor: '#b8dcbc', borderRadius: 8, padding: 10, marginTop: 8 },
+  suggestionText: { flex: 1, color: '#475569', fontSize: 13, lineHeight: 19 },
+  copyButton: { backgroundColor: '#fff', borderWidth: 1, borderColor: '#e2e8f0', borderRadius: 6, padding: 7 },
   rowJustify: { flexDirection: 'row', justifyContent: 'space-between' },
   wordCountText: { fontSize: 11, color: '#94a3b8' },
   input: { fontSize: 14, color: '#191919', borderWidth: 1, borderColor: '#cbd5e1', padding: 10, borderRadius: 10 },
@@ -332,3 +382,14 @@ const styles = StyleSheet.create({
   closeCalendarBtn: { marginTop: 12, alignItems: 'center', padding: 8, backgroundColor: '#f1f5f9', borderRadius: 8 },
   closeCalendarBtnText: { color: '#475569', fontWeight: '600' }
 });
+
+function Suggestion({ text, copied, onCopy }: { text: string; copied: boolean; onCopy: () => void }) {
+  return (
+    <View style={styles.suggestion}>
+      <Text style={styles.suggestionText}>{text}</Text>
+      <TouchableOpacity style={styles.copyButton} onPress={onCopy}>
+        {copied ? <Check size={16} color="#2d913e" /> : <Copy size={16} color="#64748b" />}
+      </TouchableOpacity>
+    </View>
+  );
+}

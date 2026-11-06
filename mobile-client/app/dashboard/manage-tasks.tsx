@@ -80,13 +80,13 @@ export default function ManageTasksScreen() {
       ) : tasks.map((task) => {
         const approved = task.application_confirm === 'approve';
         return (
-          <TouchableOpacity key={task.id || task.gig_id} style={styles.card} activeOpacity={0.8} onPress={() => isStudent && task.gig_id && router.push(`/task-req/${task.gig_id}`)}>
+          <TouchableOpacity key={task.id || task.gig_id} style={styles.card} activeOpacity={0.8} onPress={() => isStudent ? (task.gig_id && router.push(`/task-req/${task.gig_id}`)) : router.push('/dashboard/applications' as any)}>
             <View style={styles.cardHeader}><Text style={styles.cardDeadline}>📅 {task.deadline}</Text><Text style={styles.cardBudget}>LKR {task.budget?.toLocaleString() || 0}</Text></View>
             <Text style={styles.cardTitle}>{task.title}</Text>
             {isStudent && <Text style={styles.poster}>🏢 {task.poster_display_name}</Text>}
             <Text style={styles.cardDesc} numberOfLines={3}>{task.description}</Text>
             <View style={styles.skillsRow}>{task.skills_required?.slice(0, 3).map((skill) => <Text style={styles.skill} key={skill}>{skill}</Text>)}</View>
-            {isStudent && <View style={[styles.status, approved ? styles.approved : styles.pending]}><Text style={approved ? styles.approvedText : styles.pendingText}>{approved ? '✓ Task Approved - Open Workspace' : '⌛ Task Pending...'}</Text></View>}
+            {isStudent ? <View style={[styles.status, approved ? styles.approved : styles.pending]}><Text style={approved ? styles.approvedText : styles.pendingText}>{approved ? '✓ Task Approved - Open Workspace' : '⌛ Task Pending...'}</Text></View> : <View style={styles.seeApplicants}><Text style={styles.seeApplicantsText}>See Applicants</Text></View>}
           </TouchableOpacity>
         );
       })}
@@ -116,4 +116,6 @@ const styles = StyleSheet.create({
   pending: { backgroundColor: '#fff', borderColor: '#d1d5db' },
   approvedText: { color: '#059669', fontWeight: '700', fontSize: 12 },
   pendingText: { color: '#6B7280', fontWeight: '600', fontSize: 12 },
+  seeApplicants: { borderWidth: 1, borderColor: '#6366f1', borderRadius: 7, paddingVertical: 9, alignItems: 'center' },
+  seeApplicantsText: { color: '#4338ca', fontWeight: '700', fontSize: 12 },
 });

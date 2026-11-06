@@ -41,6 +41,7 @@ export default function DashboardHome() {
           <Text style={styles.actionPanelTitle}>Workspace</Text>
           <View style={styles.actionGrid}>
             <ActionButton icon={<Briefcase size={20} color="#37352f" />} label="Manage Tasks" onPress={() => router.push('/dashboard/manage-tasks')} />
+            {canCreateTask && <ActionButton icon={<Briefcase size={20} color="#37352f" />} label="Applications" onPress={() => router.push('/dashboard/applications' as any)} />}
             <ActionButton icon={<User size={20} color="#37352f" />} label="My Profile" onPress={() => router.push('/dashboard/profile')} />
             <ActionButton icon={<Settings size={20} color="#37352f" />} label="Settings" onPress={() => router.push('/dashboard/profile')} />
             {canCreateTask && <ActionButton icon={<PlusSquare size={20} color="#2d913e" />} label="Create Task" onPress={() => router.push('/dashboard/create-task')} tone="green" />}
