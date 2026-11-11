@@ -134,13 +134,10 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
     );
   }
 
-  // Derive Display Logic
-  const isRemote = task.task_type === "remote";
   return (
     <div className="min-h-screen bg-[#F7F7F5] py-15 px-4 sm:px-6 flex flex-col items-center font-sans z-20 overflow-hidden">
 
-      {/* Container width adjusts based on Remote vs On-Site */}
-      <div className={`w-full transition-all duration-300 ${isRemote ? 'max-w-[760px]' : 'max-w-[1100px]'} relative mt-12 mb-20`}>
+      <div className="w-full max-w-[1100px] relative mt-12 mb-20">
 
         {/* --- DOODLE ART BACKGROUND LAYER --- */}
         {/* Doodle 1: Hand-drawn Crown above Cards */}
@@ -233,17 +230,8 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
 
             {/* Location Pill */}
             <div className="mb-8 flex items-center gap-2 text-sm font-medium bg-slate-50 border border-slate-100 py-2 px-3.5 rounded-md w-fit">
-              {isRemote ? (
-                <>
-                  <span className="text-slate-400">🌐</span>
-                  <span className="text-slate-600">Remote Task</span>
-                </>
-              ) : (
-                <>
-                  <span className="text-red-500">📍</span>
-                  <span className="text-slate-600">Location specified on map</span>
-                </>
-              )}
+              <span className="text-red-500">📍</span>
+              <span className="text-slate-600">{task.location?.address || "Location specified on map"}</span>
             </div>
 
             {/* Description */}
@@ -279,14 +267,10 @@ export default async function TaskDetailsPage({ params }: { params: Promise<{ id
 
           </div>
 
-          {/* RIGHT CARD: Dedicated Large Location Map (Only On-Site) */}
-          {/* CHANGED: Now passing coordinates array down into the card */}
-          {!isRemote && (
-            <LargeLocationCard 
-              address={task.location?.address} 
-              coordinates={task.location?.coordinates} 
-            />
-          )}
+          <LargeLocationCard
+            address={task.location?.address}
+            coordinates={task.location?.coordinates}
+          />
 
         </div>
       </div>

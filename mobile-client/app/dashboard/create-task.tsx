@@ -22,7 +22,6 @@ export default function CreateTaskScreen() {
   const { userRole } = useLocalSearchParams<{ userRole: string }>();
   
   const [loading, setLoading] = useState(false);
-  const [taskType, setTaskType] = useState<'remote' | 'on-site'>('remote');
   
   // Real Location & WebView Map States
   const [address, setAddress] = useState('');
@@ -188,24 +187,25 @@ export default function CreateTaskScreen() {
       Alert.alert("Validation Missing", "Please complete all mandatory fields.");
       return;
     }
+    if (!selectedLocation) {
+      Alert.alert("Location Missing", "Please tap the map to set the physical task location.");
+      return;
+    }
 
-    const structuredPayload: any = {
+    const structuredPayload = {
       title: formData.title,
       description: formData.description,
       budget: parseFloat(formData.budget) || 0,
       deadline: formData.deadline,
       skills_required: formData.skills.split(',').map(s => s.trim()).filter(Boolean),
       poster_clerk_id: userId,
-      task_type: taskType
-    };
-
-    if (taskType === 'on-site' && selectedLocation) {
-      structuredPayload.location = {
+      task_type: 'on-site' as const,
+      location: {
         type: 'Point',
-        coordinates: [selectedLocation.lng, selectedLocation.lat],
-        address: address
-      };
-    }
+        coordinates: [selectedLocation.lng, selectedLocation.lat] as [number, number],
+        address
+      }
+    };
 
     try {
       setLoading(true);
@@ -284,33 +284,21 @@ export default function CreateTaskScreen() {
 
         <View style={styles.locationContainer}>
           <View style={styles.rowJustify}>
-            <Text style={styles.label}>Location Strategy</Text>
-            <View style={styles.toggleTrack}>
-              <TouchableOpacity style={[styles.toggleBtn, taskType === 'remote' && styles.toggleActive]} onPress={() => setTaskType('remote')}>
-                <Text style={styles.toggleText}>Remote</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={[styles.toggleBtn, taskType === 'on-site' && styles.toggleActive]} onPress={() => setTaskType('on-site')}>
-                <Text style={styles.toggleText}>On-Site</Text>
-              </TouchableOpacity>
-            </View>
+            <Text style={styles.label}>Physical Task Location</Text>
           </View>
 
-          {taskType === 'on-site' && (
-            <View style={styles.mapWrapper}>
-              <TextInput style={styles.addressDisplay} editable={false} placeholder="Tap on the map to set location pin..." value={address} />
-              
-              {/* WebView Map Container */}
-              <View style={styles.realMapSurface}>
-                <WebView 
-                  originWhitelist={['*']}
-                  source={{ html: mapHtml }}
-                  onMessage={handleMapMessage}
-                  geolocationEnabled={true}
-                  style={styles.mapElement}
-                />
-              </View>
+          <View style={styles.mapWrapper}>
+            <TextInput style={styles.addressDisplay} editable={false} placeholder="Tap on the map to set location pin..." value={address} />
+            <View style={styles.realMapSurface}>
+              <WebView
+                originWhitelist={['*']}
+                source={{ html: mapHtml }}
+                onMessage={handleMapMessage}
+                geolocationEnabled={true}
+                style={styles.mapElement}
+              />
             </View>
-          )}
+          </View>
         </View>
 
         <TouchableOpacity style={styles.submitBtn} onPress={handleSubmit} disabled={loading}>
@@ -364,10 +352,6 @@ const styles = StyleSheet.create({
   datePickerTrigger: { borderWidth: 1, borderColor: '#cbd5e1', padding: 11, borderRadius: 10 },
   datePickerText: { fontSize: 14, color: '#191919' },
   locationContainer: { borderTopWidth: 1, borderTopColor: '#e2e8f0', marginTop: 8, paddingVertical: 12 },
-  toggleTrack: { flexDirection: 'row', backgroundColor: '#f1f5f9', padding: 2, borderRadius: 8 },
-  toggleBtn: { paddingHorizontal: 12, paddingVertical: 6, borderRadius: 6 },
-  toggleActive: { backgroundColor: '#FFFFFF' },
-  toggleText: { fontSize: 12, fontWeight: '600', color: '#334155' },
   mapWrapper: { marginTop: 12, gap: 8 },
   addressDisplay: { fontSize: 12, color: '#64748b', backgroundColor: '#f8fafc', borderWidth: 1, borderColor: '#e2e8f0', padding: 8, borderRadius: 10 },
   realMapSurface: { height: 200, borderRadius: 12, overflow: 'hidden', borderWidth: 1, borderColor: '#cbd5e1' },

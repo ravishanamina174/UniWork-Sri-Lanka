@@ -12,7 +12,7 @@ export interface TaskGig {
   budget: number;
   deadline: string;
   skills_required: string[];
-  task_type?: "remote" | "on-site";
+  task_type?: "on-site";
   poster_clerk_id: string;
   location?: {
     type: string;
@@ -97,7 +97,7 @@ export default async function PosterTasksPage() {
       {(!userTasks || userTasks.length === 0) ? (
         <div className="text-center py-16 bg-white border border-dashed border-slate-200 rounded-md">
           <p className="text-slate-400 text-sm">
-            You haven't posted any tasks yet. Click "Post a Task" to get started.
+            You haven&apos;t posted any tasks yet. Click &quot;Post a Task&quot; to get started.
           </p>
         </div>
       ) : (
@@ -105,7 +105,6 @@ export default async function PosterTasksPage() {
           {userTasks.map((task) => {
             // MongoDB uses _id, while your previous mock might have used id
             const taskId = task._id || task.id; 
-            const isRemote = task.task_type === "remote";
 
             return (
               <div
@@ -132,19 +131,10 @@ export default async function PosterTasksPage() {
 
                   {/* Location Indicator block */}
                   <div className="mb-3 flex items-center gap-1.5 text-xs font-medium bg-slate-50 border border-slate-100 py-1.5 px-2.5 rounded-lg w-fit max-w-full">
-                    {isRemote ? (
-                      <>
-                        <span className="text-slate-400">🌐</span>
-                        <span className="text-slate-600">Remote Task</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-red-500">📍</span>
-                        <span className="text-slate-600 line-clamp-1 truncate" title={task.location?.address}>
-                          {task.location?.address || "Location specified on map"}
-                        </span>
-                      </>
-                    )}
+                    <span className="text-red-500">📍</span>
+                    <span className="text-slate-600 line-clamp-1 truncate" title={task.location?.address}>
+                      {task.location?.address || "Location specified on map"}
+                    </span>
                   </div>
 
                   {/* Description Paragraph Container */}

@@ -1,4 +1,4 @@
-**UniWork** is a mobile-first marketplace connecting Sri Lankan state university students with short-term digital and physical tasks. It provides undergraduates with a flexible income stream without the rigid commitment of standard part-time jobs, designed to handle the volatile schedules of local campus life.
+**UniWork** is a mobile-first marketplace connecting Sri Lankan state university students with short-term physical tasks. It provides undergraduates with a flexible income stream without the rigid commitment of standard part-time jobs, designed to handle the volatile schedules of local campus life.
 
 ---
 
@@ -49,7 +49,6 @@ Built with **LangGraph** and **Pinecone**, running specialized conversational AI
 ## 💰 Monetization: The Hybrid Deposit Premium
 > **Platform Promise:** Always 100% free for verified university students.
 
-*   **Digital Tasks (In-App Split):** When a poster scans the dynamic **LankaQR** to pay for a digital task, the app uses a split-payment structure where 95% goes directly to the student's linked account, and 5% is routed to the UniWork corporate bank node as an infrastructure platform fee.
 *   **Physical Tasks (The Unlock Token):** For physical tasks where users meet in person, the task remains completely free for the student. The client pays a small flat fee (e.g., 50 LKR to 100 LKR) via bank card (**Stripe**) or LankaQR to "Unlock the Student Buddy Allocation" once they choose their workers. This monetizes upstream from the employer.
 *   **Corporate Task Activation:** Premium subscriptions or bulk credits purchased by corporate clients via corporate payment rails to activate large-scale, automated, or high-priority campus errands.
 *   **Targeted Student Ads:** Paid banner space for student-focused brands, including local boarding places, food suppliers, telecom providers, and student banking services looking for direct campus reach.
@@ -58,17 +57,17 @@ Built with **LangGraph** and **Pinecone**, running specialized conversational AI
 
 ## 📋 Supported Gig Ecosystem
 
-The platform cleanly splits incoming operational workflows into two distinct pipelines:
+The platform focuses on one operational workflow: physical and event logistics in the local community.
 
-| 💻 Digital Tasks (Remote) | 🏃‍♂️ Physical & Event Logistics (Hyper-Local) |
-| :--- | :--- |
-| • Social Media Management & Reels/TikTok Editing | • Corporate Event Operations & Hosting |
-| • Graphic Design (Flyers, Menus, Social Posts) | • SIM Card Activation & Promotion Drives |
-| • Social Media Content Creation | • Boarding House Furniture Shifting & Packing |
-| • Basic Web/WordPress Setup & Bug Fixing | • Floral Decoration & Setup |
-| • Virtual Assistance, Data Entry & Copy-typing | • On-the-Ground Market Research & Field Surveys |
-| • Online Tutoring (O/L, A/L, or Peer-to-Peer) | • Painting, Cleaning & Grass Cutting |
-| • Freelance Content Writing | • Photography Assisting & Equipment Setup |
+| 🏃‍♂️ Physical & Event Logistics (Hyper-Local) |
+| :--- |
+| • Corporate Event Operations & Hosting |
+| • SIM Card Activation & Promotion Drives |
+| • Boarding House Furniture Shifting & Packing |
+| • Floral Decoration & Setup |
+| • On-the-Ground Market Research & Field Surveys |
+| • Painting, Cleaning & Grass Cutting |
+| • Photography Assisting & Equipment Setup |
 
 ---
 
@@ -82,10 +81,10 @@ The platform cleanly splits incoming operational workflows into two distinct pip
 
 ## 🚀 Go-To-Market Strategy
 
-*   **Phase 1: Seed the Supply** – Secure 50-100 digital gigs (data entry, translation, design) from local startups before inviting the general student populace to prevent an empty marketplace.
+*   **Phase 1: Seed the Supply** – Secure 50-100 physical gigs from local businesses before inviting the general student populace to prevent an empty marketplace.
 *   **Phase 2: Grassroots Trust** – Partner directly with official Faculty Student Unions. Frame the app transparently as a student-welfare and financial relief initiative.
 *   **Phase 3: Ambassadors** – Pay select final-year students micro-bonuses and credits for onboarding, validating, and peer-reviewing their respective faculties.
-*   **Phase 4: Hyper-Local Launch** – Do not launch island-wide initially. Pilot strictly at a single campus cluster (e.g., University of Moratuwa - UoM) using only digital gigs first to test the stability of payment gateways safely.
+*   **Phase 4: Hyper-Local Launch** – Do not launch island-wide initially. Pilot strictly at a single campus cluster (e.g., University of Moratuwa - UoM) using physical tasks first to test safety and payment workflows.
 
 ---
 

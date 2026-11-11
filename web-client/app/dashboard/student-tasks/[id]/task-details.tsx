@@ -640,15 +640,6 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
         </div>
 
         {/* 5. Map Component */}
-        {gigData.task_type === 'remote' ? (
-          <div className="col-span-12 md:col-span-6 bg-white border border-gray-200 rounded-xl p-8 flex flex-col items-center justify-center min-h-[500px]">
-            <div className="w-12 h-12 bg-slate-50 text-slate-400 rounded-full flex items-center justify-center mb-3">
-              <MapPin size={24} />
-            </div>
-            <p className="text-slate-500 font-medium">Remote Task</p>
-            <p className="text-xs text-slate-400 mt-1">No physical location required</p>
-          </div>
-        ) : (
           <div className="col-span-12 md:col-span-6 bg-white rounded-xl border border-gray-200 p-6 min-h-[500px] hover:shadow-xs flex flex-col group/card">
             <h3 className="font-bold text-[16px] text-slate-900 mb-3 flex items-center gap-2">
               <MapPin className="text-[#1d9c45]" size={18}/> Task Location
@@ -666,7 +657,6 @@ export default function TaskDetailsBoard({ applicationId }: TaskDetailsProps) {
               </div>
             </div>
           </div>
-        )}
 
       </div>
     </>

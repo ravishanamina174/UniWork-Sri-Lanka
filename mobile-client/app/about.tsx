@@ -262,14 +262,14 @@ export default function AboutPage() {
               <Text style={styles.badgeText}>The First Dedicated Student Task Network in Sri Lanka</Text>
             </View>
             <Text style={styles.cardTitle}>Bridging the Gap Between Flexible Student Income and On-Demand Help</Text>
-            <Text style={styles.cardSubtitle}>The Ultimate Solution for On-Campus Help, Skilled Digital Work, and Trusted Earnings</Text>
+            <Text style={styles.cardSubtitle}>The Ultimate Solution for On-Campus Help and Trusted Earnings</Text>
             
             <Text style={styles.cardBody}>
               University students always need extra money, but regular part-time jobs do not work because timetables change constantly from week to week. On the other side, local businesses find it hard to find quick, trustworthy help for hands-on tasks like moving items, running errands, or event setup. Right now, there is absolutely no single, trusted website in Sri Lanka built to bring these two sides together and fix this problem.
             </Text>
             
             <Text style={styles.cardBody}>
-              UniWorkSL fixes this by focusing heavily on quick, physical tasks around the campus area—like lifting lab equipment, helping at events, or local deliveries—while also offering digital freelance work like simple design or typing tasks. Unlike confusing social media groups or big, corporate job boards that take weeks to reply, UniWorkSL is fast, completely local, and fits perfectly around a student's daily class hours.
+              UniWorkSL fixes this by focusing heavily on quick, physical tasks around the campus area—like lifting lab equipment, helping at events, or local deliveries. Unlike confusing social media groups or big, corporate job boards that take weeks to reply, UniWorkSL is fast, completely local, and fits perfectly around a student&apos;s daily class hours.
             </Text>
             
             <Text style={[styles.cardBody, { marginBottom: 0 }]}>

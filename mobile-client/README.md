@@ -69,3 +69,15 @@ ipconfig getifaddr en0
 
 cd ~/MyProjects/UniWorkSL/mobile-client
 REACT_NATIVE_PACKAGER_HOSTNAME=192.168.6.170 npx expo start --dev-client --host lan
+
+
+
+
+
+## when trouble use this (can open both (android / I phone)) - for moving to i phone use "s" 
+## http://<YOUR_MAC_IP>:8081
+
+cd /Users/raveesha/MyProjects/UniWorkSL/mobile-client
+npx expo start --dev-client --host lan --clear
+
+

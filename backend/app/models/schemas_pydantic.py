@@ -1,7 +1,7 @@
 # backend/app/models/schemas_pydantic.py
 from datetime import datetime
 from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_validator
-from typing import List, Optional, Tuple
+from typing import List, Literal, Optional, Tuple
 
 class BaseRegisterRequest(BaseModel):
     clerk_id: str
@@ -47,8 +47,8 @@ class GigCreateRequest(BaseModel):
     deadline: str
     skills_required: List[str] = []
     poster_clerk_id: str
-    task_type: str = "remote"  # Expected: 'remote' or 'on-site'
-    location: Optional[GeoJSONLocation] = None
+    task_type: Literal["on-site"] = "on-site"
+    location: GeoJSONLocation
 
 class GigResponse(BaseModel):
     id: str
@@ -59,7 +59,7 @@ class GigResponse(BaseModel):
     skills_required: List[str]
     poster_clerk_id: str
     created_at: str
-    task_type: str
+    task_type: Literal["on-site"] = "on-site"
     location: Optional[GeoJSONLocation] = None
 
     

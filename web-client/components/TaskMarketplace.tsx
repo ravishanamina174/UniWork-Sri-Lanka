@@ -10,7 +10,7 @@ export interface TaskGig {
   budget: number;
   deadline: string;
   skills_required: string[];
-  task_type?: "remote" | "on-site";
+  task_type?: "on-site";
   location?: {
     type: string;
     coordinates: [number, number];
@@ -69,7 +69,6 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tasks.slice(0, visibleCount).map((task) => {
-              const isRemote = task.task_type === "remote";
               const isExpanded = !!expandedTasks[task.id];
               
               return (
@@ -98,19 +97,10 @@ export default function TaskMarketplace({ tasks, userRole }: TaskMarketplaceProp
 
                     {/* Location Indicator block */}
                     <div className="mb-3 flex items-center gap-1.5 text-xs font-medium bg-slate-50 border border-slate-100 py-1.5 px-2.5 rounded-lg w-fit max-w-full">
-                      {isRemote ? (
-                        <>
-                          <span className="text-slate-400">🌐</span>
-                          <span className="text-slate-600">Remote Task</span>
-                        </>
-                      ) : (
-                        <>
-                          <span className="text-red-500">📍</span>
-                          <span className="text-slate-600 line-clamp-1 truncate" title={task.location?.address}>
-                            {task.location?.address || "Location specified on map"}
-                          </span>
-                        </>
-                      )}
+                      <span className="text-red-500">📍</span>
+                      <span className="text-slate-600 line-clamp-1 truncate" title={task.location?.address}>
+                        {task.location?.address || "Location specified on map"}
+                      </span>
                     </div>
 
                     {/* CHANGED: Description Paragraph Container with "see more" toggle */}

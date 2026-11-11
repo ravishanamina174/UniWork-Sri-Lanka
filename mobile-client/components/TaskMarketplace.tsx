@@ -15,7 +15,7 @@ export interface TaskGig {
   budget: number;
   deadline: string;
   skills_required: string[];
-  task_type?: 'remote' | 'on-site';
+  task_type?: 'on-site';
   location?: {
     type: string;
     coordinates: [number, number];
@@ -63,7 +63,6 @@ function MarketplaceHeader() {
 
 function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const isRemote = task.task_type === 'remote';
 
   return (
     <View style={styles.card}>
@@ -81,19 +80,10 @@ function TaskCard({ task, userRole }: { task: TaskGig; userRole?: string }) {
 
         {/* Location Block */}
         <View style={styles.locationBadgeContainer}>
-          {isRemote ? (
-            <>
-              <Text style={styles.locationIcon}>🌐</Text>
-              <Text style={styles.locationText}>Remote Task</Text>
-            </>
-          ) : (
-            <>
-              <Text style={styles.locationIcon}>📍</Text>
-              <Text style={styles.locationText} numberOfLines={1}>
-                {task.location?.address || 'Location specified on map'}
-              </Text>
-            </>
-          )}
+          <Text style={styles.locationIcon}>📍</Text>
+          <Text style={styles.locationText} numberOfLines={1}>
+            {task.location?.address || 'Location specified on map'}
+          </Text>
         </View>
 
         {/* Description & See More Toggle */}

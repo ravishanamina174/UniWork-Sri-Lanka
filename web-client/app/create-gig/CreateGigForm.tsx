@@ -21,9 +21,6 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   
-  // Task Type Toggle State
-  const [taskType, setTaskType] = useState<"remote" | "on-site">("remote");
-  
   // Location States
   const [mapCenter, setMapCenter] = useState(defaultCenter);
   const [selectedLocation, setSelectedLocation] = useState<{lat: number, lng: number} | null>(null);
@@ -103,25 +100,27 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!selectedLocation) {
+      alert("Please select the physical task location on the map.");
+      return;
+    }
+
     setLoading(true);
 
-    const structuredPayload: any = {
+    const structuredPayload = {
       title: formData.title,
       description: formData.description,
       budget: parseFloat(formData.budget) || 0,
       deadline: formData.deadline,
       skills_required: formData.skills.split(",").map(s => s.trim()).filter(Boolean),
       poster_clerk_id: clerkId,
-      task_type: taskType
-    };
-
-    if (taskType === "on-site" && selectedLocation) {
-      structuredPayload.location = {
+      task_type: "on-site" as const,
+      location: {
         type: "Point",
-        coordinates: [selectedLocation.lng, selectedLocation.lat], // Longitude first for MongoDB GeoJSON
-        address: address
-      };
-    }
+        coordinates: [selectedLocation.lng, selectedLocation.lat] as [number, number],
+        address
+      }
+    };
 
     try {
       const res = await fetch(API_BASE_URL + "/api/v1/gigs/create", {
@@ -186,7 +185,7 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
         <input
           required
           type="text"
-          placeholder="e.g., Develop landing page using Tailwind CSS"
+          placeholder="e.g., Help set up registration desks for a campus event"
           className="w-full px-3 py-2 border border-slate-200 rounded-md focus:outline-none focus:border-[#2d913e] transition-colors"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
@@ -304,37 +303,13 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
         />
       </div>
 
-      {/* --- NEW: Location Section --- */}
+      {/* --- Location Section --- */}
       <div className="pt-4 border-t border-slate-200">
         <div className="flex items-center justify-between mb-4">
           <label className="block text-sm font-semibold text-slate-700">Task Location Requirements</label>
-          
-          {/* Toggle Switch */}
-          <div className="flex bg-slate-100 p-1 rounded-lg">
-            <button
-              type="button"
-              onClick={() => setTaskType("remote")}
-              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                taskType === "remote" ? "bg-white shadow-sm text-slate-900" : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              Remote
-            </button>
-            <button
-              type="button"
-              onClick={() => setTaskType("on-site")}
-              className={`px-4 py-1.5 text-sm font-medium rounded-md transition-all ${
-                taskType === "on-site" ? "bg-white shadow-sm text-slate-900" : "text-slate-500 hover:text-slate-700"
-              }`}
-            >
-              On-Site
-            </button>
-          </div>
         </div>
 
-        {/* Map UI (Only loads if On-Site is selected) */}
-        {taskType === "on-site" && (
-          <div className="space-y-3 fade-in">
+        <div className="space-y-3 fade-in">
             <div className="flex gap-2">
               <button
                 type="button"
@@ -373,13 +348,12 @@ export default function CreateGigForm({ clerkId }: { clerkId: string }) {
                 </div>
               )}
             </div>
-          </div>
-        )}
+        </div>
       </div>
 
       <button
         type="submit"
-        disabled={loading || (taskType === "on-site" && !selectedLocation)}
+        disabled={loading || !selectedLocation}
         className="w-full py-3 bg-white hover:bg-[#e8e9ec] text-[#28292b] border border-[#afb2b6] md:text-[14px] text-sm font-semibold rounded-md transition-all shadow-sm active:scale-[0.99] mt-6 flex items-center justify-center gap-2 "
       >
         {loading ? "Publishing to Ecosystem..." : <>Publish Task Card <Send size={16} color="#189e49" /></>}

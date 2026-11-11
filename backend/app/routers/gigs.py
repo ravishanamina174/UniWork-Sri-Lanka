@@ -23,13 +23,10 @@ async def create_gig(payload: GigCreateRequest):
             "deadline": payload.deadline,
             "skills_required": payload.skills_required,
             "poster_clerk_id": payload.poster_clerk_id,
-            "task_type": payload.task_type,
+            "task_type": "on-site",
+            "location": payload.location.model_dump(),
             "created_at": datetime.utcnow().isoformat()
         }
-        
-        # Append location data only if it is an on-site task
-        if payload.task_type == "on-site" and payload.location:
-            gig_document["location"] = payload.location.dict()
         
         # Insert inside your mongo collection
         result = await mongo_db["gigs"].insert_one(gig_document)
@@ -64,7 +61,7 @@ async def get_all_gigs():
                 "skills_required": doc.get("skills_required", []),
                 "poster_clerk_id": doc["poster_clerk_id"],
                 "created_at": doc.get("created_at", ""),
-                "task_type": doc.get("task_type", "remote"),
+                "task_type": "on-site",
                 "location": doc.get("location", None)
             })
             
@@ -104,7 +101,7 @@ async def get_single_gig(gig_id: str):
             "skills_required": doc.get("skills_required", []),
             "poster_clerk_id": doc["poster_clerk_id"],
             "created_at": doc.get("created_at", ""),
-            "task_type": doc.get("task_type", "remote"),
+            "task_type": "on-site",
             "location": doc.get("location", None)
         }
     except HTTPException as http_err:

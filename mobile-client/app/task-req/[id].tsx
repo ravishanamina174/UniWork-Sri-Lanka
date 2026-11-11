@@ -50,7 +50,6 @@ export default function TaskRequestScreen() {
     );
   }
 
-  const isRemote = task.task_type === "remote";
   const [longitude, latitude] = task.location?.coordinates?.length === 2
     ? task.location.coordinates
     : [80.5234, 6.6191];
@@ -69,9 +68,7 @@ export default function TaskRequestScreen() {
           <Text style={styles.budget}>LKR {task.budget?.toLocaleString() || 0}</Text>
 
           <View style={styles.locationPill}>
-            <Text style={styles.locationPillText}>
-              {isRemote ? "🌐 Remote Task" : `📍 ${task.location?.address || "Location specified on map"}`}
-            </Text>
+            <Text style={styles.locationPillText}>📍 {task.location?.address || "Location specified on map"}</Text>
           </View>
 
           <Text style={styles.description}>{task.description}</Text>
@@ -90,30 +87,23 @@ export default function TaskRequestScreen() {
         </View>
 
         {/* Interactive task map, matching the web task details page. */}
-        {!isRemote && (
-          <View style={styles.mapSection}>
-            <Text style={styles.mapTitle}>TASK LOCATION</Text>
-            <View style={styles.mapContainer}>
-              <MapView
-                style={styles.map}
-                initialRegion={{
-                  latitude,
-                  longitude,
-                  latitudeDelta: 0.02,
-                  longitudeDelta: 0.02,
-                }}
-                scrollEnabled={false}
-                zoomEnabled={false}
-              >
-                <Marker coordinate={{ latitude, longitude }} />
-              </MapView>
-              <View style={styles.mapInnerCard}>
-                <Text style={styles.pinIcon}>📍</Text>
-                <Text style={styles.mapInnerText}>{task.location?.address || 'Exact location pinned on map'}</Text>
-              </View>
+        <View style={styles.mapSection}>
+          <Text style={styles.mapTitle}>TASK LOCATION</Text>
+          <View style={styles.mapContainer}>
+            <MapView
+              style={styles.map}
+              initialRegion={{ latitude, longitude, latitudeDelta: 0.02, longitudeDelta: 0.02 }}
+              scrollEnabled={false}
+              zoomEnabled={false}
+            >
+              <Marker coordinate={{ latitude, longitude }} />
+            </MapView>
+            <View style={styles.mapInnerCard}>
+              <Text style={styles.pinIcon}>📍</Text>
+              <Text style={styles.mapInnerText}>{task.location?.address || 'Exact location pinned on map'}</Text>
             </View>
           </View>
-        )}
+        </View>
 
       </ScrollView>
     </SafeAreaView>
