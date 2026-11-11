@@ -56,3 +56,16 @@ Join our community of developers creating universal apps.
 Running this is completely safe. The next time you eventually need to plug in your USB cable and run a full compilation via npx expo run:android, Gradle will simply recreate these build artifacts automatically
 
 
+-----------------
+
+npx expo start
+npx expo start --dev-client
+
+## expo run on mac IP
+npx expo start --dev-client --host lan
+
+## get mac current IP
+ipconfig getifaddr en0
+
+cd ~/MyProjects/UniWorkSL/mobile-client
+REACT_NATIVE_PACKAGER_HOSTNAME=192.168.6.170 npx expo start --dev-client --host lan
