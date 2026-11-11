@@ -19,7 +19,10 @@ export default function LoadingScreen({
   const [exiting, setExiting] = useState(false);
   const [done, setDone] = useState(false);
   const completeRef = useRef(onComplete);
-  completeRef.current = onComplete;
+
+  useEffect(() => {
+    completeRef.current = onComplete;
+  }, [onComplete]);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;

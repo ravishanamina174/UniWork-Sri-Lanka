@@ -15,7 +15,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
   const navigationTabs = {
     STUDENT_EARNER: [
       { name: "Find Tasks", href: "/tasks" },
-      { name: "Physical", href: "/" },
+      { name: "Physical", href: "/physical" },
       // { name: "Digital", href: "/" },
       { name: "About", href: "/about" },
     ],
@@ -26,7 +26,7 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
       { name: "About", href: "/about" },
     ],
     CORPORATE_CLIENT: [
-      { name: "Enterprise Contracts", href: "/" },
+      { name: "Enterprise Contracts", href: "/enterprise-contracts" },
       { name: "Applications", href: "/dashboard/applications" },
       { name: "Talent Pool", href: "/" },
       { name: "About", href: "/about" },
