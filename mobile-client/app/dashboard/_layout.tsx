@@ -69,6 +69,14 @@ export default function DashboardLayout() {
         options={{ title: 'Manage Tasks', headerBackTitle: 'Back' }} 
         initialParams={{ userRole }}
       />
+      <Stack.Screen
+        name="student-tasks"
+        options={{ title: 'My Applied Tasks', headerBackTitle: 'Back' }}
+      />
+      <Stack.Screen
+        name="student-tasks/[id]"
+        options={{ title: 'Task Workspace', headerBackTitle: 'Back' }}
+      />
       {/* NEW SCREEN ADDED HERE */}
       <Stack.Screen 
         name="create-task" 

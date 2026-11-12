@@ -80,7 +80,7 @@ export default function ManageTasksScreen() {
       ) : tasks.map((task) => {
         const approved = task.application_confirm === 'approve';
         return (
-          <TouchableOpacity key={task.id || task.gig_id} style={styles.card} activeOpacity={0.8} onPress={() => isStudent ? (task.gig_id && router.push(`/task-req/${task.gig_id}`)) : router.push('/dashboard/applications' as any)}>
+          <TouchableOpacity key={task.id || task.gig_id} style={styles.card} activeOpacity={0.8} onPress={() => isStudent ? (approved ? router.push(`/dashboard/student-tasks/${task.id}` as any) : (task.gig_id && router.push(`/task-req/${task.gig_id}`))) : router.push('/dashboard/applications' as any)}>
             <View style={styles.cardHeader}><Text style={styles.cardDeadline}>📅 {task.deadline}</Text><Text style={styles.cardBudget}>LKR {task.budget?.toLocaleString() || 0}</Text></View>
             <Text style={styles.cardTitle}>{task.title}</Text>
             {isStudent && <Text style={styles.poster}>🏢 {task.poster_display_name}</Text>}

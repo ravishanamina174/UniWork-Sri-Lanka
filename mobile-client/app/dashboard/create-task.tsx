@@ -69,7 +69,7 @@ export default function CreateTaskScreen() {
         let map, marker;
         function initMap() {
           // Default center: Pelmadulla
-          const defaultPos = { lat: 6.6191, lng: 80.5234 };
+          const defaultPos = { lat: 6.855521, lng: 80.092607 };
           map = new google.maps.Map(document.getElementById('map'), {
             zoom: 13,
             center: defaultPos,

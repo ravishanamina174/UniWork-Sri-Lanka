@@ -9,27 +9,74 @@ import {
   SafeAreaView,
 } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { fetchAllGigs } from '@/constants/api';
+import { useAuth } from '@clerk/clerk-expo';
+import { API_BASE_URL, fetchAllGigs } from '@/constants/api';
 import { TaskGig } from '@/components/TaskMarketplace'; // Adjust path if needed
-import MapView, { Marker } from 'react-native-maps';
+import TaskMap from '@/components/TaskMap';
 
 export default function TaskRequestScreen() {
   const { id } = useLocalSearchParams();
   const router = useRouter();
+  const { userId } = useAuth();
+  const taskId = Array.isArray(id) ? id[0] : id;
   
   const [task, setTask] = useState<TaskGig | null>(null);
   const [loading, setLoading] = useState(true);
+  const [applicationStatus, setApplicationStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [applicationError, setApplicationError] = useState('');
 
   useEffect(() => {
     // Fetching all and filtering by ID to maintain consistency with your existing API logic
     fetchAllGigs()
       .then((tasks) => {
-        const foundTask = tasks.find((t) => t.id === id);
+        const foundTask = tasks.find((t) => t.id === taskId);
         setTask(foundTask || null);
       })
       .catch((err) => console.error("Error fetching task:", err))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [taskId]);
+
+  useEffect(() => {
+    if (!userId || !taskId) return;
+    const checkApplication = async () => {
+      try {
+        const response = await fetch(`${API_BASE_URL}/applications/student/${userId}`);
+        if (!response.ok) return;
+        const applications = await response.json() as { gig_id: string; applied?: boolean }[];
+        if (applications.some((application) => application.gig_id === taskId && application.applied !== false)) {
+          setApplicationStatus('success');
+        }
+      } catch (error) {
+        console.error('Failed to check task application:', error);
+      }
+    };
+    void checkApplication();
+  }, [taskId, userId]);
+
+  const applyForTask = async () => {
+    if (!userId || !taskId) return;
+    setApplicationStatus('loading');
+    setApplicationError('');
+    try {
+      const response = await fetch(`${API_BASE_URL}/applications/apply`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          student_clerk_id: userId,
+          gig_id: taskId,
+          student_message: 'I am highly interested in this task and available to start immediately.',
+        }),
+      });
+      const data = await response.json().catch(() => ({})) as { detail?: string };
+      if (!response.ok && !(response.status === 400 && data.detail === 'You have already submitted an application for this task.')) {
+        throw new Error(data.detail || 'Failed to submit application.');
+      }
+      setApplicationStatus('success');
+    } catch (error: unknown) {
+      setApplicationStatus('error');
+      setApplicationError(error instanceof Error ? error.message : 'Could not submit application.');
+    }
+  };
 
   if (loading) {
     return (
@@ -81,23 +128,28 @@ export default function TaskRequestScreen() {
             ))}
           </View>
 
-          <TouchableOpacity style={styles.requestButton}>
-            <Text style={styles.requestButtonText}>Request Task</Text>
-          </TouchableOpacity>
+          {applicationStatus === 'success' ? (
+            <View style={styles.applicationActions}>
+              <View style={styles.submittedButton}><Text style={styles.submittedText}>✓ Application Submitted</Text></View>
+              <TouchableOpacity style={styles.tasksButton} onPress={() => router.push('/dashboard/student-tasks' as any)}>
+                <Text style={styles.tasksButtonText}>View Applied Tasks</Text>
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <View style={styles.applicationActions}>
+              <TouchableOpacity style={styles.requestButton} onPress={applyForTask} disabled={applicationStatus === 'loading'}>
+                {applicationStatus === 'loading' ? <ActivityIndicator color="#191919" /> : <Text style={styles.requestButtonText}>Request Task</Text>}
+              </TouchableOpacity>
+              {applicationStatus === 'error' && <Text style={styles.applicationError}>{applicationError}</Text>}
+            </View>
+          )}
         </View>
 
         {/* Interactive task map, matching the web task details page. */}
         <View style={styles.mapSection}>
           <Text style={styles.mapTitle}>TASK LOCATION</Text>
           <View style={styles.mapContainer}>
-            <MapView
-              style={styles.map}
-              initialRegion={{ latitude, longitude, latitudeDelta: 0.02, longitudeDelta: 0.02 }}
-              scrollEnabled={false}
-              zoomEnabled={false}
-            >
-              <Marker coordinate={{ latitude, longitude }} />
-            </MapView>
+            <TaskMap coordinates={[longitude, latitude]} />
             <View style={styles.mapInnerCard}>
               <Text style={styles.pinIcon}>📍</Text>
               <Text style={styles.mapInnerText}>{task.location?.address || 'Exact location pinned on map'}</Text>
@@ -139,6 +191,12 @@ const styles = StyleSheet.create({
   skillText: { color: '#FFF', fontSize: 12, fontWeight: '600' },
   requestButton: { backgroundColor: '#FFF', borderWidth: 1, borderColor: '#6366F1', paddingVertical: 14, borderRadius: 12, alignItems: 'center' },
   requestButtonText: { color: '#191919', fontSize: 14, fontWeight: '600' },
+  applicationActions: { gap: 8 },
+  submittedButton: { backgroundColor: '#ECFDF5', borderWidth: 1, borderColor: '#A7F3D0', paddingVertical: 14, borderRadius: 12, alignItems: 'center' },
+  submittedText: { color: '#047857', fontSize: 14, fontWeight: '700' },
+  tasksButton: { backgroundColor: '#FFFFFF', borderWidth: 1, borderColor: '#CBD5E1', paddingVertical: 12, borderRadius: 12, alignItems: 'center' },
+  tasksButtonText: { color: '#334155', fontSize: 14, fontWeight: '600' },
+  applicationError: { color: '#DC2626', textAlign: 'center', fontSize: 12 },
   mapSection: { backgroundColor: '#FFF', borderRadius: 16, padding: 20, borderWidth: 1, borderColor: '#E2E8F0' },
   mapTitle: { fontSize: 12, fontWeight: 'bold', color: '#64748B', marginBottom: 16, letterSpacing: 0.5 },
   mapContainer: {
@@ -152,7 +210,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
-  map: { ...StyleSheet.absoluteFillObject },
   mapInnerCard: {
     backgroundColor: '#FFF',
     padding: 16,
