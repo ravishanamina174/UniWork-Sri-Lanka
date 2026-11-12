@@ -20,7 +20,6 @@
 
 Because student safety is paramount, the platform implements a strict multi-layered security protocol:
 
-*   **Strict Onboarding:** Requires a valid `.ac.lk` university email domain or institutional student ID paired with a live facial biometric scan during registration.
 *   **Buddy System:** Mandates "Team Gigs" (minimum of 2+ verified students) for physical tasks such as moving furniture or working off-campus locations.
 *   **Live Tracking:** Background GPS tracking and automated emergency share links activate instantly the moment a physical gig begins.
 *   **Two-Way Ratings:** Blind ratings between posters and students; low platform scores trigger automatic, permanent account bans.
@@ -41,14 +40,7 @@ Because student safety is paramount, the platform implements a strict multi-laye
 ### Databases & Spatial Engines
 *   **MongoDB:** Document store for flexible user/student profile metadata, unstructured skill matrices, high-velocity in-app chat logs, and transient multi-agent conversational states.
 *   **PostgreSQL + PostGIS:** Relational data models combined with high-performance geospatial indexing for location calculations.
-*   **Pinecone:** High-dimensional semantic vector database for running multi-agent search profiles.
 *   **Geofencing & GPS Telemetry:** Real-time spatial tracking engine calculating proof-of-presence, background movement logs, and automated risk-zone telemetry scaling.
-
-### 🧠 Multi-Agent RAG Layer (LangGraph)
-Built with **LangGraph** and **Pinecone**, running specialized conversational AI agents:
-1.  **Ingestion Agent:** Reads messy, unformatted job descriptions typed naturally by clients, extracts the exact requirements, and uses current market data to calculate a fair, inflation-adjusted price suggestion before publication.
-2.  **Sandbox Guards Agent:** Instantly and actively monitors in-app chats to parse and block phone numbers, external payment links, or personal emails, preventing users from bypassing the platform escrow system.
-
 ---
 
 ## 💰 Monetization: The Hybrid Deposit Premium
