@@ -21,13 +21,13 @@ export default function Navbar({ userRole = "STUDENT_EARNER" }: NavbarProps) {
     TASK_POSTER: [
       { name: "Tasks", href: "/tasks" },
       { name: "Applications", href: "/dashboard/applications" },
-      { name: "Talent Pool", href: "/" },
+      { name: "Talent Pool", href: "/talent-pool" },
       { name: "About", href: "/about" },
     ],
     CORPORATE_CLIENT: [
       { name: "Enterprise Contracts", href: "/enterprise-contracts" },
       { name: "Applications", href: "/dashboard/applications" },
-      { name: "Talent Pool", href: "/" },
+      { name: "Talent Pool", href: "/talent-pool" },
       { name: "About", href: "/about" },
     ],
   };

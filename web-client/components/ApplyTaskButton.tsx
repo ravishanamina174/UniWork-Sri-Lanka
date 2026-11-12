@@ -2,6 +2,7 @@
 import { API_BASE_URL } from "@/lib/api";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 interface ApplyTaskButtonProps {
   gigId: string;
@@ -21,11 +22,11 @@ export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButt
         });
 
         if (res.ok) {
-          const applications = await res.json();
+          const applications = await res.json() as Array<{ gig_id: string; applied: boolean }>;
           
           // Check if this specific gig is in the student's application history and applied is true
           const hasApplied = applications.some(
-            (app: any) => app.gig_id === gigId && app.applied === true
+            (app) => app.gig_id === gigId && app.applied === true
           );
 
           if (hasApplied) {
@@ -71,21 +72,23 @@ export default function ApplyTaskButton({ gigId, studentClerkId }: ApplyTaskButt
       }
 
       setStatus("success");
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error("Application error:", err);
       setStatus("error");
-      setErrorMessage(err.message || "An unexpected error occurred.");
+      setErrorMessage(err instanceof Error ? err.message : "An unexpected error occurred.");
     }
   };
 
   if (status === "success") {
     return (
-      <button 
-        disabled
-        className="w-full sm:w-auto shrink-0 bg-[#EAFAEA] border-[0.7px] border-[#2E7D32] text-[#2E7D32] text-sm font-medium py-2 px-7 rounded-[5px] transition-all shadow-sm tracking-wide cursor-not-allowed"
-      >
-        Application Submitted ✓
-      </button>
+      <div className="flex flex-col items-end gap-2 w-full sm:w-auto">
+        <button disabled className="w-full sm:w-auto shrink-0 bg-[#EAFAEA] border-[0.7px] border-[#2E7D32] text-[#2E7D32] text-sm font-medium py-2 px-7 rounded-[5px] shadow-sm tracking-wide cursor-not-allowed">
+          Application Submitted ✓
+        </button>
+        <Link href="/dashboard/student-tasks" className="w-full sm:w-auto text-center bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 hover:border-slate-400 text-sm font-medium py-2 px-5 rounded-xl transition-colors">
+          View Applied Tasks
+        </Link>
+      </div>
     );
   }
 

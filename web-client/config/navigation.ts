@@ -14,7 +14,7 @@ export const getNavLinks = (role: UserRole) => {
       return [
         commonLinks[0],
         { name: 'Tasks', href: '/dashboard/student-tasks', icon: Briefcase },
-        { name: 'Settings', href: '/', icon: Settings }, // <-- Added
+        { name: 'Settings', href: '/dashboard/settings', icon: Settings },
         commonLinks[1],
       ];
     case 'TASK_POSTER':

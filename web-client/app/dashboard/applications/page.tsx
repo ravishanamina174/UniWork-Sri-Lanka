@@ -203,15 +203,6 @@ export default async function ApplicationsDashboardPage() {
                         applicationId={app.id} 
                         initialStatus={app.application_confirm} 
                       />
-                      {/* Dynamic Routing specifically for approved applications */}
-                      {app.application_confirm === "approve" && (
-                        <Link 
-                          href={`/dashboard/applications/${app.id}`}
-                          className="w-full py-2.5 px-3 rounded-lg bg-white border border-[#2f96df85] text-[#2f96df] hover:bg-[#f3f8fbb0] text-xs font-bold flex items-center justify-center gap-1.5 transition-colors shadow-sm"
-                        >
-                          <span>💬</span> Open Task Workspace
-                        </Link>
-                      )}
                     </div>
                   </div>
                 ))}
