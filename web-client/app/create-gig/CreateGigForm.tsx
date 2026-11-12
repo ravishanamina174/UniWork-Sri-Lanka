@@ -13,8 +13,8 @@ const mapContainerStyle = {
 
 // Defaulting to Pelmadulla, Sabaragamuwa Province
 const defaultCenter = {
-  lat: 6.6191,
-  lng: 80.5234,
+  lat: 6.855521,
+  lng: 80.092607,
 };
 
 export default function CreateGigForm({ clerkId }: { clerkId: string }) {
